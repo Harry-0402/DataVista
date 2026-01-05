@@ -78,6 +78,7 @@ module.exports = async (env, options) => {
                     { from: "src/taskpane/generators.js", to: "generators.js" },
                     { from: "src/taskpane/workbook_generators.js", to: "workbook_generators.js" },
                     { from: "assets", to: "assets", noErrorOnMissing: true },
+                    { from: "manifest.xml", to: "manifest.xml" },
                 ],
             }),
         ],
