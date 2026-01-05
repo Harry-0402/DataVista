@@ -58,7 +58,7 @@ async function runAnalysis() {
                 await context.sync();
 
                 // Trim empty rows/cols
-                const trimmed = trimEmptyGrid(range.values);
+                const trimmed = window.trimEmptyGrid(range.values);
 
                 if (!trimmed) throw new Error("Selection is empty");
 
@@ -82,7 +82,7 @@ async function runAnalysis() {
                 // 3. Process Data
                 for (let item of sheetRanges) {
                     if (!item.rng.isNullObject && item.rng.rowCount > 0) {
-                        const trimmed = trimEmptyGrid(item.rng.values);
+                        const trimmed = window.trimEmptyGrid(item.rng.values);
                         if (trimmed) {
                             data[item.name] = trimmed;
                             sheetNames.push(item.name);
