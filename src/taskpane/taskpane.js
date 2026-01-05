@@ -57,10 +57,12 @@ async function runAnalysis() {
                 range.load("values");
                 await context.sync();
 
-                // Simple check for data
-                if (!range.values || range.values.length === 0) throw new Error("Selection is empty");
+                // Trim empty rows/cols
+                const trimmed = trimEmptyGrid(range.values);
 
-                data["Selection"] = range.values;
+                if (!trimmed) throw new Error("Selection is empty");
+
+                data["Selection"] = trimmed;
                 sheetNames.push("Selection");
             } else {
                 const sheets = context.workbook.worksheets;
@@ -80,8 +82,11 @@ async function runAnalysis() {
                 // 3. Process Data
                 for (let item of sheetRanges) {
                     if (!item.rng.isNullObject && item.rng.rowCount > 0) {
-                        data[item.name] = item.rng.values;
-                        sheetNames.push(item.name);
+                        const trimmed = trimEmptyGrid(item.rng.values);
+                        if (trimmed) {
+                            data[item.name] = trimmed;
+                            sheetNames.push(item.name);
+                        }
                     }
                 }
             }
