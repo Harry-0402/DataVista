@@ -3,6 +3,8 @@
  * See LICENSE in the project root for license information.
  */
 
+import { trimEmptyGrid } from "../utils/data-utils";
+
 // Define library URLs for offline bundling (Same as taskpane.js)
 const LIB_URLS = {
     jquery: "https://code.jquery.com/jquery-3.7.0.min.js",
@@ -74,7 +76,7 @@ async function runHeadlessExport(source, event) {
                 await context.sync();
 
                 // Trim empty
-                const trimmed = window.trimEmptyGrid(range.values);
+                const trimmed = trimEmptyGrid(range.values);
                 if (!trimmed) throw new Error("Selection is empty");
 
                 data["Selection"] = trimmed;
@@ -93,7 +95,7 @@ async function runHeadlessExport(source, event) {
 
                 for (let item of sheetRanges) {
                     if (!item.rng.isNullObject && item.rng.rowCount > 0) {
-                        const trimmed = window.trimEmptyGrid(item.rng.values);
+                        const trimmed = trimEmptyGrid(item.rng.values);
                         if (trimmed) {
                             data[item.name] = trimmed;
                             sheetNames.push(item.name);
