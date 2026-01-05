@@ -230,12 +230,37 @@ function generateWorkbookHTML(data, sheetNames, options, libs) {
                         orientation: 'landscape',
                         pageSize: 'A4',
                         customize: function(doc) {
+                            // 1. Optimize Margins
                             doc.pageMargins = [10, 10, 10, 10];
-                            var colCount = doc.content[1].table.body[0].length;
-                            var fontSize = doc.content[1].table.body[0].length > 15 ? 6 : 8;
+                            
+                            // 2. robust column count
+                            var table = doc.content[1].table;
+                            var colCount = table.body[0].length;
+                            
+                            // 3. Dynamic Font Scaling (More granular)
+                            // Base 9, reduced by 0.2 for every column over 5, min 4
+                            var fontSize = 9;
+                            if(colCount > 5) {
+                                fontSize = Math.max(4, 9 - ((colCount - 5) * 0.3)); 
+                            }
+                            
                             doc.defaultStyle.fontSize = fontSize;
                             doc.styles.tableHeader.fontSize = fontSize + 1;
-                            doc.content[1].table.widths = Array(colCount + 1).join('*').split('');
+                            doc.styles.title.fontSize = 12;
+
+                            // 4. Force Fit Page Width
+                            table.widths = new Array(colCount).fill('*');
+
+                            // 5. Condensed margins & alignment
+                            var rowCount = table.body.length;
+                            for (var i = 1; i < rowCount; i++) {
+                                table.body[i].forEach(function(cell) {
+                                    if(!isNaN(Number(cell.text)) && cell.text !== "") {
+                                        cell.alignment = 'right';
+                                    }
+                                    cell.margin = [1, 2, 1, 2];
+                                });
+                            }
                         }
                     },
                     'print', 'colvis'
