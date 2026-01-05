@@ -543,3 +543,6 @@ function trimEmptyGrid(data) {
 
     return trimmed;
 }
+
+// Export for global usage
+window.trimEmptyGrid = trimEmptyGrid;
