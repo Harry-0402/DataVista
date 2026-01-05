@@ -20,6 +20,7 @@ module.exports = async (env, options) => {
         entry: {
             polyfill: ["core-js/stable", "regenerator-runtime/runtime"],
             taskpane: "./src/taskpane/taskpane.js", // We will bundle this, BUT our code relies on global scripts. 
+            commands: "./src/commands/commands.js",
             // We will handle that by Copying them.
         },
         output: {
@@ -60,6 +61,11 @@ module.exports = async (env, options) => {
                 filename: "taskpane.html",
                 template: "./src/taskpane/taskpane.html",
                 chunks: ["polyfill", "taskpane"],
+            }),
+            new HtmlWebpackPlugin({
+                filename: "commands.html",
+                template: "./src/commands/commands.html",
+                chunks: ["polyfill", "commands"],
             }),
             new HtmlWebpackPlugin({
                 filename: "index.html",

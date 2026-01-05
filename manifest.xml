@@ -38,6 +38,36 @@
                   <bt:Image size="32" resid="Icon.32x32"/>
                   <bt:Image size="80" resid="Icon.80x80"/>
                 </Icon>
+                <Control xsi:type="Button" id="BtnExportSelection">
+                  <Label resid="BtnExportSelection.Label"/>
+                  <Supertip>
+                    <Title resid="BtnExportSelection.Label"/>
+                    <Description resid="BtnExportSelection.Tooltip"/>
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="Icon.16x16"/>
+                    <bt:Image size="32" resid="Icon.32x32"/>
+                    <bt:Image size="80" resid="Icon.80x80"/>
+                  </Icon>
+                  <Action xsi:type="ExecuteFunction">
+                    <FunctionName>exportSelection</FunctionName>
+                  </Action>
+                </Control>
+                <Control xsi:type="Button" id="BtnExportWorkbook">
+                  <Label resid="BtnExportWorkbook.Label"/>
+                  <Supertip>
+                    <Title resid="BtnExportWorkbook.Label"/>
+                    <Description resid="BtnExportWorkbook.Tooltip"/>
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="Icon.16x16"/>
+                    <bt:Image size="32" resid="Icon.32x32"/>
+                    <bt:Image size="80" resid="Icon.80x80"/>
+                  </Icon>
+                  <Action xsi:type="ExecuteFunction">
+                    <FunctionName>exportWorkbook</FunctionName>
+                  </Action>
+                </Control>
                 <Control xsi:type="Button" id="TaskpaneButton">
                   <Label resid="TaskpaneButton.Label"/>
                   <Supertip>
@@ -75,12 +105,16 @@
       <bt:ShortStrings>
         <bt:String id="GetStarted.Title" DefaultValue="Get started with DataVista!"/>
         <bt:String id="CommandsGroup.Label" DefaultValue="Export Tools"/>
-        <bt:String id="TaskpaneButton.Label" DefaultValue="Launch DataVista"/>
+        <bt:String id="TaskpaneButton.Label" DefaultValue="Settings / Sidebar"/>
+        <bt:String id="BtnExportSelection.Label" DefaultValue="Export Selection"/>
+        <bt:String id="BtnExportWorkbook.Label" DefaultValue="Export Workbook"/>
         <bt:String id="TabOfficeAddinTest.Label" DefaultValue="DataVista"/>
       </bt:ShortStrings>
       <bt:LongStrings>
         <bt:String id="GetStarted.Description" DefaultValue="Your new DataVista add-in loaded successfully. Go to the DataVista tab to start using it!"/>
-        <bt:String id="TaskpaneButton.Tooltip" DefaultValue="Click into the task pane to explore DataVista features."/>
+        <bt:String id="TaskpaneButton.Tooltip" DefaultValue="Open the sidebar for advanced settings and info."/>
+        <bt:String id="BtnExportSelection.Tooltip" DefaultValue="Generate report for the currently selected cells."/>
+        <bt:String id="BtnExportWorkbook.Tooltip" DefaultValue="Generate a comprehensive report for the entire workbook."/>
       </bt:LongStrings>
     </Resources>
   </VersionOverrides>
