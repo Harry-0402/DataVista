@@ -61,6 +61,11 @@ module.exports = async (env, options) => {
                 template: "./src/taskpane/taskpane.html",
                 chunks: ["polyfill", "taskpane"],
             }),
+            new HtmlWebpackPlugin({
+                filename: "index.html",
+                template: "./src/index.html",
+                chunks: [], // No JS chunks for landing page
+            }),
             // Copy the generator files as-is because the HTML refers to them via <script> tags
             new CopyWebpackPlugin({
                 patterns: [
