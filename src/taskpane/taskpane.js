@@ -1,6 +1,4 @@
 
-import { trimEmptyGrid } from "../utils/grid";
-
 window.LIB_URLS = {
     jquery: "https://code.jquery.com/jquery-3.7.0.min.js",
     bootstrap_css: "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css",
@@ -60,7 +58,7 @@ async function runAnalysis() {
                 await context.sync();
 
                 // Trim empty rows/cols
-                const trimmed = trimEmptyGrid(range.values);
+                const trimmed = window.trimEmptyGrid(range.values);
 
                 if (!trimmed) throw new Error("Selection is empty");
 
@@ -84,7 +82,7 @@ async function runAnalysis() {
                 // 3. Process Data
                 for (let item of sheetRanges) {
                     if (!item.rng.isNullObject && item.rng.rowCount > 0) {
-                        const trimmed = trimEmptyGrid(item.rng.values);
+                        const trimmed = window.trimEmptyGrid(item.rng.values);
                         if (trimmed) {
                             data[item.name] = trimmed;
                             sheetNames.push(item.name);

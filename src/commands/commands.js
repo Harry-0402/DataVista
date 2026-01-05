@@ -4,9 +4,6 @@
  */
 
 // Define library URLs for offline bundling (Same as taskpane.js)
-import { trimEmptyGrid } from "../utils/grid";
-import { getSettings, toggleSetting, updateSetting } from "../utils/settings";
-
 const LIB_URLS = {
     jquery: "https://code.jquery.com/jquery-3.7.0.min.js",
     bootstrap_css: "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css",
@@ -35,32 +32,6 @@ Office.onReady(() => {
 });
 
 /**
- * Toggle Commands
- */
-function toggleStats(event) {
-    toggleSetting('stats');
-    event.completed();
-}
-function toggleInfo(event) {
-    toggleSetting('info');
-    event.completed();
-}
-function toggleDesc(event) {
-    toggleSetting('desc');
-    event.completed();
-}
-function toggleRich(event) {
-    toggleSetting('rich');
-    event.completed();
-}
-function toggleDark(event) {
-    const s = getSettings();
-    const newTheme = s.theme === 'dark' ? 'light' : 'dark';
-    updateSetting('theme', newTheme);
-    event.completed();
-}
-
-/**
  * Exports the currently selected range.
  * @param event {Office.AddinCommands.Event}
  */
@@ -78,16 +49,14 @@ async function exportWorkbook(event) {
 
 async function runHeadlessExport(source, event) {
     try {
-        // Load Settings
-        const settings = getSettings();
-
+        // Show a "working" indicator (not really possible without UI, but we can prevent timeout)
+        // Default Options
         const options = {
-            stats: settings.stats,
-            info: settings.info,
-            desc: settings.desc,
-            rich: settings.rich,
-            workbookName: "Report",
-            theme: settings.theme // Pass theme to generator
+            stats: true,
+            info: true,
+            desc: true,
+            rich: true,
+            workbookName: "Report"
         };
 
         let data = {};
@@ -105,7 +74,7 @@ async function runHeadlessExport(source, event) {
                 await context.sync();
 
                 // Trim empty
-                const trimmed = trimEmptyGrid(range.values);
+                const trimmed = window.trimEmptyGrid(range.values);
                 if (!trimmed) throw new Error("Selection is empty");
 
                 data["Selection"] = trimmed;
@@ -124,7 +93,7 @@ async function runHeadlessExport(source, event) {
 
                 for (let item of sheetRanges) {
                     if (!item.rng.isNullObject && item.rng.rowCount > 0) {
-                        const trimmed = trimEmptyGrid(item.rng.values);
+                        const trimmed = window.trimEmptyGrid(item.rng.values);
                         if (trimmed) {
                             data[item.name] = trimmed;
                             sheetNames.push(item.name);
@@ -149,6 +118,7 @@ async function runHeadlessExport(source, event) {
         // Trigger Download
         const url = URL.createObjectURL(blob);
 
+        // In FunctionFile, we have a hidden DOM. Creating an anchor usually works.
         const a = document.createElement("a");
         a.href = url;
         a.download = `DataVista_${options.workbookName}_${new Date().getTime()}.html`;
@@ -156,8 +126,14 @@ async function runHeadlessExport(source, event) {
         a.click();
         document.body.removeChild(a);
 
+        // Success Notification?
+        // Office.context.ui.displayDialogAsync is only for opening windows.
+        // We assume download started.
+
     } catch (error) {
         console.error(error);
+        // If error, show a dialog? Or just silent fail?
+        // Since we are headless, we can't show alerts easily unless we use displayDialogAsync
     } finally {
         event.completed();
     }
@@ -197,11 +173,6 @@ async function fetchOfflineLibs() {
 const g = getGlobal();
 g.exportSelection = exportSelection;
 g.exportWorkbook = exportWorkbook;
-g.toggleStats = toggleStats;
-g.toggleInfo = toggleInfo;
-g.toggleDesc = toggleDesc;
-g.toggleRich = toggleRich;
-g.toggleDark = toggleDark;
 
 function getGlobal() {
     return typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : undefined;

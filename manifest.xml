@@ -68,80 +68,21 @@
                     <FunctionName>exportWorkbook</FunctionName>
                   </Action>
                 </Control>
-                <Control xsi:type="Menu" id="SettingsMenu">
-                  <Label resid="SettingsMenu.Label"/>
+                <Control xsi:type="Button" id="TaskpaneButton">
+                  <Label resid="TaskpaneButton.Label"/>
                   <Supertip>
-                    <Title resid="SettingsMenu.Label"/>
-                    <Description resid="SettingsMenu.Tooltip"/>
+                    <Title resid="TaskpaneButton.Label"/>
+                    <Description resid="TaskpaneButton.Tooltip"/>
                   </Supertip>
                   <Icon>
                     <bt:Image size="16" resid="Icon.16x16"/>
                     <bt:Image size="32" resid="Icon.32x32"/>
                     <bt:Image size="80" resid="Icon.80x80"/>
                   </Icon>
-                  <Items>
-                    <Item id="ToggleStatsItem">
-                      <Label resid="ToggleStats.Label"/>
-                      <Supertip>
-                        <Title resid="ToggleStats.Label"/>
-                        <Description resid="ToggleStats.Tooltip"/>
-                      </Supertip>
-                      <Action xsi:type="ExecuteFunction">
-                        <FunctionName>toggleStats</FunctionName>
-                      </Action>
-                    </Item>
-                    <Item id="ToggleInfoItem">
-                      <Label resid="ToggleInfo.Label"/>
-                      <Supertip>
-                        <Title resid="ToggleInfo.Label"/>
-                        <Description resid="ToggleInfo.Tooltip"/>
-                      </Supertip>
-                      <Action xsi:type="ExecuteFunction">
-                        <FunctionName>toggleInfo</FunctionName>
-                      </Action>
-                    </Item>
-                    <Item id="ToggleDescItem">
-                      <Label resid="ToggleDesc.Label"/>
-                      <Supertip>
-                        <Title resid="ToggleDesc.Label"/>
-                        <Description resid="ToggleDesc.Tooltip"/>
-                      </Supertip>
-                      <Action xsi:type="ExecuteFunction">
-                        <FunctionName>toggleDesc</FunctionName>
-                      </Action>
-                    </Item>
-                    <Item id="ToggleRichItem">
-                      <Label resid="ToggleRich.Label"/>
-                      <Supertip>
-                        <Title resid="ToggleRich.Label"/>
-                        <Description resid="ToggleRich.Tooltip"/>
-                      </Supertip>
-                      <Action xsi:type="ExecuteFunction">
-                        <FunctionName>toggleRich</FunctionName>
-                      </Action>
-                    </Item>
-                    <Item id="ToggleDarkItem">
-                      <Label resid="ToggleDark.Label"/>
-                      <Supertip>
-                        <Title resid="ToggleDark.Label"/>
-                        <Description resid="ToggleDark.Tooltip"/>
-                      </Supertip>
-                      <Action xsi:type="ExecuteFunction">
-                        <FunctionName>toggleDark</FunctionName>
-                      </Action>
-                    </Item>
-                    <Item id="OpenSidebarItem">
-                      <Label resid="TaskpaneButton.Label"/>
-                      <Supertip>
-                        <Title resid="TaskpaneButton.Label"/>
-                        <Description resid="TaskpaneButton.Tooltip"/>
-                      </Supertip>
-                      <Action xsi:type="ShowTaskpane">
-                        <TaskpaneId>ButtonId1</TaskpaneId>
-                        <SourceLocation resid="Taskpane.Url"/>
-                      </Action>
-                    </Item>
-                  </Items>
+                  <Action xsi:type="ShowTaskpane">
+                    <TaskpaneId>ButtonId1</TaskpaneId>
+                    <SourceLocation resid="Taskpane.Url"/>
+                  </Action>
                 </Control>
               </Group>
               <Label resid="TabOfficeAddinTest.Label"/>
@@ -168,24 +109,6 @@
         <bt:String id="BtnExportSelection.Label" DefaultValue="Export Selection"/>
         <bt:String id="BtnExportWorkbook.Label" DefaultValue="Export Workbook"/>
         <bt:String id="TabOfficeAddinTest.Label" DefaultValue="DataVista"/>
-        
-        <bt:String id="SettingsMenu.Label" DefaultValue="Options"/>
-        <bt:String id="SettingsMenu.Tooltip" DefaultValue="Configure export settings."/>
-        
-        <bt:String id="ToggleStats.Label" DefaultValue="Toggle Statistics"/>
-        <bt:String id="ToggleStats.Tooltip" DefaultValue="Include summary statistics in the report."/>
-        
-        <bt:String id="ToggleInfo.Label" DefaultValue="Toggle Dataset Info"/>
-        <bt:String id="ToggleInfo.Tooltip" DefaultValue="Include dataset type information."/>
-        
-        <bt:String id="ToggleDesc.Label" DefaultValue="Toggle Pandas Describe"/>
-        <bt:String id="ToggleDesc.Tooltip" DefaultValue="Include detailed statistical description."/>
-        
-        <bt:String id="ToggleRich.Label" DefaultValue="Toggle Rich Formatting"/>
-        <bt:String id="ToggleRich.Tooltip" DefaultValue="Enable data bars and conditional formatting."/>
-        
-        <bt:String id="ToggleDark.Label" DefaultValue="Toggle Dark Mode"/>
-        <bt:String id="ToggleDark.Tooltip" DefaultValue="Use dark theme for generated reports."/>
       </bt:ShortStrings>
       <bt:LongStrings>
         <bt:String id="GetStarted.Description" DefaultValue="Your new DataVista add-in loaded successfully. Go to the DataVista tab to start using it!"/>
