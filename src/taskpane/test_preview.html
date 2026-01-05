@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>DataVista Preview</title>
+    <style>
+        body,
+        html {
+            margin: 0;
+            height: 100%;
+            overflow: hidden;
+            background: #333;
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="background: #222; color: #fff; padding: 10px; display: flex; gap: 10px; align-items: center;">
+        <strong>DataVista Preview Simulator</strong>
+        <button onclick="runTest()">Run with Dummy Data</button>
+        <span id="status" style="margin-left: auto; font-size: 0.9em; opacity: 0.7;">Ready</span>
+    </div>
+    <iframe id="preview-frame" style="flex: 1; border: none; background: white; width: 100%; height: 100%;"></iframe>
+
+    <script src="generators.js"></script>
+    <script>
+        // Mock window.LIB_URLS to local if needed, but we used CDN in generators.js so it's fine for preview online
+        // For accurate offline simulation, we still fetch from CDN in this preview context
+
+        async function runTest() {
+            const status = document.getElementById("status");
+            status.textContent = "Fetching libs...";
+
+            // 1. Generate Large Mock Data
+            const rowCount = 500;
+            const colCount = 20;
+            const headers = ["Date", "Region", "Category"];
+            for (let i = 3; i < colCount; i++) headers.push(`Metric_${i}`);
+
+            const dataRows = [headers];
+            const regions = ["North", "South", "East", "West", "Central"];
+            const categories = ["Technology", "Furniture", "Office Supplies"];
+
+            for (let i = 0; i < rowCount; i++) {
+                const date = new Date(2024, 0, 1 + i).toISOString().split('T')[0];
+                const region = regions[Math.floor(Math.random() * regions.length)];
+                const category = categories[Math.floor(Math.random() * categories.length)];
+
+                const row = [date, region, category];
+
+                // Add numeric columns
+                for (let j = 3; j < colCount; j++) {
+                    // Mix of positive and negative numbers for conditional formatting test
+                    const val = (Math.random() * 20000) - 5000;
+                    row.push(parseFloat(val.toFixed(2)));
+                }
+                dataRows.push(row);
+            }
+
+            const dummyData = {
+                "LargeDataset": dataRows
+            };
+            const sheets = ["LargeDataset"];
+
+            // 2. Mock Options
+            const options = { stats: true, info: true, desc: false, rich: true, workbookName: "SampleWorkbook.xlsx" };
+
+            // 3. Fetch Libs (Reuse logic from taskpane.js essentially)
+            const urls = window.LIB_URLS;
+            const load = async (url) => (await fetch(url)).text();
+
+            const cssKeys = ['bootstrap_css', 'datatables_css', 'buttons_css', 'searchbuilder_css', 'dateTime_css'];
+            const jsKeys = ['jquery', 'bootstrap_js', 'datatables_js', 'datatables_bs5_js', 'jszip', 'pdfmake', 'vfs_fonts', 'buttons_js', 'buttons_bs5_js', 'buttons_colvis_js', 'buttons_html5_js', 'buttons_print_js', 'dateTime_js', 'searchbuilder_js', 'searchbuilder_bs5_js'];
+
+            try {
+                const [css, js] = await Promise.all([
+                    Promise.all(cssKeys.map(k => load(urls[k]))).then(a => a.join("\n")),
+                    Promise.all(jsKeys.map(k => load(urls[k]))).then(a => a.join("\n"))
+                ]);
+
+                status.textContent = "Generating HTML...";
+                const blob = generateHTML(dummyData, sheets, options, { css, js });
+                const url = URL.createObjectURL(blob);
+
+                document.getElementById("preview-frame").src = url;
+                status.textContent = "Preview Loaded.";
+
+            } catch (e) {
+                status.textContent = "Error: " + e.message;
+            }
+        }
+    </script>
+</body>
+
+</html>
