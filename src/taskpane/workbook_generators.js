@@ -283,3 +283,5 @@ function generateWorkbookHTML(data, sheetNames, options, libs) {
 
     return new Blob([parts.join("")], { type: "text/html" });
 }
+
+window.generateWorkbookHTML = generateWorkbookHTML;

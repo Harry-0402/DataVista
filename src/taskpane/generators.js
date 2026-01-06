@@ -569,3 +569,4 @@ function trimEmptyGrid(data) {
 
 // Export for global usage
 window.trimEmptyGrid = trimEmptyGrid;
+window.generateHTML = generateHTML;
