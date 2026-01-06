@@ -95,8 +95,30 @@ DataVista/
 ### For End Users
 1. Visit the [DataVista Landing Page](https://Harry-0402.github.io/DataVista/).
 2. Download the `manifest.xml`.
-3. Sideload into Excel via **Insert > Add-ins > Manage My Add-ins > Upload My Add-in**.
-4. 📖 **New:** Follow the detailed [Sideloading Guide](file:///c:/Users/javis/OneDrive/Desktop/Tools/Excel%20Add-Ins/SIDELOADING.md) for Desktop Excel.
+3. Choose a sideloading method below to add the add-in to Excel.
+
+#### Method A: The "Shared Folder" Way (Desktop Excel - Most Reliable)
+1.  **Locate your Project Folder**: `C:\Users\javis\OneDrive\Desktop\Tools\Excel Add-Ins`.
+2.  **Share the Folder**:
+    *   Right-click the folder `Excel Add-Ins` -> **Properties** -> **Sharing** tab.
+    *   Click the **Share...** button, select your name (`javis`) or **Everyone**, and click **Share**.
+    *   Note the **Network Path**: It should look like `\\Zero\Excel Add-Ins`.
+3.  **Add to Excel Trust Center**:
+    *   Open Excel -> **File** -> **Options** -> **Trust Center** -> **Trust Center Settings...** -> **Trusted Add-in Catalogs**.
+    *   In **Catalog Url**, paste: `\\Zero\Excel Add-Ins`
+    *   Click **Add Catalog**. Check the **Show in Menu** box.
+    *   Click **OK** and **Restart Excel**.
+4.  **Insert the Add-in**:
+    *   Go to **Insert** -> **Add-ins** -> **My Add-ins** -> **Shared Folder** tab.
+    *   Select **DataVista Premium Export** and click **Add**.
+
+#### Method B: The "Upload My Add-in" Way (Quickest)
+1. Open Excel Desktop or Web.
+2. Go to **Insert** -> **Add-ins** -> **Manage My Add-ins** -> **Upload My Add-in**.
+3. Browse and select your `manifest.xml` file.
+
+> [!TIP]
+> If you are a developer, running `npm start` in your terminal will attempt to automatically sideload the add-in for you.
 
 ### For Developers
 1. Clone the repo and run `npm install`.
