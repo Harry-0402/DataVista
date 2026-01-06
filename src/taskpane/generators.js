@@ -88,7 +88,7 @@ export function generateHTML(data, sheetNames, options, libs) {
         /* Card */
         .dv-card { background: var(--bs-card-bg); border: 1px solid var(--bs-border-color); border-radius: 12px; padding: 1rem; box-shadow: 0 2px 4px rgba(0,0,0,0.02); margin-bottom: 2rem; }
 
-        /* === VISUAL PRECISION & FIXED CONTROLS (v6.0) === */
+        /* === VISUAL PRECISION & FIXED CONTROLS (v8.0) === */
         .dv-table-wrapper {
             width: 100%;
             margin-bottom: 2rem;
@@ -102,7 +102,53 @@ export function generateHTML(data, sheetNames, options, libs) {
             align-items: center;
             margin-bottom: 1rem;
             flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        /* Stats & Search Group */
+        .dv-search-group {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .dv-summary-stats {
+            display: flex;
             gap: 10px;
+            font-size: 0.85rem;
+            color: var(--bs-secondary-color);
+            border-right: 1px solid var(--bs-border-color);
+            padding-right: 15px;
+        }
+        .dv-stat-badge {
+            background: var(--bs-secondary-bg);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            color: var(--bs-primary);
+        }
+
+        /* Navigator Bar Refinement */
+        .dv-header-tabs {
+            border-bottom: none !important;
+            justify-content: center;
+            gap: 5px;
+        }
+        .dv-header-tabs .nav-link {
+            border: none !important;
+            color: rgba(255,255,255,0.7) !important;
+            padding: 8px 20px !important;
+            border-radius: 20px !important;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        .dv-header-tabs .nav-link:hover {
+            color: white !important;
+            background: rgba(255,255,255,0.1) !important;
+        }
+        .dv-header-tabs .nav-link.active {
+            color: white !important;
+            background: rgba(255,255,255,0.2) !important;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         /* Teal Advanced Filters Button */
@@ -111,21 +157,23 @@ export function generateHTML(data, sheetNames, options, libs) {
             color: white !important;
             border: none !important;
             font-weight: 600 !important;
-            padding: 6px 16px !important;
-            border-radius: 4px !important;
-            transition: opacity 0.2s;
+            padding: 7px 18px !important;
+            border-radius: 6px !important;
+            transition: transform 0.1s, opacity 0.2s;
         }
-        .btn-advanced-filters:hover { opacity: 0.9; }
+        .btn-advanced-filters:hover { opacity: 0.95; transform: translateY(-1px); }
+        .btn-advanced-filters:active { transform: translateY(0); }
 
         /* Gray Export Buttons */
         .dt-button {
             background-color: #6c757d !important;
             color: white !important;
             border: none !important;
-            border-radius: 4px !important;
-            padding: 5px 12px !important;
-            font-size: 0.8rem !important;
+            border-radius: 6px !important;
+            padding: 6px 14px !important;
+            font-size: 0.85rem !important;
             margin-right: 4px !important;
+            transition: background 0.2s;
         }
         .dt-button:hover { background-color: #5a6268 !important; }
 
@@ -136,7 +184,7 @@ export function generateHTML(data, sheetNames, options, libs) {
         table.dataTable th, table.dataTable td { 
             white-space: nowrap !important; 
             vertical-align: middle; 
-            padding: 12px 15px !important; 
+            padding: 12px 18px !important; 
             font-size: inherit; 
             min-width: 120px; 
         }
@@ -158,7 +206,7 @@ export function generateHTML(data, sheetNames, options, libs) {
                 <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                 DataVista <span style="opacity: 0.6; margin: 0 8px;">|</span> ${sheetName}
             </div>
-            <div class="dv-meta">Generated: ${timestamp} &bull; v7.0 (Precision Layout)</div>
+            <div class="dv-meta">Generated: ${timestamp} &bull; v8.0 (Enhanced UI)</div>
         </div>
         <ul class="nav nav-tabs dv-header-tabs" role="tablist">
             <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#page-data">Data</a></li>
@@ -236,7 +284,7 @@ export function generateHTML(data, sheetNames, options, libs) {
             var table = $(this);
             // Initialize DataTable with STRICT options
             table.DataTable({
-                dom: '<"dv-controls-row"Bf>t<"row mt-3"<"col-md-6"i><"col-md-6"p>>',
+                dom: '<"dv-controls-row"B<"dv-search-group"f>>t<"row mt-3"<"col-md-6"i><"col-md-6"p>>',
                 autoWidth: false,
                 scrollX: true,
                 scrollCollapse: true,
@@ -257,17 +305,29 @@ export function generateHTML(data, sheetNames, options, libs) {
                 ],
                 initComplete: function () {
                     var api = this.api();
+                    
+                    // Add Row/Col Counts
+                    var rowCount = api.rows().count();
+                    var colCount = api.columns().count();
+                    var statsHtml = \`
+                        <div class="dv-summary-stats">
+                            <span>Total Rows: <span class="dv-stat-badge">\${rowCount}</span></span>
+                            <span>Total Columns: <span class="dv-stat-badge">\${colCount}</span></span>
+                        </div>
+                    \`;
+                    $('.dv-search-group').prepend(statsHtml);
+
                     $(api.table().header()).find('th').each(function (colIdx) {
                         var title = $(this).text();
                         $(this).empty().append('<div style="margin-bottom:5px;font-weight:600;font-size:0.75rem;">'+title+'</div>');
-                        $('<input type="text" class="filter-input" placeholder="Filter..." style="width:100%; border:1px solid #ddd; padding:2px; font-size:0.75rem;" />')
+                        $('<input type="text" class="filter-input" placeholder="Filter..." style="width:100%; border:1px solid var(--bs-border-color); padding:4px; font-size:0.75rem; border-radius:4px; outline:none;" />')
                             .appendTo(this)
                             .on('keyup change', function (e) { 
                                 e.stopPropagation();
                                 api.column(colIdx).search(this.value).draw(); 
                             });
                     });
-                    setTimeout(function() { api.columns.adjust(); }, 100);
+                    setTimeout(function() { api.columns.adjust(); }, 150);
                 }
             });
         });
