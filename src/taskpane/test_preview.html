@@ -25,12 +25,11 @@
     </div>
     <iframe id="preview-frame" style="flex: 1; border: none; background: white; width: 100%; height: 100%;"></iframe>
 
-    <script src="generators.js"></script>
-    <script>
-        // Mock window.LIB_URLS to local if needed, but we used CDN in generators.js so it's fine for preview online
-        // For accurate offline simulation, we still fetch from CDN in this preview context
+    <script type="module">
+        import { generateHTML } from "./generators.js";
 
-        async function runTest() {
+        // Expose runTest to window so button can call it
+        window.runTest = async function () {
             const status = document.getElementById("status");
             status.textContent = "Fetching libs...";
 
@@ -69,7 +68,13 @@
             const options = { stats: true, info: true, desc: false, rich: true, workbookName: "SampleWorkbook.xlsx" };
 
             // 3. Fetch Libs (Reuse logic from taskpane.js essentially)
+            // generators.js sets window.LIB_URLS when imported
             const urls = window.LIB_URLS;
+            if (!urls) {
+                status.textContent = "Error: LIB_URLS not loaded.";
+                return;
+            }
+
             const load = async (url) => (await fetch(url)).text();
 
             const cssKeys = ['bootstrap_css', 'datatables_css', 'buttons_css', 'searchbuilder_css', 'dateTime_css'];
@@ -89,6 +94,7 @@
                 status.textContent = "Preview Loaded.";
 
             } catch (e) {
+                console.error(e);
                 status.textContent = "Error: " + e.message;
             }
         }

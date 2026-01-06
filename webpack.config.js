@@ -77,6 +77,7 @@ module.exports = async (env, options) => {
                 patterns: [
                     { from: "src/taskpane/generators.js", to: "generators.js" },
                     { from: "src/taskpane/workbook_generators.js", to: "workbook_generators.js" },
+                    { from: "src/taskpane/test_preview.html", to: "test_preview.html" },
                     { from: "assets", to: "assets", noErrorOnMissing: true },
                     { from: "manifest.xml", to: "manifest.xml" },
                 ],
