@@ -89,11 +89,39 @@ export function generateWorkbookHTML(data, sheetNames, options, libs) {
         .dv-summary-stats { display: flex; gap: 10px; font-size: 0.85rem; color: var(--bs-secondary-color); border-right: 1px solid var(--bs-border-color); padding-right: 15px; }
         .dv-stat-badge { background: var(--bs-secondary-bg); padding: 2px 8px; border-radius: 4px; font-weight: 600; color: var(--dv-primary); }
 
-        .btn-advanced-filters { background-color: #00bcd4 !important; color: white !important; border: none !important; font-weight: 600 !important; padding: 7px 18px !important; border-radius: 6px !important; transition: opacity 0.2s, transform 0.1s; }
-        .btn-advanced-filters:hover { opacity: 0.95; transform: translateY(-1px); }
-
-        .dt-button { background-color: #6c757d !important; color: white !important; border: none !important; border-radius: 6px !important; padding: 6px 14px !important; font-size: 0.85rem !important; margin-right: 4px !important; transition: background 0.2s; }
+        /* Unified Button Group Styling (v11.0) */
+        .dt-buttons {
+            display: inline-flex !important;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--bs-border-color);
+        }
+        .btn-advanced-filters, .dt-button {
+            margin: 0 !important;
+            border: none !important;
+            border-radius: 0 !important;
+            padding: 8px 18px !important;
+            font-size: 0.85rem !important;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            font-weight: 500 !important;
+            transition: all 0.2s !important;
+        }
+        .btn-advanced-filters {
+            background-color: #00bcd4 !important;
+            color: white !important;
+            border-right: 1px solid rgba(0,0,0,0.1) !important;
+        }
+        .dt-button {
+            background-color: #6c757d !important;
+            color: white !important;
+            border-right: 1px solid rgba(255,255,255,0.1) !important;
+        }
+        .dt-button:last-child { border-right: none !important; }
         .dt-button:hover { background-color: #5a6268 !important; }
+        .btn-advanced-filters:hover { background-color: #00acc1 !important; }
 
         .dataTables_scrollBody { border: 1px solid var(--bs-border-color); border-radius: 0 0 8px 8px; }
         .dataTables_scrollHead { border: 1px solid var(--bs-border-color); border-bottom: none; border-radius: 8px 8px 0 0; background: var(--dv-header-bg); }
@@ -124,7 +152,7 @@ export function generateWorkbookHTML(data, sheetNames, options, libs) {
                     DataVista Report
                 </div>
                 <h1 class="dashboard-title">${workbookName}</h1>
-                <p class="dashboard-meta">Generated on ${timestamp} &bull; ${sheetNames.length} Sheets &bull; v9.0 (Precision Layout & Filters)</p>
+                <p class="dashboard-meta">Generated on ${timestamp} &bull; ${sheetNames.length} Sheets &bull; v11.0 (Precision Alignment)</p>
             </div>
             <div class="sheet-grid">
     `);
@@ -143,8 +171,8 @@ export function generateWorkbookHTML(data, sheetNames, options, libs) {
     sheetNames.forEach((name, index) => {
         const rows = data[name];
         const header = rows.length > 0 ? rows[0] : [];
-        // v10.0: Remove blank rows
-        const body = rows.length > 0 ? rows.slice(1).filter(r => r.some(c => c && c.toString().trim() !== "")) : [];
+        // v11.0: Aggressive row cleaning
+        const body = rows.length > 0 ? rows.slice(1).filter(r => r.some(c => c !== null && c !== undefined && c.toString().trim() !== "")) : [];
 
         // Dynamic Font Scaling (v10.0 Refined)
         const colCount = header.length;

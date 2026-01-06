@@ -157,31 +157,39 @@ export function generateHTML(data, sheetNames, options, libs) {
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
-        /* Teal Advanced Filters Button */
+        /* Unified Button Group Styling (v11.0) */
+        .dt-buttons {
+            display: inline-flex !important;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--bs-border-color);
+        }
+        .btn-advanced-filters, .dt-button {
+            margin: 0 !important;
+            border: none !important;
+            border-radius: 0 !important;
+            padding: 8px 18px !important;
+            font-size: 0.85rem !important;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            font-weight: 500 !important;
+            transition: all 0.2s !important;
+        }
         .btn-advanced-filters {
             background-color: #00bcd4 !important;
             color: white !important;
-            border: none !important;
-            font-weight: 600 !important;
-            padding: 7px 18px !important;
-            border-radius: 6px !important;
-            transition: transform 0.1s, opacity 0.2s;
+            border-right: 1px solid rgba(0,0,0,0.1) !important;
         }
-        .btn-advanced-filters:hover { opacity: 0.95; transform: translateY(-1px); }
-        .btn-advanced-filters:active { transform: translateY(0); }
-
-        /* Gray Export Buttons */
         .dt-button {
             background-color: #6c757d !important;
             color: white !important;
-            border: none !important;
-            border-radius: 6px !important;
-            padding: 6px 14px !important;
-            font-size: 0.85rem !important;
-            margin-right: 4px !important;
-            transition: background 0.2s;
+            border-right: 1px solid rgba(255,255,255,0.1) !important;
         }
-        .dt-button:hover { background-color: #5a6268 !important; }
+        .dt-button:last-child { border-right: none !important; }
+        .dt-button:hover { background-color: #5a6268 !important; transform: none !important; }
+        .btn-advanced-filters:hover { background-color: #00acc1 !important; transform: none !important; }
 
         .dataTables_scrollBody { border: 1px solid var(--bs-border-color); border-radius: 0 0 8px 8px; }
         .dataTables_scrollHead { border: 1px solid var(--bs-border-color); border-bottom: none; border-radius: 8px 8px 0 0; background: var(--bs-secondary-bg); }
@@ -213,7 +221,7 @@ export function generateHTML(data, sheetNames, options, libs) {
                 <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                 DataVista <span style="opacity: 0.6; margin: 0 8px;">|</span> ${sheetName}
             </div>
-            <div class="dv-meta">Generated: ${timestamp} &bull; v10.0 (UX Refined & Colored)</div>
+            <div class="dv-meta">Generated: ${timestamp} &bull; v11.0 (Precision Alignment)</div>
         </div>
         <ul class="nav nav-tabs dv-header-tabs" role="tablist">
             <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#page-data">Data</a></li>
@@ -235,8 +243,8 @@ export function generateHTML(data, sheetNames, options, libs) {
         const rows = data[name];
         const hasHeader = rows.length > 0;
         const header = hasHeader ? rows[0] : [];
-        // v10.0: Remove blank rows (rows that are all empty)
-        const body = hasHeader ? rows.slice(1).filter(r => r.some(c => c && c.toString().trim() !== "")) : [];
+        // v11.0: Aggressive row cleaning (removes any rows with only whitespace/nulls)
+        const body = hasHeader ? rows.slice(1).filter(r => r.some(c => c !== null && c !== undefined && c.toString().trim() !== "")) : [];
         const colCount = header.length;
 
         // Dynamic Font Scaling Logic (v10.0 Refined)
