@@ -7,18 +7,18 @@
 ---
 
 ## 📑 Table of Contents
-- [🏢 Why DataVista? (Business Value)](#-why-datavista-business-value)
-- [📖 How to Use](#-how-to-use)
-- [✨ Key Features](#-key-features)
-- [📊 Analytics Module](#-analytics-module)
-- [📂 Repository Structure](#-repository-structure)
-- [🚀 Quick Start](#-quick-start)
-- [🛠️ Development](#️-development)
-- [⚖️ License](#-license)
+- [🏢 Why DataVista? (Business Value)](#why-datavista-business-value)
+- [📖 How to Use](#how-to-use)
+- [✨ Key Features](#key-features)
+- [📊 Analytics Module](#analytics-module)
+- [📂 Repository Structure](#repository-structure)
+- [🚀 Quick Start](#quick-start)
+- [Development](#development)
+- [⚖️ License](#license)
 
 ---
 
-## 🏢 Why DataVista? (Business Value)
+## <a name="why-datavista-business-value"></a>🏢 Why DataVista? (Business Value)
 
 DataVista is designed for managers and business analysts who need to share complex data without the overhead of heavy BI tools or compromising security.
 
@@ -36,7 +36,7 @@ Managers get instant access to Sum, Average, Min, and Max statistics for their d
 
 ---
 
-## 📖 How to Use
+## <a name="how-to-use"></a>📖 How to Use
 
 ### Step 1: Data Preparation
 Select the range of data in your Excel sheet. Ensure you include the header row for the best experience.
@@ -55,7 +55,7 @@ Save the browser page (Ctrl+S) or print it to PDF. The resulting file is complet
 
 ---
 
-## ✨ Key Features
+## <a name="key-features"></a>✨ Key Features
 
 - **Offline-First Privacy**: No data ever leaves your computer.
 - **Precision Layout**: Unified button groups and perfectly aligned toolbars.
@@ -63,7 +63,7 @@ Save the browser page (Ctrl+S) or print it to PDF. The resulting file is complet
 - **Smart Data Presentation**: Conditional coloring and dynamic font scaling.
 - **Clean Export Engine**: Aggressive "Ghost Row" removal for professional results.
 
-## 📊 Analytics Module (v1.2.1)
+## <a name="analytics-module"></a>📊 Analytics Module
 
 The **Analytics Edition** handles the heavy lifting for you:
 - **Automatic Numeric Detection**: Identifies and analyzes numeric columns instantly.
@@ -72,7 +72,7 @@ The **Analytics Edition** handles the heavy lifting for you:
 
 ---
 
-## 📂 Repository Structure
+## <a name="repository-structure"></a>📂 Repository Structure
 
 ```text
 DataVista/
@@ -90,7 +90,7 @@ DataVista/
 
 ---
 
-## 🚀 Quick Start
+## <a name="quick-start"></a>🚀 Quick Start
 
 ### For End Users
 1. Visit the [DataVista Landing Page](https://Harry-0402.github.io/DataVista/).
@@ -103,7 +103,7 @@ DataVista/
 
 ---
 
-## ⚖️ License
+## <a name="license"></a>⚖️ License
 
 Distributed under the **Apache License 2.0**. See `LICENSE` for more information.
 
