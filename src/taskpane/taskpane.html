@@ -13,6 +13,22 @@
             padding-bottom: 60px;
         }
 
+        .ribbon-guide {
+            background: #e7f1ff;
+            border-left: 4px solid #3c6ea9;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            color: #0c3e76;
+            font-size: 0.9rem;
+        }
+
+        .ribbon-guide strong {
+            display: block;
+            margin-bottom: 4px;
+            font-weight: 700;
+        }
+
         .hero {
             background: linear-gradient(135deg, #3c6ea9 0%, #2a5298 100%);
             color: white;
@@ -119,7 +135,15 @@
 
     <div class="container px-3">
 
+        <!-- Ribbon Guide -->
+        <div class="ribbon-guide">
+            <strong>🚀 Ready to Export?</strong>
+            Use the <b>DataVista</b> tab in the Ribbon above for one-click exports. Use this panel to configure your
+            settings.
+        </div>
+
         <!-- Source -->
+        <div class="group-label">Source Selection</div>
         <div class="card p-3 border-0 shadow-sm mb-3">
             <div class="btn-group w-100" role="group">
                 <input type="radio" class="btn-check" name="source" id="src-selection" value="selection" checked>
@@ -176,8 +200,8 @@
             <label class="form-check-label small text-muted" for="theme-dark">Dark Mode (Add-in UI)</label>
         </div>
 
-        <button id="run-btn" class="btn-export">
-            Generate Premium Report
+        <button id="run-btn" class="btn-export btn-secondary" style="background: #6c757d; font-size: 0.8rem;">
+            Generate from Sidebar
         </button>
 
     </div>
