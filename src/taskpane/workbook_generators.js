@@ -1,7 +1,7 @@
 /* global console */
 
 // Function to generate the HTML content for the Entire Workbook (Dashboard/Index Style)
-function generateWorkbookHTML(data, sheetNames, options, libs) {
+export function generateWorkbookHTML(data, sheetNames, options, libs) {
     const timestamp = new Date().toLocaleString();
     const workbookName = options.workbookName || "Workbook";
 
@@ -284,4 +284,4 @@ function generateWorkbookHTML(data, sheetNames, options, libs) {
     return new Blob([parts.join("")], { type: "text/html" });
 }
 
-window.generateWorkbookHTML = generateWorkbookHTML;
+

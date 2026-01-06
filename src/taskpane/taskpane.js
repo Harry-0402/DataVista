@@ -1,5 +1,7 @@
 
 import { trimEmptyGrid } from "../utils/data-utils";
+import { generateHTML } from "./generators";
+import { generateWorkbookHTML } from "./workbook_generators";
 
 window.LIB_URLS = {
     jquery: "https://code.jquery.com/jquery-3.7.0.min.js",
@@ -84,7 +86,7 @@ async function runAnalysis() {
                 // 3. Process Data
                 for (let item of sheetRanges) {
                     if (!item.rng.isNullObject && item.rng.rowCount > 0) {
-                        const trimmed = window.trimEmptyGrid(item.rng.values);
+                        const trimmed = trimEmptyGrid(item.rng.values);
                         if (trimmed) {
                             data[item.name] = trimmed;
                             sheetNames.push(item.name);

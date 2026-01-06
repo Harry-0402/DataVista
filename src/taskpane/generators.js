@@ -42,7 +42,7 @@ window.LIB_URLS = {
  * @param {Object} options - { stats: bool, info: bool, desc: bool, rich: bool, workbookName: string }
  * @param {Object} libs - { css: string, js: string }
  */
-function generateHTML(data, sheetNames, options, libs) {
+export function generateHTML(data, sheetNames, options, libs) {
     const parts = [];
     parts.push(`<!DOCTYPE html><html lang='en' data-bs-theme='light'>`);
     parts.push("<head><meta charset='UTF-8'><title>DataVista Report</title>");
@@ -567,6 +567,4 @@ function trimEmptyGrid(data) {
     return trimmed;
 }
 
-// Export for global usage
-window.trimEmptyGrid = trimEmptyGrid;
-window.generateHTML = generateHTML;
+// End of Module
