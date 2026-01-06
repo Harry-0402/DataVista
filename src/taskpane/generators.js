@@ -88,63 +88,63 @@ export function generateHTML(data, sheetNames, options, libs) {
         /* Card */
         .dv-card { background: var(--bs-card-bg); border: 1px solid var(--bs-border-color); border-radius: 12px; padding: 1rem; box-shadow: 0 2px 4px rgba(0,0,0,0.02); margin-bottom: 2rem; }
 
-        /* === FIXED CONTROLS & FLUID DATA (v5.1) === */
+        /* === VISUAL PRECISION & FIXED CONTROLS (v6.0) === */
         .dv-table-wrapper {
             width: 100%;
             margin-bottom: 2rem;
             position: relative;
         }
 
-        /* Ensure the DataTables scroll area is constrained */
-        .dataTables_scrollBody {
-            border: 1px solid var(--bs-border-color);
-            border-radius: 0 0 8px 8px;
-        }
-        
-        .dataTables_scrollHead {
-            border: 1px solid var(--bs-border-color);
-            border-bottom: none;
-            border-radius: 8px 8px 0 0;
-            background: var(--bs-secondary-bg);
+        /* Buttons & Search Row */
+        .dv-controls-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
-        table.dataTable { 
-            width: 100% !important; 
-            margin: 0 !important;
-            table-layout: auto !important; /* Allow natural sizing */
-            border-collapse: collapse !important; 
+        /* Teal Advanced Filters Button */
+        .btn-advanced-filters {
+            background-color: #00bcd4 !important;
+            color: white !important;
+            border: none !important;
+            font-weight: 600 !important;
+            padding: 6px 16px !important;
+            border-radius: 4px !important;
+            transition: opacity 0.2s;
         }
-        
-        table.dataTable th, 
-        table.dataTable td { 
-            white-space: nowrap !important; /* Prevent text wrapping unless explicitly needed */
-            vertical-align: middle;
-            padding: 10px 15px !important;
-            font-size: inherit;
-            min-width: 120px; /* Ensure readability */
-        }
+        .btn-advanced-filters:hover { opacity: 0.9; }
 
-        /* Allow wrap in specific long-text columns if needed, but default to nowrap for clean look */
-        .dv-wrap { white-space: normal !important; min-width: 200px !important; }
-
-        /* Filter Inputs - Make them smaller to fit */
-        .filter-input { 
-            width: 100%; 
-            min-width: 0; /* Allow shrinking */
-            border: 1px solid var(--bs-border-color); 
-            padding: 2px; 
-            font-size: 0.75rem; 
-            border-radius: 3px; 
+        /* Gray Export Buttons */
+        .dt-button {
+            background-color: #6c757d !important;
+            color: white !important;
+            border: none !important;
+            border-radius: 4px !important;
+            padding: 5px 12px !important;
+            font-size: 0.8rem !important;
+            margin-right: 4px !important;
         }
-        
-        /* Footer/Pagination */
-        .dataTables_paginate { display: flex; justify-content: flex-end; margin-top: 10px; font-size: 0.8rem; }
-        .dataTables_info { font-size: 0.8rem; padding-top: 10px; }
+        .dt-button:hover { background-color: #5a6268 !important; }
+
+        .dataTables_scrollBody { border: 1px solid var(--bs-border-color); border-radius: 0 0 8px 8px; }
+        .dataTables_scrollHead { border: 1px solid var(--bs-border-color); border-bottom: none; border-radius: 8px 8px 0 0; background: var(--bs-secondary-bg); }
+
+        table.dataTable { width: 100% !important; margin: 0 !important; table-layout: auto !important; border-collapse: collapse !important; }
+        table.dataTable th, table.dataTable td { 
+            white-space: nowrap !important; 
+            vertical-align: middle; 
+            padding: 12px 15px !important; 
+            font-size: inherit; 
+            min-width: 120px; 
+        }
 
         /* RICH FORMATTING */
         .dv-neg { color: #dc3545 !important; font-weight: 500; }
         .dv-bar-cell { position: relative; z-index: 1; }
-        .dv-bar { position: absolute; top: 2px; bottom: 2px; left: 0; background: rgba(60, 110, 169, 0.15); z-index: -1; }
+        .dv-bar { position: absolute; top: 2px; bottom: 2px; left: 0; background: rgba(0, 188, 212, 0.15); z-index: -1; }
     </style>`);
 
     parts.push("</head><body>");
@@ -158,7 +158,7 @@ export function generateHTML(data, sheetNames, options, libs) {
                 <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                 DataVista <span style="opacity: 0.6; margin: 0 8px;">|</span> ${sheetName}
             </div>
-            <div class="dv-meta">Generated: ${timestamp} &bull; v5.1 (Fixed Controls)</div>
+            <div class="dv-meta">Generated: ${timestamp} &bull; v6.0 (Visual Precision)</div>
         </div>
         <ul class="nav nav-tabs dv-header-tabs" role="tablist">
             <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#page-data">Data</a></li>
@@ -236,53 +236,39 @@ export function generateHTML(data, sheetNames, options, libs) {
             var table = $(this);
             // Initialize DataTable with STRICT options
             table.DataTable({
-                dom: '<"row mb-3"<"col-md-8"B><"col-md-4"f>>t<"row mt-3"<"col-md-6"i><"col-md-6"p>>',
+                dom: '<"dv-controls-row"Bf>t<"row mt-3"<"col-md-6"i><"col-md-6"p>>',
                 autoWidth: false,
-                scrollX: true,        // NATIVE SCROLLING
+                scrollX: true,
                 scrollCollapse: true,
                 paging: true,
                 pageLength: 20,
-                lengthChange: true,
                 buttons: [
                     {
-                        extend: 'collection',
-                        text: 'Export',
-                        className: 'btn-sm btn-primary',
-                        buttons: ['copy', 'excel', 'pdf', 'print']
-                    },
-                    {
-                        extend: 'colvis',
-                        text: 'Columns',
-                        className: 'btn-sm btn-outline-secondary'
-                    },
-                    {
                         text: 'Advanced Filters',
-                        className: 'btn-sm btn-dark',
+                        className: 'btn-advanced-filters',
                         action: function (e, dt) {
                             $('#sb-modal-body').empty();
                             var sb = new $.fn.dataTable.SearchBuilder(dt, {});
                             $('#sb-modal-body').append(sb.getNode());
                             $('#searchBuilderModal').modal('show');
                         }
-                    }
+                    },
+                    'copy', 'csv', 'excel', 'pdf', 'print', 'colvis'
                 ],
                 initComplete: function () {
                     var api = this.api();
-                    // Fix: Apply filters to the corrected header in scrollX mode
                     $(api.table().header()).find('th').each(function (colIdx) {
                         var title = $(this).text();
                         $(this).empty().append('<div style="margin-bottom:5px;font-weight:600;font-size:0.75rem;">'+title+'</div>');
-                        $('<input type="text" class="filter-input" placeholder="Filter..." />')
+                        $('<input type="text" class="filter-input" placeholder="Filter..." style="width:100%; border:1px solid #ddd; padding:2px; font-size:0.75rem;" />')
                             .appendTo(this)
                             .on('keyup change', function (e) { 
                                 e.stopPropagation();
                                 api.column(colIdx).search(this.value).draw(); 
                             });
                     });
-                    // Recalculate column widths after init
                     setTimeout(function() { api.columns.adjust(); }, 100);
                 }
-            });
             });
         });
     });

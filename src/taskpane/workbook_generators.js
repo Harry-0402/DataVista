@@ -58,39 +58,21 @@ export function generateWorkbookHTML(data, sheetNames, options, libs) {
         }
         .btn-back { cursor: pointer; font-weight: 600; text-decoration: none; color: inherit; display: flex; align-items: center; gap: 5px; }
 
-        /* === FIXED CONTROLS & FLUID DATA (v5.1) === */
-        .dv-table-wrapper {
-            width: 100%;
-            margin-bottom: 2rem;
-        }
-
-        .dataTables_scrollBody {
-            border: 1px solid var(--bs-border-color);
-            border-radius: 0 0 8px 8px;
-        }
+        /* === VISUAL PRECISION & FIXED CONTROLS (v6.0) === */
+        .dv-table-wrapper { width: 100%; margin-bottom: 2rem; position: relative; }
+        .dv-controls-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 10px; }
         
-        .dataTables_scrollHead {
-            border: 1px solid var(--bs-border-color);
-            border-bottom: none;
-            border-radius: 8px 8px 0 0;
-            background: var(--dv-header-bg);
-        }
+        .btn-advanced-filters { background-color: #00bcd4 !important; color: white !important; border: none !important; font-weight: 600 !important; padding: 6px 16px !important; border-radius: 4px !important; transition: opacity 0.2s; }
+        .btn-advanced-filters:hover { opacity: 0.9; }
 
-        table.dataTable { 
-            width: 100% !important; 
-            margin: 0 !important;
-            table-layout: auto !important; 
-            border-collapse: collapse !important; 
-        }
-        
-        table.dataTable th, 
-        table.dataTable td { 
-            white-space: nowrap !important;
-            vertical-align: middle;
-            padding: 10px 15px !important;
-            border: 1px solid var(--bs-border-color);
-            min-width: 120px;
-        }
+        .dt-button { background-color: #6c757d !important; color: white !important; border: none !important; border-radius: 4px !important; padding: 5px 12px !important; font-size: 0.8rem !important; margin-right: 4px !important; }
+        .dt-button:hover { background-color: #5a6268 !important; }
+
+        .dataTables_scrollBody { border: 1px solid var(--bs-border-color); border-radius: 0 0 8px 8px; }
+        .dataTables_scrollHead { border: 1px solid var(--bs-border-color); border-bottom: none; border-radius: 8px 8px 0 0; background: var(--dv-header-bg); }
+
+        table.dataTable { width: 100% !important; margin: 0 !important; table-layout: auto !important; border-collapse: collapse !important; }
+        table.dataTable th, table.dataTable td { white-space: nowrap !important; vertical-align: middle; padding: 12px 15px !important; border: 1px solid var(--bs-border-color); min-width: 120px; }
 
         .filter-input { width: 100%; border: 1px solid var(--bs-border-color); padding: 2px; font-size: 0.75rem; border-radius: 3px; }
         .dataTables_paginate { display: flex; justify-content: flex-end; margin-top: 10px; font-size: 0.8rem; }
@@ -111,7 +93,7 @@ export function generateWorkbookHTML(data, sheetNames, options, libs) {
                     DataVista Report
                 </div>
                 <h1 class="dashboard-title">${workbookName}</h1>
-                <p class="dashboard-meta">Generated on ${timestamp} &bull; ${sheetNames.length} Sheets &bull; v5.1 (Fixed Controls)</p>
+                <p class="dashboard-meta">Generated on ${timestamp} &bull; ${sheetNames.length} Sheets &bull; v6.0 (Visual Precision)</p>
             </div>
             <div class="sheet-grid">
     `);
@@ -182,40 +164,30 @@ export function generateWorkbookHTML(data, sheetNames, options, libs) {
         $('table.display').each(function() {
             var table = $(this);
             table.DataTable({
-                dom: '<"row mb-3"<"col-md-8"B><"col-md-4"f>>t<"row mt-3"<"col-md-6"i><"col-md-6"p>>',
+                dom: '<"dv-controls-row"Bf>t<"row mt-3"<"col-md-6"i><"col-md-6"p>>',
                 autoWidth: false,
                 scrollX: true,
                 scrollCollapse: true,
                 pageLength: 20,
                 buttons: [
                     {
-                        extend: 'collection',
-                        text: 'Export',
-                        className: 'btn-sm btn-primary',
-                        buttons: ['copy', 'excel', 'pdf']
+                        text: 'Advanced Filters',
+                        className: 'btn-advanced-filters',
+                        action: function (e, dt) {
+                            $('#sb-modal-body').empty();
+                            var sb = new $.fn.dataTable.SearchBuilder(dt, {});
+                            $('#sb-modal-body').append(sb.getNode());
+                            $('#searchBuilderModal').modal('show');
+                        }
                     },
-                    {
-                        extend: 'colvis',
-                        text: 'Columns',
-                        className: 'btn-sm btn-outline-secondary'
-                    },
-                    {
-                         text: 'Advanced Filters', 
-                         className: 'btn-sm btn-dark',
-                         action: function (e, dt) {
-                             $('#sb-modal-body').empty();
-                             var sb = new $.fn.dataTable.SearchBuilder(dt, {});
-                             $('#sb-modal-body').append(sb.getNode());
-                             $('#searchBuilderModal').modal('show');
-                         }
-                    }
+                    'copy', 'csv', 'excel', 'pdf', 'print', 'colvis'
                 ],
                 initComplete: function() {
                     var api = this.api();
                     $(api.table().header()).find('th').each(function (colIdx) {
                         var title = $(this).text();
                         $(this).empty().append('<div style="margin-bottom:5px;font-weight:600;font-size:0.75rem;">'+title+'</div>');
-                        $('<input type="text" class="filter-input" placeholder="Filter..." />')
+                        $('<input type="text" class="filter-input" placeholder="Filter..." style="width:100%; border:1px solid #ddd; padding:2px; font-size:0.75rem;" />')
                             .appendTo(this)
                             .on('keyup change', function (e) { 
                                 e.stopPropagation();
@@ -224,7 +196,6 @@ export function generateWorkbookHTML(data, sheetNames, options, libs) {
                     });
                     setTimeout(function() { api.columns.adjust(); }, 100);
                 }
-            });
             });
         });
     });
