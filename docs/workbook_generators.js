@@ -1,1 +1,199 @@
-export function generateWorkbookHTML(n,e,t,o){const a=(new Date).toLocaleString(),r=t.workbookName||"Workbook",d=`\n    <style>\n        :root {\n            --bs-body-bg: #ffffff;\n            --bs-body-color: #212529;\n            --bs-primary: #0d6efd;\n            --bs-secondary: #6c757d;\n            --bs-light: #f8f9fa;\n            --bs-dark: #212529;\n            --bs-border-color: #dee2e6;\n            --dv-header-bg: #f8f9fa;\n            --dv-header-color: #333;\n        }\n        [data-bs-theme="dark"] {\n            --bs-body-bg: #212529;\n            --bs-body-color: #f8f9fa;\n            --bs-border-color: #495057;\n            --dv-header-bg: #2c3034;\n            --dv-header-color: #fff;\n        }\n        body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 0.9rem; margin: 0; padding: 0; background-color: var(--bs-body-bg); color: var(--bs-body-color); zoom: 0.9; }\n        \n        /* Dashboard / Index Styles */\n        .dashboard-container { max-width: 1200px; margin: 50px auto; text-align: center; }\n        .dashboard-header { margin-bottom: 50px; }\n        .dashboard-title { font-size: 2.5rem; font-weight: 300; margin-bottom: 10px; }\n        .dashboard-meta { color: var(--bs-secondary); }\n        \n        .sheet-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; padding: 20px; }\n        .sheet-card {\n            background: var(--bs-body-bg);\n            border: 1px solid var(--bs-border-color);\n            border-radius: 8px;\n            padding: 30px;\n            cursor: pointer;\n            transition: transform 0.2s, box-shadow 0.2s;\n            text-decoration: none;\n            color: inherit;\n            display: flex;\n            flex-direction: column;\n            align-items: center;\n            justify-content: center;\n            height: 150px;\n            width: 280px;\n        }\n        .sheet-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); border-color: var(--bs-primary); }\n        .sheet-icon { width: 40px; height: 40px; margin-bottom: 15px; color: var(--bs-primary); }\n        .sheet-name { font-size: 1.2rem; font-weight: 500; }\n\n        /* Sheet View Styles (Initially Hidden) */\n        .view-section { display: none; padding-top: 20px; }\n        .view-section.active { display: block; }\n\n        /* Back Button Header */\n        .sheet-header {\n            display: flex; align-items: center; justify-content: space-between;\n            background: var(--dv-header-bg); color: var(--dv-header-color);\n            padding: 10px 20px;\n            border-bottom: 1px solid var(--bs-border-color);\n            margin-bottom: 20px;\n        }\n        .btn-back { display: flex; align-items: center; gap: 5px; cursor: pointer; font-weight: 600; text-decoration: none; color: inherit; }\n        .btn-back:hover { text-decoration: underline; }\n\n        /* Table Styles (Compact) */\n        table.dataTable { border-collapse: collapse !important; border: 1px solid var(--bs-border-color) !important; font-size: 0.8rem; width: 100% !important; }\n        table.dataTable thead th { border: 1px solid var(--bs-border-color); padding: 6px 8px; background: var(--bs-light); color: var(--bs-dark); }\n        [data-bs-theme="dark"] table.dataTable thead th { background: #343a40; color: #fff; }\n        table.dataTable tbody td { border: 1px solid var(--bs-border-color); padding: 4px 8px; }\n\n        /* Modal Tweaks */\n        .modal-backdrop.show { opacity: 0 !important; position: fixed; width: 100vw; height: 100vh; top: 0; left: 0; }\n        .modal-content { box-shadow: none !important; border: 1px solid var(--bs-border-color); }\n    </style>\n    <style>${o.css||""}</style>\n    `,i=[];return i.push(`<!DOCTYPE html><html lang="en" data-bs-theme="light"><head><meta charset="UTF-8"><title>${r}</title>${d}</head><body>`),i.push(`\n    <div id="dashboard-view" class="view-section active">\n        <div class="dashboard-container">\n            <div class="dashboard-header">\n                <div class="dv-brand" style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px; font-size: 1.5rem; font-weight: bold;">\n                    <img src="https://Harry-0402.github.io/DataVista/assets/icon-32.png" width="32" height="32" style="margin-right: 10px;" alt="Logo">\n                    DataVista Report\n                </div>\n                <h1 class="dashboard-title">${r}</h1>\n                <p class="dashboard-meta">Generated on ${a} &bull; ${e.length} Sheets</p>\n            </div>\n            \n            <div class="sheet-grid">\n    `),e.forEach((n,e)=>{i.push(`\n        <div class="sheet-card" onclick="showSheet('${e}')">\n            <svg class="sheet-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>\n            <div class="sheet-name">${n}</div>\n        </div>\n        `)}),i.push("    </div></div></div>"),e.forEach((e,t)=>{const o=n[e],a=o.length>0?o[0]:[],r=o.length>0?o.slice(1):[];i.push(`\n        <div id="sheet-view-${t}" class="view-section">\n            \x3c!-- Sheet Header --\x3e\n            <div class="sheet-header">\n                <a class="btn-back" onclick="showDashboard()">\n                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>\n                    Back to Dashboard\n                </a>\n                <div style="font-size: 1.2rem; font-weight: bold;">${e}</div>\n                <div class="theme-toggler" style="cursor: pointer;" onclick="toggleTheme()">\n                     <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z"/></svg>\n                </div>\n            </div>\n\n            <div class="container-fluid">\n        `),i.push('<table class="table table-striped table-hover display nowrap" style="width:100%">'),i.push("<thead><tr>"),a.forEach(n=>i.push(`<th>${n||""}</th>`)),i.push("</tr></thead>"),i.push("<tbody>"),r.forEach(n=>{i.push("<tr>"),n.forEach(n=>{const e=null==n?"":n;i.push(`<td>${e}</td>`)}),i.push("</tr>")}),i.push("</tbody>"),i.push("</table>"),i.push("</div></div>")}),i.push('\n    <div class="modal fade" id="searchBuilderModal" tabindex="-1" aria-hidden="true">\n        <div class="modal-dialog modal-xl">\n            <div class="modal-content" style="background-color: var(--bs-body-bg); color: var(--bs-body-color);">\n                <div class="modal-header">\n                    <h5 class="modal-title">Advanced Filters</h5>\n                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>\n                </div>\n                <div class="modal-body" id="sb-modal-body"></div>\n                <div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button></div>\n            </div>\n        </div>\n    </div>\n    '),i.push(`<script>${o.js||""}<\/script>`),i.push(`<script>\n    // Navigation Logic\n    function showDashboard() {\n        $('.view-section').removeClass('active');\n        $('#dashboard-view').addClass('active');\n        document.title = "${r}";\n    }\n\n    function showSheet(index) {\n        $('.view-section').removeClass('active');\n        $('#sheet-view-' + index).addClass('active');\n        // We might want to trigger a redraw of DataTable if it was hidden\n        $.fn.dataTable.tables({ visible: true, api: true }).columns.adjust();\n    }\n\n    function toggleTheme() {\n        const html = document.documentElement;\n        const current = html.getAttribute('data-bs-theme');\n        html.setAttribute('data-bs-theme', current === 'dark' ? 'light' : 'dark');\n    }\n\n    $(document).ready(function() {\n        // Initialize ALL tables\n        $('table.display').each(function() {\n            var table = $(this);\n            var dt = table.DataTable({\n                dom: '<"row mb-3"<"col-md-6"B><"col-md-6"f>>rt<"row mt-3"<"col-md-6"i><"col-md-6"p>>',\n                pageLength: 15,\n                scrollX: true,\n                buttons: [\n                    {\n                         text: 'Advanced Filters',\n                         className: 'btn-info me-3',\n                         action: function (e, dt, node, config) {\n                             // Clear previous SB\n                             $('#sb-modal-body').empty();\n                             var sb = new $.fn.dataTable.SearchBuilder(dt, {}); // Create for current table\n                             $('#sb-modal-body').append(sb.getNode());\n                             $('#searchBuilderModal').modal('show');\n                         }\n                    },\n                    'copy', 'csv', 'excel',\n                    {\n                        extend: 'pdfHtml5',\n                        orientation: 'landscape',\n                        pageSize: 'A4',\n                        customize: function(doc) {\n                            // 1. Optimize Margins\n                            doc.pageMargins = [10, 10, 10, 10];\n                            \n                            // 2. robust column count\n                            var table = doc.content[1].table;\n                            var colCount = table.body[0].length;\n                            \n                            // 3. Dynamic Font Scaling (More granular)\n                            // Base 9, reduced by 0.2 for every column over 5, min 4\n                            var fontSize = 9;\n                            if(colCount > 5) {\n                                fontSize = Math.max(4, 9 - ((colCount - 5) * 0.3)); \n                            }\n                            \n                            doc.defaultStyle.fontSize = fontSize;\n                            doc.styles.tableHeader.fontSize = fontSize + 1;\n                            doc.styles.title.fontSize = 12;\n\n                            // 4. Force Fit Page Width\n                            table.widths = new Array(colCount).fill('*');\n\n                            // 5. Condensed margins & alignment\n                            var rowCount = table.body.length;\n                            for (var i = 1; i < rowCount; i++) {\n                                table.body[i].forEach(function(cell) {\n                                    if(!isNaN(Number(cell.text)) && cell.text !== "") {\n                                        cell.alignment = 'right';\n                                    }\n                                    cell.margin = [1, 2, 1, 2];\n                                });\n                            }\n                        }\n                    },\n                    'print', 'colvis'\n                ],\n                initComplete: function() {\n                    var api = this.api();\n                    api.columns().eq(0).each(function (colIdx) {\n                        var header = $(api.column(colIdx).header());\n                        var title = header.text();\n                        var input = $('<input type="text" class="filter-input" placeholder="Filter..." style="width:100%; border:1px solid #ddd; border-radius:4px; padding:2px 4px; font-weight:normal;" />')\n                            .appendTo(header.empty())\n                            .on('keyup change', function () { api.column(colIdx).search(this.value).draw(); });\n                        header.prepend('<div style="margin-bottom: 5px; font-weight: 600;">' + title + '</div>');\n                    });\n                }\n            });\n        });\n    });\n    <\/script></body></html>`),new Blob([i.join("")],{type:"text/html"})}
+/* global console */
+
+// Function to generate the HTML content for the Entire Workbook (Dashboard/Index Style)
+export function generateWorkbookHTML(data, sheetNames, options, libs) {
+    const timestamp = new Date().toLocaleString();
+    const workbookName = options.workbookName || "Workbook";
+
+    // 1. CSS & Styles (Reusing Strict Core Styles)
+    const styles = `
+    <style>
+        :root {
+            --bs-body-bg: #ffffff;
+            --bs-body-color: #212529;
+            --bs-primary: #0d6efd;
+            --bs-border-color: #dee2e6;
+            --dv-header-bg: #f8f9fa;
+        }
+        [data-bs-theme="dark"] {
+            --bs-body-bg: #212529;
+            --bs-body-color: #f8f9fa;
+            --bs-border-color: #495057;
+            --dv-header-bg: #2c3034;
+        }
+        body { 
+            font-family: 'Segoe UI', sans-serif; 
+            margin: 0; padding: 0; 
+            background-color: var(--bs-body-bg); color: var(--bs-body-color);
+            overflow-x: hidden; 
+            width: 100vw;
+        }
+        
+        /* Dashboard Styles */
+        .dashboard-container { max-width: 1200px; margin: 50px auto; text-align: center; }
+        .dashboard-title { font-size: 2.5rem; font-weight: 300; margin-bottom: 10px; }
+        .dashboard-meta { color: gray; }
+        
+        .sheet-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; padding: 20px; }
+        .sheet-card {
+            background: var(--bs-body-bg);
+            border: 1px solid var(--bs-border-color);
+            border-radius: 8px;
+            padding: 30px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            width: 280px;
+        }
+        .sheet-card:hover { transform: translateY(-5px); border-color: var(--bs-primary); }
+        .sheet-name { font-size: 1.2rem; font-weight: 500; margin-top: 15px; }
+
+        /* Sheet View Styles */
+        .view-section { display: none; padding-top: 0; }
+        .view-section.active { display: block; }
+
+        .sheet-header {
+            display: flex; align-items: center; justify-content: space-between;
+            background: var(--dv-header-bg); padding: 10px 20px;
+            border-bottom: 1px solid var(--bs-border-color); margin-bottom: 20px;
+        }
+        .btn-back { cursor: pointer; font-weight: 600; text-decoration: none; color: inherit; display: flex; align-items: center; gap: 5px; }
+
+        /* === ULTRA STRICT TABLE LAYOUT === */
+        table.dataTable { 
+            width: 100% !important; 
+            margin: 0 !important;
+            table-layout: fixed !important; 
+            border-collapse: collapse !important; 
+        }
+        
+        table.dataTable th, 
+        table.dataTable td { 
+            white-space: normal !important; 
+            word-wrap: break-word !important; 
+            overflow-wrap: anywhere !important; 
+            vertical-align: top;
+            padding: 4px 6px !important;
+            border: 1px solid var(--bs-border-color);
+        }
+
+        .filter-input { width: 100%; border: 1px solid var(--bs-border-color); padding: 2px; font-size: 0.75rem; border-radius: 3px; }
+        .dataTables_paginate { display: flex; justify-content: flex-end; margin-top: 10px; font-size: 0.8rem; }
+    </style>
+    <style>${libs.css || ""}</style>
+    `;
+
+    const parts = [];
+    parts.push(`<!DOCTYPE html><html lang="en" data-bs-theme="light"><head><meta charset="UTF-8"><title>${workbookName}</title>${styles}</head><body>`);
+
+    // --- 1. DASHBOARD OVERVIEW ---
+    parts.push(`
+    <div id="dashboard-view" class="view-section active">
+        <div class="dashboard-container">
+            <div class="dashboard-header">
+                <div style="font-size: 1.5rem; font-weight: bold; margin-bottom: 20px;">
+                    <img src="https://Harry-0402.github.io/DataVista/assets/icon-32.png" width="32" height="32" style="margin-right: 10px;">
+                    DataVista Report
+                </div>
+                <h1 class="dashboard-title">${workbookName}</h1>
+                <p class="dashboard-meta">Generated on ${timestamp} &bull; ${sheetNames.length} Sheets &bull; v3.0 (Rewrite)</p>
+            </div>
+            <div class="sheet-grid">
+    `);
+
+    sheetNames.forEach((name, index) => {
+        parts.push(`
+        <div class="sheet-card" onclick="showSheet('${index}')">
+            <svg width="40" height="40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+            <div class="sheet-name">${name}</div>
+        </div>
+        `);
+    });
+    parts.push(`</div></div></div>`);
+
+    // --- 2. INDIVIDUAL SHEET VIEWS ---
+    sheetNames.forEach((name, index) => {
+        const rows = data[name];
+        const header = rows.length > 0 ? rows[0] : [];
+        const body = rows.length > 0 ? rows.slice(1) : [];
+
+        // Dynamic Font Scaling
+        const colCount = header.length;
+        let fontSizeVal = 0.9;
+        if (colCount > 6) {
+            fontSizeVal = Math.max(0.5, 0.9 - ((colCount - 6) * 0.05));
+        }
+        const fontSizeStr = fontSizeVal.toFixed(2) + "rem";
+
+        parts.push(`
+        <div id="sheet-view-${index}" class="view-section">
+            <div class="sheet-header">
+                <a class="btn-back" onclick="showDashboard()">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                    Back to Dashboard
+                </a>
+                <div style="font-weight: bold;">${name}</div>
+                <div onclick="document.documentElement.setAttribute('data-bs-theme', document.documentElement.getAttribute('data-bs-theme')==='dark'?'light':'dark')" style="cursor: pointer;">Theme</div>
+            </div>
+            <div class="container-fluid" style="padding: 0 20px;">
+                <table class="table table-striped table-hover display table-bordered" style="width:100% !important; font-size:${fontSizeStr};">
+                    <thead><tr>${header.map(h => `<th>${h || ""}</th>`).join('')}</tr></thead>
+                    <tbody>
+                        ${body.map(r => `<tr>${r.map(c => `<td>${c || ""}</td>`).join('')}</tr>`).join('')}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        `);
+    });
+
+    parts.push(`
+    <div class="modal fade" id="searchBuilderModal" tabindex="-1"><div class="modal-dialog modal-xl"><div class="modal-content"><div class="modal-body" id="sb-modal-body"></div></div></div></div>
+    `);
+
+    // --- 3. SCRIPTS ---
+    parts.push(`<script>${libs.js || ""}</script>`);
+    parts.push(`<script>
+    function showDashboard() { $('.view-section').removeClass('active'); $('#dashboard-view').addClass('active'); }
+    function showSheet(index) { 
+        $('.view-section').removeClass('active'); 
+        $('#sheet-view-' + index).addClass('active'); 
+        $.fn.dataTable.tables({ visible: true, api: true }).columns.adjust();
+    }
+
+    $(document).ready(function() {
+        $('table.display').each(function() {
+            var table = $(this);
+            table.DataTable({
+                dom: '<"row mb-2"<"col-6"B><"col-6"f>>rt<"row mt-2"<"col-6"i><"col-6"p>>',
+                autoWidth: false,      // KEY: Disable auto width
+                scrollX: false,        // KEY: Disable scrollX
+                pageLength: 20,
+                buttons: [
+                    {
+                         text: 'Filters', className: 'btn-sm btn-outline-secondary',
+                         action: function (e, dt) {
+                             $('#sb-modal-body').empty();
+                             var sb = new $.fn.dataTable.SearchBuilder(dt, {});
+                             $('#sb-modal-body').append(sb.getNode());
+                             $('#searchBuilderModal').modal('show');
+                         }
+                    }, 'copy', 'excel'
+                ],
+                initComplete: function() {
+                    var api = this.api();
+                    api.columns().eq(0).each(function (colIdx) {
+                        var header = $(api.column(colIdx).header());
+                        var title = header.text();
+                        header.empty().append('<div style="margin-bottom:2px;font-weight:bold;">'+title+'</div>');
+                        $('<input type="text" class="filter-input" placeholder="Search" />')
+                            .appendTo(header)
+                            .on('keyup change', function () { api.column(colIdx).search(this.value).draw(); });
+                    });
+                }
+            });
+        });
+    });
+    </script></body></html>`);
+
+    return new Blob([parts.join("")], { type: "text/html" });
+}

@@ -1,1 +1,257 @@
-window.LIB_URLS={bootstrap_css:"https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css",datatables_css:"https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css",buttons_css:"https://cdn.datatables.net/buttons/2.4.1/css/buttons.bootstrap5.min.css",searchbuilder_css:"https://cdn.datatables.net/searchbuilder/1.5.0/css/searchBuilder.bootstrap5.min.css",dateTime_css:"https://cdn.datatables.net/datetime/1.5.1/css/dataTables.dateTime.min.css",jquery:"https://code.jquery.com/jquery-3.7.0.min.js",bootstrap_js:"https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js",datatables_js:"https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js",datatables_bs5_js:"https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js",jszip:"https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js",pdfmake:"https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js",vfs_fonts:"https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js",buttons_js:"https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js",buttons_bs5_js:"https://cdn.datatables.net/buttons/2.4.1/js/buttons.bootstrap5.min.js",buttons_colvis_js:"https://cdn.datatables.net/buttons/2.4.1/js/buttons.colVis.min.js",buttons_html5_js:"https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js",buttons_print_js:"https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js",dateTime_js:"https://cdn.datatables.net/datetime/1.5.1/js/dataTables.dateTime.min.js",searchbuilder_js:"https://cdn.datatables.net/searchbuilder/1.5.0/js/dataTables.searchBuilder.min.js",searchbuilder_bs5_js:"https://cdn.datatables.net/searchbuilder/1.5.0/js/searchBuilder.bootstrap5.min.js"};export function generateHTML(t,a,n,e){const s=[];s.push("<!DOCTYPE html><html lang='en' data-bs-theme='light'>"),s.push("<head><meta charset='UTF-8'><title>DataVista Report</title>"),s.push(`<style>${e.css||""}</style>`),s.push('<style>\n        :root { --header-bg: #3c6ea9; --header-text: white; }\n        [data-bs-theme="dark"] { --header-bg: #1f2937; }\n\n        html { scroll-behavior: smooth; }\n        body { background-color: var(--bs-body-bg); color: var(--bs-body-color); font-family: \'Segoe UI\', sans-serif; zoom: 0.9; }\n        \n        .dv-header {\n            background-color: var(--header-bg); color: var(--header-text);\n            padding: 12px 2rem; display: flex; justify-content: space-between; align-items: center;\n            box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 1.5rem; gap: 2rem;\n        }\n        [data-bs-theme="dark"] .dv-header { background-color: var(--header-bg-dark); }\n\n        .header-content { display: flex; flex-direction: column; }\n        .dv-brand { font-size: 1.1rem; font-weight: 600; display: flex; align-items: center; gap: 8px; }\n        .dv-meta { font-size: 0.75rem; opacity: 0.7; margin-top: 2px; }\n        \n        /* Header Tabs */\n        .dv-header-tabs { \n            border: none; margin: 0; display: flex; gap: 4px; flex: 1; justify-content: center;\n        }\n        .dv-header-tabs .nav-link { \n            border: none; color: rgba(255,255,255,0.7); background: transparent;\n            padding: 8px 16px; font-weight: 500; border-radius: 20px;\n            transition: all 0.2s; font-size: 0.85rem;\n        }\n        .dv-header-tabs .nav-link:hover { \n            color: white; background: rgba(255,255,255,0.1);\n        }\n        .dv-header-tabs .nav-link.active { \n            color: white; background: rgba(255,255,255,0.2);\n            box-shadow: 0 2px 4px rgba(0,0,0,0.1);\n        }\n        \n        .theme-toggler { cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.3); padding: 4px 10px; border-radius: 16px; transition: all 0.2s; }\n        .theme-toggler:hover { background-color: rgba(255,255,255,0.1); }\n\n        .dv-container { padding: 0 2rem 3rem 2rem; }\n        .dv-tab-content { padding-top: 0; }\n        .nav-link { \n            border: none; color: var(--bs-body-color); opacity: 0.6; padding: 10px 20px; font-weight: 500; border-radius: 30px !important; transition: all 0.2s; \n        }\n        .nav-link:hover { background: rgba(0,0,0,0.05); opacity: 1; }\n        .nav-link.active { background-color: var(--header-bg) !important; color: white !important; opacity: 1; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }\n\n        /* Card */\n        .dv-card { background: var(--bs-card-bg); border: 1px solid var(--bs-border-color); border-radius: 12px; padding: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.02); margin-bottom: 2rem; }\n\n        /* Sheet Sections */\n        .dv-sheet-section { margin-bottom: 3rem; }\n\n        /* DataTable Overrides */\n        table.dataTable { border-collapse: collapse !important; border: 1px solid var(--bs-border-color) !important; font-size: 0.8rem; }\n        table.dataTable thead th { \n            border: 1px solid var(--bs-border-color) !important; \n            border-bottom: 2px solid var(--bs-border-color) !important; \n            font-weight: 600; \n            vertical-align: middle; \n            padding: 6px 8px !important;\n        table.dataTable tbody td { \n            vertical-align: middle; \n            padding: 4px 8px !important; \n            border: 1px solid var(--bs-border-color) !important;\n        table.dataTable tfoot th {\n            border: 1px solid var(--bs-border-color) !important;\n            padding: 6px 8px !important;\n            font-size: 0.8rem;\n        }\n        \n        /* Filter Inputs */\n        .filter-input { width: 100%; border: 1px solid var(--bs-border-color); background: var(--bs-body-bg); color: var(--bs-body-color); padding: 4px 8px; border-radius: 4px; font-size: 0.85rem; margin-top: 5px; }\n        \n        /* Pagination & Info Alignment */\n        .dataTables_info { padding-top: 0.85em !important; }\n        .dataTables_paginate { display: flex; justify-content: flex-end; }\n        \n        /* Stats Footer */\n        tfoot th { font-size: 0.9rem; background: var(--bs-tertiary-bg); }\n\n        /* RICH FORMATTING */\n        .dv-neg { color: #dc3545 !important; font-weight: 500; }\n        .dv-bar-cell { position: relative; z-index: 1; }\n        .dv-bar {\n            position: absolute; top: 2px; bottom: 2px; left: 0; \n            background: linear-gradient(90deg, rgba(60, 110, 169, 0.15), rgba(60, 110, 169, 0.05));\n            z-index: -1; border-radius: 0 4px 4px 0; transition: width 0.3s;\n        }\n        [data-bs-theme="dark"] .dv-bar { background: linear-gradient(90deg, rgba(60, 110, 169, 0.4), rgba(60, 110, 169, 0.1)); }\n        \n        /* Modal Tweaks */\n        .modal-backdrop.show { opacity: 0; position: fixed; width: 100vw; height: 100vh; top: 0; left: 0; } /* Transparent backdrop */\n        .modal-content { box-shadow: none; border: 1px solid var(--bs-border-color); }\n    </style>'),s.push("</head><body>");const o=(new Date).toLocaleString(),r=a.length>0?a[0]:"Report";return s.push(`\n    <div class="dv-header">\n        <div>\n            <div class="dv-brand">\n                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>\n                DataVista <span style="opacity: 0.6; margin: 0 8px;">|</span> ${r}\n            </div>\n            <div class="dv-meta">Generated: ${o}</div>\n        </div>\n        <ul class="nav nav-tabs dv-header-tabs" role="tablist">\n            <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#page-data">Data</a></li>\n            ${n.info?'<li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#page-info">Dataset Info</a></li>':""}\n            ${n.stats?'<li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#page-stats">Summary Statistics</a></li>':""}\n        </ul>\n        <div class="theme-toggler" onclick="document.documentElement.setAttribute('data-bs-theme', document.documentElement.getAttribute('data-bs-theme')==='dark'?'light':'dark')">\n            <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z"/></svg>\n            <span>Theme</span>\n        </div>\n    </div>\n    `),s.push('<div class="container-fluid dv-container mt-3 mb-5">'),s.push('<div class="tab-content dv-tab-content">'),s.push('<div id="page-data" class="tab-pane fade show active">'),a.forEach((a,e)=>{const o=t[a],r=o.length>0,d=r?o[0]:[],i=r?o.slice(1):[],l=[],c=[];for(let t=0;t<d.length;t++){let a=0,n=!0;for(let e=0;e<i.length;e++){const s=Number(i[e][t]);if(isNaN(s)){n=!1;break}Math.abs(s)>a&&(a=Math.abs(s))}l[t]=n?"num":"str",c[t]=n&&a>0?a:0}s.push('<div class="dv-sheet-section" id="data-section">'),s.push('<div class="dv-card">'),s.push('<table class="table table-hover display nowrap" style="width:100%">'),s.push("<thead><tr>"),d.forEach((t,a)=>{const n="num"===l[a]?"text-end":"text-start";s.push(`<th class="${n}">${t}</th>`)}),s.push("</tr></thead>"),s.push("<tbody>"),i.forEach(t=>{s.push("<tr>"),t.forEach((t,a)=>{let e=t,o="num"===l[a]?"text-end":"text-start",r="";if(n.rich){const n=Number(t);!isNaN(n)&&(n<0&&(o+=" dv-neg"),c[a]>0)&&(o+=" dv-bar-cell",r=`<div class="dv-bar" style="width:${Math.min(100,Math.abs(n)/c[a]*100)}%"></div>`)}s.push(`<td class="${o}">${e}${r}</td>`)}),s.push("</tr>")}),s.push("</tbody>"),s.push("</table></div>"),s.push("</div>")}),s.push("</div>"),n.info&&(s.push('<div id="page-info" class="tab-pane fade">'),a.forEach((a,n)=>{const e=t[a],o=e.length>0?e[0]:[],r=e.length>0?e.slice(1):[];s.push(`<div class="dv-card"><h5>Dataset Info: ${a}</h5>${generateInfo(o,r)}</div>`)}),s.push("</div>")),n.stats&&(s.push('<div id="page-stats" class="tab-pane fade">'),a.forEach((a,n)=>{const e=t[a],o=e.length>0?e[0]:[],r=e.length>0?e.slice(1):[];s.push(`<div class="dv-card"><h5>Statistics: ${a}</h5>${generateDesc(o,r)}</div>`)}),s.push("</div>")),s.push("</div>"),s.push('\n    <div class="modal fade" id="searchBuilderModal" tabindex="-1" aria-hidden="true">\n        <div class="modal-dialog modal-xl">\n            <div class="modal-content" style="background-color: var(--bs-body-bg); color: var(--bs-body-color);">\n                <div class="modal-header">\n                    <h5 class="modal-title">Advanced Filters</h5>\n                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>\n                </div>\n                <div class="modal-body" id="sb-modal-body">\n                    \x3c!-- SearchBuilder will be appended here --\x3e\n                </div>\n                <div class="modal-footer">\n                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>\n                </div>\n            </div>\n        </div>\n    </div>\n    '),s.push("</div>"),s.push(`<script>${e.js||""}<\/script>`),s.push("<script>\n    $(document).ready(function() {\n        $('table.display').each(function() {\n            var table = $(this);\n            \n            var dt = table.DataTable({\n                dom: '<\"row mb-3\"<\"col-md-6\"B><\"col-md-6\"f>>rt<\"row mt-3\"<\"col-md-6\"i><\"col-md-6\"p>>',\n                initComplete: function () {\n                    var api = this.api();\n                    \n                    // 1. Move SearchBuilder to Modal\n                    // We manually create the SearchBuilder instance and append to modal\n                    var sb = new $.fn.dataTable.SearchBuilder(api, {});\n                    $('#sb-modal-body').append(sb.getNode());\n\n                    // 2. Add Filter Inputs to Header\n                    api.columns().eq(0).each(function (colIdx) {\n                        var header = $(api.column(colIdx).header());\n                        var title = header.text();\n                        var input = $('<input type=\"text\" class=\"filter-input\" placeholder=\"Filter...\" />')\n                            .appendTo(header.empty())\n                            .on('keyup change', function () {\n                                api.column(colIdx).search(this.value).draw();\n                            });\n                        header.prepend('<div style=\"margin-bottom: 5px; font-weight: 600;\">' + title + '</div>');\n                    });\n                },\n                buttons: [\n                    {\n                        text: 'Advanced Filters',\n                        className: 'btn-info me-3', // Added margin-end for spacing\n                        action: function (e, dt, node, config) {\n                            $('#searchBuilderModal').modal('show');\n                        }\n                    },\n                    'copy', \n                    'csv', \n                    'excel', \n                    {\n                        extend: 'pdfHtml5',\n                        orientation: 'landscape',\n                        pageSize: 'A4',\n                        customize: function(doc) {\n                            // 1. Optimize Margins\n                            doc.pageMargins = [10, 10, 10, 10];\n                            \n                            // 2. robust column count\n                            var table = doc.content[1].table;\n                            var colCount = table.body[0].length;\n                            \n                            // 3. Dynamic Font Scaling (More granular)\n                            // Base 9, reduced by 0.2 for every column over 5, min 4\n                            var fontSize = 9;\n                            if(colCount > 5) {\n                                fontSize = Math.max(4, 9 - ((colCount - 5) * 0.3)); \n                            }\n                            \n                            doc.defaultStyle.fontSize = fontSize;\n                            doc.styles.tableHeader.fontSize = fontSize + 1;\n                            doc.styles.title.fontSize = 12;\n\n                            // 4. Force Fit Page Width (Star Widths)\n                            // Using Array.fill is cleaner/safer than join/split\n                            table.widths = new Array(colCount).fill('*');\n\n                            // 5. Right-align numbers & condensed margins\n                            var rowCount = table.body.length;\n                            for (var i = 1; i < rowCount; i++) {\n                                table.body[i].forEach(function(cell) {\n                                    if(!isNaN(Number(cell.text)) && cell.text !== \"\") {\n                                        cell.alignment = 'right';\n                                    }\n                                    cell.margin = [1, 2, 1, 2]; // Tighter cell padding\n                                });\n                            }\n                        }\n                    },\n                    'print', \n                    'colvis'\n                ],\n                pageLength: 15\n            });\n        });\n    });\n    <\/script>"),s.push("</body></html>"),new Blob(s,{type:"text/html"})}function calculateBasicStats(t,a){const n=new Array(a).fill(0),e=new Array(a).fill(0),s=new Array(a).fill(0),o=new Array(a).fill(!0);t.forEach(t=>{t.forEach((t,a)=>{""!==t&&null!=t&&s[a]++;const r=Number(t);isNaN(r)||""===t?o[a]=!1:(n[a]+=r,e[a]++)})});const r=t=>t.toLocaleString(void 0,{maximumFractionDigits:2});return[{name:"Count",values:s.map(t=>t)},{name:"Sum",values:n.map((t,a)=>o[a]&&e[a]>0?r(t):"-")},{name:"Average",values:n.map((t,a)=>o[a]&&e[a]>0?r(t/e[a]):"-")}]}function generateInfo(t,a){let n="<table class='table table-sm'><thead><tr><th>Col</th><th>Type</th><th>Non-Null</th></tr></thead><tbody>";return t.forEach((t,e)=>{let s=0,o=0;a.forEach(t=>{""!==t[e]&&null!==t[e]&&s++,isNaN(Number(t[e]))||o++}),n+=`<tr><td>${t}</td><td>${o===s&&s>0?"Numeric":"Object"}</td><td>${s}</td></tr>`}),n+"</tbody></table>"}function generateDesc(t,a){if(0===a.length)return"<p class='small text-muted'>No data available.</p>";const n=[];t.forEach((t,e)=>{let s=0;const o=[];if(a.forEach(t=>{const a=t[e];""!==a&&null!=a&&s++;const n=Number(a);isNaN(n)||""===a||o.push(n)}),0===o.length)return void n.push({col:t,count:s,mean:"-",std:"-",min:"-",q25:"-",q50:"-",q75:"-",max:"-"});o.sort((t,a)=>t-a);const r=o.length,d=o.reduce((t,a)=>t+a,0)/r,i=o.reduce((t,a)=>t+Math.pow(a-d,2),0)/r,l=Math.sqrt(i),c=t=>{const a=t/100*(r-1),n=Math.floor(a),e=Math.ceil(a),s=a%1;return o[n]*(1-s)+o[e]*s},b=t=>t.toLocaleString(void 0,{minimumFractionDigits:2,maximumFractionDigits:2});n.push({col:t,count:s,mean:b(d),std:b(l),min:b(o[0]),q25:b(c(25)),q50:b(c(50)),q75:b(c(75)),max:b(o[r-1])})});let e="<table class='table table-sm table-bordered'><thead><tr><th>Statistic</th>";return n.forEach(t=>e+=`<th>${t.col}</th>`),e+="</tr></thead><tbody>",["count","mean","std","min","25%","50%","75%","max"].forEach(t=>{e+=`<tr><th>${t}</th>`,n.forEach(a=>{const n=a["25%"===t?"q25":"50%"===t?"q50":"75%"===t?"q75":t];e+=`<td>${n}</td>`}),e+="</tr>"}),e+="</tbody></table>",e}function trimEmptyGrid(t){if(!t||0===t.length)return null;let a=t.length,n=-1,e=t[0].length,s=-1;for(let o=0;o<t.length;o++)for(let r=0;r<t[o].length;r++){const d=t[o][r];""!==d&&null!=d&&(o<a&&(a=o),o>n&&(n=o),r<e&&(e=r),r>s&&(s=r))}if(-1===n)return null;const o=[];for(let r=a;r<=n;r++)o.push(t[r].slice(e,s+1));return o}
+/* global Blob, window */
+// generators.js
+
+window.LIB_URLS = {
+    bootstrap_css: "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css",
+    datatables_css: "https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css",
+    buttons_css: "https://cdn.datatables.net/buttons/2.4.1/css/buttons.bootstrap5.min.css",
+
+    // SearchBuilder & DateTime
+    searchbuilder_css: "https://cdn.datatables.net/searchbuilder/1.5.0/css/searchBuilder.bootstrap5.min.css",
+    dateTime_css: "https://cdn.datatables.net/datetime/1.5.1/css/dataTables.dateTime.min.css",
+
+    // JS Dependencies
+    jquery: "https://code.jquery.com/jquery-3.7.0.min.js",
+    bootstrap_js: "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js",
+
+    // DataTables Core & BS5
+    datatables_js: "https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js",
+    datatables_bs5_js: "https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js",
+
+    // Export Dependencies
+    jszip: "https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js",
+    pdfmake: "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js",
+    vfs_fonts: "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js",
+
+    // Extensions
+    buttons_js: "https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js",
+    buttons_bs5_js: "https://cdn.datatables.net/buttons/2.4.1/js/buttons.bootstrap5.min.js",
+    buttons_colvis_js: "https://cdn.datatables.net/buttons/2.4.1/js/buttons.colVis.min.js",
+    buttons_html5_js: "https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js",
+    buttons_print_js: "https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js",
+
+    dateTime_js: "https://cdn.datatables.net/datetime/1.5.1/js/dataTables.dateTime.min.js",
+    searchbuilder_js: "https://cdn.datatables.net/searchbuilder/1.5.0/js/dataTables.searchBuilder.min.js",
+    searchbuilder_bs5_js: "https://cdn.datatables.net/searchbuilder/1.5.0/js/searchBuilder.bootstrap5.min.js"
+};
+
+/**
+ * Main Generator Function
+ * @param {Object} data - { "Sheet1": [[header, val], [val, val]] }
+ * @param {string[]} sheetNames
+ * @param {Object} options - { stats: bool, info: bool, desc: bool, rich: bool, workbookName: string }
+ * @param {Object} libs - { css: string, js: string }
+ */
+export function generateHTML(data, sheetNames, options, libs) {
+    const parts = [];
+    parts.push(`<!DOCTYPE html><html lang='en' data-bs-theme='light'>`);
+    parts.push("<head><meta charset='UTF-8'><title>DataVista Report</title>");
+
+    // 1. CSS
+    parts.push(`<style>${libs.css || ""}</style>`);
+
+    // 2. Custom CSS - STRICT FIT TO SCREEN
+    parts.push(`<style>
+        :root { --header-bg: #3c6ea9; --header-text: white; }
+        [data-bs-theme="dark"] { --header-bg: #1f2937; }
+
+        html { scroll-behavior: smooth; }
+        body { 
+            background-color: var(--bs-body-bg); 
+            color: var(--bs-body-color); 
+            font-family: 'Segoe UI', sans-serif; 
+            overflow-x: hidden; /* Prevent body scroll */
+            width: 100vw;
+        }
+        
+        /* Header Container */
+        .dv-header {
+            background-color: var(--header-bg); color: var(--header-text);
+            padding: 12px 2rem; display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 1.5rem; gap: 2rem;
+        }
+        [data-bs-theme="dark"] .dv-header { background-color: var(--header-bg-dark); }
+
+        .dv-brand { font-size: 1.1rem; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+        .dv-meta { font-size: 0.75rem; opacity: 0.7; margin-top: 2px; }
+        
+        /* Navigation */
+        .dv-header-tabs .nav-link { 
+            border: none; color: rgba(255,255,255,0.7); background: transparent;
+            padding: 8px 16px; font-weight: 500; border-radius: 20px; transition: all 0.2s; font-size: 0.85rem;
+        }
+        .dv-header-tabs .nav-link.active { color: white; background: rgba(255,255,255,0.2); }
+        .theme-toggler { cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.3); padding: 4px 10px; border-radius: 16px; }
+
+        .dv-container { padding: 0 20px 3rem 20px; max-width: 100vw; overflow-x: hidden; }
+
+        /* Card */
+        .dv-card { background: var(--bs-card-bg); border: 1px solid var(--bs-border-color); border-radius: 12px; padding: 1rem; box-shadow: 0 2px 4px rgba(0,0,0,0.02); margin-bottom: 2rem; }
+
+        /* === ULTRA STRICT TABLE LAYOUT === */
+        table.dataTable { 
+            width: 100% !important; 
+            margin: 0 !important;
+            table-layout: fixed !important; 
+            border-collapse: collapse !important; 
+        }
+        
+        /* Force Wrap Everything */
+        table.dataTable th, 
+        table.dataTable td { 
+            white-space: normal !important; 
+            word-wrap: break-word !important; 
+            overflow-wrap: anywhere !important; 
+            word-break: break-word !important;
+            vertical-align: top;
+            padding: 4px 6px !important;
+            font-size: inherit; /* Inherit dynamic size */
+        }
+
+        /* Filter Inputs - Make them smaller to fit */
+        .filter-input { 
+            width: 100%; 
+            min-width: 0; /* Allow shrinking */
+            border: 1px solid var(--bs-border-color); 
+            padding: 2px; 
+            font-size: 0.75rem; 
+            border-radius: 3px; 
+        }
+        
+        /* Footer/Pagination */
+        .dataTables_paginate { display: flex; justify-content: flex-end; margin-top: 10px; font-size: 0.8rem; }
+        .dataTables_info { font-size: 0.8rem; padding-top: 10px; }
+
+        /* RICH FORMATTING */
+        .dv-neg { color: #dc3545 !important; font-weight: 500; }
+        .dv-bar-cell { position: relative; z-index: 1; }
+        .dv-bar { position: absolute; top: 2px; bottom: 2px; left: 0; background: rgba(60, 110, 169, 0.15); z-index: -1; }
+    </style>`);
+
+    parts.push("</head><body>");
+
+    const timestamp = new Date().toLocaleString();
+    const sheetName = sheetNames.length > 0 ? sheetNames[0] : "Report";
+    parts.push(`
+    <div class="dv-header">
+        <div>
+            <div class="dv-brand">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                DataVista <span style="opacity: 0.6; margin: 0 8px;">|</span> ${sheetName}
+            </div>
+            <div class="dv-meta">Generated: ${timestamp} &bull; v3.0 (Rewrite)</div>
+        </div>
+        <ul class="nav nav-tabs dv-header-tabs" role="tablist">
+            <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#page-data">Data</a></li>
+            ${options.info ? '<li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#page-info">Info</a></li>' : ''}
+            ${options.stats ? '<li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#page-stats">Stats</a></li>' : ''}
+        </ul>
+        <div class="theme-toggler" onclick="document.documentElement.setAttribute('data-bs-theme', document.documentElement.getAttribute('data-bs-theme')==='dark'?'light':'dark')">
+            <span>Theme</span>
+        </div>
+    </div>
+    `);
+
+    parts.push(`<div class="container-fluid dv-container">`);
+    parts.push(`<div class="tab-content dv-tab-content">`);
+
+    // --- DATA PAGE ---
+    parts.push(`<div id="page-data" class="tab-pane fade show active">`);
+    sheetNames.forEach((name, i) => {
+        const rows = data[name];
+        const hasHeader = rows.length > 0;
+        const header = hasHeader ? rows[0] : [];
+        const body = hasHeader ? rows.slice(1) : [];
+        const colCount = header.length;
+
+        // Dynamic Font Scaling Logic
+        // Baseline: 0.9rem for < 6 cols
+        // Reduce by 0.05rem for each col above 6
+        // Min: 0.5rem
+        let fontSizeVal = 0.9;
+        if (colCount > 6) {
+            fontSizeVal = Math.max(0.5, 0.9 - ((colCount - 6) * 0.05));
+        }
+        const fontSizeStr = fontSizeVal.toFixed(2) + "rem";
+
+        parts.push(`<div class="dv-sheet-section"><div class="dv-card">`);
+
+        // Explicit style injection for font size
+        parts.push(`<table class="table table-hover display table-bordered" style="width:100% !important; font-size:${fontSizeStr};">`);
+        parts.push(`<thead><tr>`);
+        header.forEach((h) => parts.push(`<th>${h}</th>`));
+        parts.push(`</tr></thead><tbody>`);
+
+        body.forEach(row => {
+            parts.push(`<tr>`);
+            row.forEach((cell) => {
+                parts.push(`<td>${cell || ""}</td>`);
+            });
+            parts.push(`</tr>`);
+        });
+        parts.push(`</tbody></table></div></div>`);
+    });
+    parts.push(`</div>`); // End Data Page
+
+    // --- INFO & STATS PAGES (Simplified) ---
+    if (options.info) {
+        parts.push(`<div id="page-info" class="tab-pane fade"><div class="dv-card"><h5>Dataset Info</h5><div class="alert alert-info">Generated via DataVista Engine v3.0</div></div></div>`);
+    }
+    if (options.stats) {
+        parts.push(`<div id="page-stats" class="tab-pane fade"><div class="dv-card"><h5>Statistics</h5><p>Statistics module initialized.</p></div></div>`);
+    }
+
+    parts.push(`</div></div>`); // End Container
+
+    // SearchBuilder Modal
+    parts.push(`
+    <div class="modal fade" id="searchBuilderModal" tabindex="-1"><div class="modal-dialog modal-xl"><div class="modal-content"><div class="modal-body" id="sb-modal-body"></div></div></div></div>
+    `);
+
+    // Scripts
+    parts.push(`<script>${libs.js || ""}</script>`);
+    parts.push(`<script>
+    $(document).ready(function() {
+        $('table.display').each(function() {
+            var table = $(this);
+            // Initialize DataTable with STRICT options
+            table.DataTable({
+                dom: '<"row mb-2"<"col-6"B><"col-6"f>>rt<"row mt-2"<"col-6"i><"col-6"p>>',
+                autoWidth: false,      // KEY: Disable auto width calculation
+                scrollX: false,        // KEY: Disable horizontal scroll
+                paging: true,
+                pageLength: 20,
+                lengthChange: false,   // Simplify UI
+                buttons: [
+                    {
+                        text: 'Filters',
+                        className: 'btn-sm btn-outline-secondary',
+                        action: function (e, dt) {
+                            $('#sb-modal-body').empty();
+                            var sb = new $.fn.dataTable.SearchBuilder(dt, {});
+                            $('#sb-modal-body').append(sb.getNode());
+                            $('#searchBuilderModal').modal('show');
+                        }
+                    },
+                    'copy', 'excel', 'pdf'
+                ],
+                initComplete: function () {
+                    var api = this.api();
+                    // Add compact search inputs
+                    api.columns().eq(0).each(function (colIdx) {
+                        var header = $(api.column(colIdx).header());
+                        var title = header.text();
+                        header.empty().append('<div style="margin-bottom:2px;font-weight:bold;">'+title+'</div>');
+                        $('<input type="text" class="filter-input" placeholder="Search" />')
+                            .appendTo(header)
+                            .on('keyup change', function () { api.column(colIdx).search(this.value).draw(); });
+                    });
+                }
+            });
+        });
+    });
+    </script>`);
+
+    parts.push("</body></html>");
+    return new Blob(parts, { type: "text/html" });
+}
