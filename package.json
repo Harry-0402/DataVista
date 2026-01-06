@@ -1,6 +1,6 @@
 {
   "name": "datavista-excel-addin",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "DataVista Offline Excel Add-in",
   "main": "src/taskpane/taskpane.js",
   "scripts": {
