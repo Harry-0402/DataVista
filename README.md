@@ -96,6 +96,7 @@ DataVista/
 1. Visit the [DataVista Landing Page](https://Harry-0402.github.io/DataVista/).
 2. Download the `manifest.xml`.
 3. Sideload into Excel via **Insert > Add-ins > Manage My Add-ins > Upload My Add-in**.
+4. 📖 **New:** Follow the detailed [Sideloading Guide](file:///c:/Users/javis/OneDrive/Desktop/Tools/Excel%20Add-Ins/SIDELOADING.md) for Desktop Excel.
 
 ### For Developers
 1. Clone the repo and run `npm install`.
