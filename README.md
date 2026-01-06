@@ -1,4 +1,4 @@
-# <img src="https://Harry-0402.github.io/DataVista/assets/icon-48.png" width="48" valign="middle"> DataVista Premium Export (v1.2.1)
+# <img src="./assets/icon-80.png" width="48" valign="middle"> DataVista Premium Export (v1.2.1)
 
 **A professional, offline-first Excel Add-in for generating interactive HTML reports with advanced analytics and responsive data visualization.**
 
