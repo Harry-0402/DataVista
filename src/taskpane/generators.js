@@ -111,14 +111,10 @@ function generateHTML(data, sheetNames, options, libs) {
             font-weight: 600; 
             vertical-align: middle; 
             padding: 6px 8px !important;
-            text-align: left;
-        }
         table.dataTable tbody td { 
             vertical-align: middle; 
             padding: 4px 8px !important; 
             border: 1px solid var(--bs-border-color) !important;
-            text-align: left;
-        }
         table.dataTable tfoot th {
             border: 1px solid var(--bs-border-color) !important;
             padding: 6px 8px !important;
@@ -127,6 +123,10 @@ function generateHTML(data, sheetNames, options, libs) {
         
         /* Filter Inputs */
         .filter-input { width: 100%; border: 1px solid var(--bs-border-color); background: var(--bs-body-bg); color: var(--bs-body-color); padding: 4px 8px; border-radius: 4px; font-size: 0.85rem; margin-top: 5px; }
+        
+        /* Pagination & Info Alignment */
+        .dataTables_info { padding-top: 0.85em !important; }
+        .dataTables_paginate { display: flex; justify-content: flex-end; }
         
         /* Stats Footer */
         tfoot th { font-size: 0.9rem; background: var(--bs-tertiary-bg); }
@@ -172,7 +172,7 @@ function generateHTML(data, sheetNames, options, libs) {
     </div>
     `);
 
-    parts.push(`<div class="container-fluid mt-3 mb-5">`);
+    parts.push(`<div class="container-fluid dv-container mt-3 mb-5">`);
 
     // Tab Content Container (tabs are now in header)
     parts.push(`<div class="tab-content dv-tab-content">`);
@@ -186,19 +186,25 @@ function generateHTML(data, sheetNames, options, libs) {
         const header = hasHeader ? rows[0] : [];
         const body = hasHeader ? rows.slice(1) : [];
 
-        // Pre-calculate Column Max for Data Bars
-        const colMax = [];
-        if (options.rich) {
-            for (let c = 0; c < header.length; c++) {
-                let max = 0;
-                let isNum = true;
-                for (let r = 0; r < body.length; r++) {
-                    const v = Number(body[r][c]);
-                    if (isNaN(v)) { isNum = false; break; }
-                    if (Math.abs(v) > max) max = Math.abs(v);
-                }
-                colMax[c] = (isNum && max > 0) ? max : 0;
+        // Analyze Columns (Type & Stats)
+        const colTypes = []; // 'num' or 'str'
+        const colMax = [];   // For data bars
+
+        for (let c = 0; c < header.length; c++) {
+            let max = 0;
+            let isNum = true;
+
+            for (let r = 0; r < body.length; r++) {
+                const v = Number(body[r][c]);
+                // If any cell is NOT a number (and not empty), mark as string
+                // Note: Number("") === 0, so empty cells count as valid "numeric" placeholders.
+                // Depending on desired behavior for mostly-empty text columns, strict check is safer.
+                if (isNaN(v)) { isNum = false; break; }
+                if (Math.abs(v) > max) max = Math.abs(v);
             }
+            colTypes[c] = isNum ? 'num' : 'str';
+            // Only store colMax if rich is on, or just store it generally (unused if !rich)
+            colMax[c] = (isNum && max > 0) ? max : 0;
         }
 
         parts.push(`<div class="dv-sheet-section" id="data-section">`);
@@ -206,7 +212,10 @@ function generateHTML(data, sheetNames, options, libs) {
 
         parts.push(`<table class="table table-hover display nowrap" style="width:100%">`);
         parts.push(`<thead><tr>`);
-        header.forEach(h => parts.push(`<th>${h}</th>`));
+        header.forEach((h, cIdx) => {
+            const alignClass = colTypes[cIdx] === 'num' ? 'text-end' : 'text-start';
+            parts.push(`<th class="${alignClass}">${h}</th>`);
+        });
         parts.push(`</tr></thead>`);
 
         parts.push(`<tbody>`);
@@ -214,7 +223,8 @@ function generateHTML(data, sheetNames, options, libs) {
             parts.push(`<tr>`);
             row.forEach((cell, cIdx) => {
                 let content = cell;
-                let classes = "";
+                // Auto-align based on column type
+                let classes = colTypes[cIdx] === 'num' ? "text-end" : "text-start";
                 let addons = "";
 
                 // Rich Formatting Logic
