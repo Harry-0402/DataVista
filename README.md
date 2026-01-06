@@ -7,6 +7,8 @@
 ---
 
 ## 📑 Table of Contents
+- [🏢 Why DataVista? (Business Value)](#-why-datavista-business-value)
+- [📖 How to Use](#-how-to-use)
 - [✨ Key Features](#-key-features)
 - [📊 Analytics Module](#-analytics-module)
 - [📂 Repository Structure](#-repository-structure)
@@ -16,22 +18,54 @@
 
 ---
 
+## 🏢 Why DataVista? (Business Value)
+
+DataVista is designed for managers and business analysts who need to share complex data without the overhead of heavy BI tools or compromising security.
+
+### 🛡️ 100% Privacy & Compliance
+DataVista runs entirely on the client side. Your sensitive business data **never leaves your local environment**. It is perfect for industries with strict data residency requirements (Finance, Healthcare, Legal).
+
+### 📦 Zero Dependency Distribution
+Generate a single, lightweight HTML file that contains your entire report. Your team can view it on any device (laptop, tablet, phone) without needing Excel, PowerBI, or an internet connection.
+
+### ⚡ Instant Decision-Making
+Don't wait for IT to build a dashboard. Convert any Excel selection into a professional analytical report in **one click**.
+
+### 📉 Automated Low-End Analytics
+Managers get instant access to Sum, Average, Min, and Max statistics for their datasets without writing a single formula.
+
+---
+
+## 📖 How to Use
+
+### Step 1: Data Preparation
+Select the range of data in your Excel sheet. Ensure you include the header row for the best experience.
+
+### Step 2: One-Click Export
+Go to the **DataVista** tab in the Ribbon and click **Export Selection** (for your current view) or **Export Workbook** (to create a multi-tab dashboard).
+
+### Step 3: Interactive Exploration
+A new browser tab will open with your report:
+- **SearchPanes**: Filter by categories visually at the top.
+- **SearchBuilder**: Click "Advanced Filters" to build complex queries.
+- **Analytics Pill**: Toggle the "Analytics" tab to see instant summary statistics.
+
+### Step 4: Share
+Save the browser page (Ctrl+S) or print it to PDF. The resulting file is completely portable and can be emailed or shared via SharePoint.
+
+---
+
 ## ✨ Key Features
 
-- **Offline-First Privacy**: No data ever leaves your computer. Reports are generated locally in your browser.
-- **Precision Layout (v11.0+)**: Unified button groups and perfectly aligned toolbars.
-- **Multi-Dimensional Filtering**:
-  - **SearchPanes**: High-level categorical filtering.
-  - **SearchBuilder**: Complex conditional logic (AND/OR).
-  - **Real-time Column Filters**: Instant filtering on every column.
-- **Smart Data Presentation**:
-  - **Conditional Coloring**: Automatic green/red formatting for numeric trends.
-  - **Dynamic Scaling**: Automatic font adjustment for wide datasets.
-- **Clean Export Engine**: Aggressive "Ghost Row" removal to eliminate Excel artifacts.
+- **Offline-First Privacy**: No data ever leaves your computer.
+- **Precision Layout**: Unified button groups and perfectly aligned toolbars.
+- **Multi-Dimensional Filtering**: SearchPanes, SearchBuilder, and real-time column filters.
+- **Smart Data Presentation**: Conditional coloring and dynamic font scaling.
+- **Clean Export Engine**: Aggressive "Ghost Row" removal for professional results.
 
 ## 📊 Analytics Module (v1.2.1)
 
-The latest **Analytics Edition** automatically calculates key insights for every dataset:
+The **Analytics Edition** handles the heavy lifting for you:
 - **Automatic Numeric Detection**: Identifies and analyzes numeric columns instantly.
 - **Summary Statistics**: Sum, Average, Min, Max, and Count calculations.
 - **Metadata Inspection**: Source verification and row/column audit logs.
@@ -48,14 +82,10 @@ DataVista/
 │   └── manifest.xml    # Final Production Manifest
 ├── src/                # Source Code
 │   ├── taskpane/       # Add-in UI logic
-│   │   ├── taskpane.html
-│   │   ├── generators.js   # Single-sheet export engine
-│   │   └── workbook_generators.js # Dashboard engine
-│   ├── commands/       # Ribbon command handlers
 │   └── index.html      # Landing page source
 ├── manifest.xml        # Development Manifest
-├── package.json        # Build scripts & dependencies
-└── webpack.config.js   # Production bundling configuration
+├── package.json        # Build scripts
+└── webpack.config.js   # Production bundling
 ```
 
 ---
@@ -65,32 +95,11 @@ DataVista/
 ### For End Users
 1. Visit the [DataVista Landing Page](https://Harry-0402.github.io/DataVista/).
 2. Download the `manifest.xml`.
-3. Sideload into Excel (Office 365 or Desktop) via **Insert > Add-ins > Manage My Add-ins > Upload My Add-in**.
-4. Use the **DataVista** tab in your Ribbon!
+3. Sideload into Excel via **Insert > Add-ins > Manage My Add-ins > Upload My Add-in**.
 
 ### For Developers
-1. Clone the repository.
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Run in development mode:
-   ```bash
-   npm start
-   ```
-4. Build for production:
-   ```bash
-   npm run build
-   ```
-
----
-
-## 🛠️ Development Tools
-
-- **DataTables Engine**: Powered by DataTables.net with Buttons, SearchPanes, and SearchBuilder.
-- **Bootstrap 5**: Responsive UI components.
-- **Office.js**: Tight integration with the Excel host.
-- **Webpack 5**: Production-grade bundling and optimization.
+1. Clone the repo and run `npm install`.
+2. Run `npm start` for development or `npm run build` for production.
 
 ---
 
