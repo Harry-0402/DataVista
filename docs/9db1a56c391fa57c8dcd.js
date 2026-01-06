@@ -1,0 +1,1 @@
+Office.onReady(function(e){e.host===Office.HostType.Excel&&(console.log("DataVista Taskpane Guide Loaded"),document.getElementById("status").innerText="Add-in Ready")});
