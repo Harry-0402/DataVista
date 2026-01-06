@@ -1,0 +1,256 @@
+﻿You already have trusted access to https://localhost.
+Certificate: C:\Users\javis\.office-addin-dev-certs\localhost.crt
+Key: C:\Users\javis\.office-addin-dev-certs\localhost.key
+assets by status 305 KiB [1m[32m[cached][39m[22m 15 assets
+orphan modules 24.1 KiB [1m[33m[orphan][39m[22m 3 modules
+runtime modules 442 bytes 2 modules
+modules by path [1m./node_modules/core-js/modules/*.js[39m[22m 415 KiB
+  [1m./node_modules/core-js/modules/es.symbol.js[39m[22m 322 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+  [1m./node_modules/core-js/modules/es.json.stringify.js[39m[22m 4.99 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+  + 335 modules
+modules by path [1m./node_modules/core-js/internals/*.js[39m[22m 259 KiB
+  [1m./node_modules/core-js/internals/path.js[39m[22m 98 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+  [1m./node_modules/core-js/internals/export.js[39m[22m 2.65 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+  + 282 modules
+modules by path [1m./src/[39m[22m 42.6 KiB
+  [1m./src/taskpane/taskpane.js[39m[22m 529 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+  [1m./src/commands/commands.js + 3 modules[39m[22m 42.1 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+[1m./node_modules/core-js/stable/index.js[39m[22m 13.3 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+[1m./node_modules/regenerator-runtime/runtime.js[39m[22m 24.6 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+
+[1m[31mERROR[39m[22m in [1m  [1m[31mError[39m[22m[1m: Child compilation [1m[31mfailed[39m[22m[1m:
+  Module [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve './assets/icon-32.png' in 'C:\Users\jav  is\OneDrive\Desktop\Excel Add-Ins\src\taskpane'
+  ModuleNotFoundError: Module [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve './assets/icon-32.  png' in 'C:\Users\javis\OneDrive\Desktop\Excel Add-Ins\src\taskpane'
+      at C:\Users\javis\OneDrive\Desktop\Excel Add-Ins\node_modules\webpack\lib\  Compilation.js:2065:28
+      at C:\Users\javis\OneDrive\Desktop\Excel Add-Ins\node_modules\webpack\lib\  NormalModuleFactory.js:1028:13
+      at eval (eval at create (C:\Users\javis\OneDrive\Desktop\Excel Add-Ins\nod  e_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:10:1)
+      at C:\Users\javis\OneDrive\Desktop\Excel Add-Ins\node_modules\webpack\lib\  NormalModuleFactory.js:429:22
+      at eval (eval at create (C:\Users\javis\OneDrive\Desktop\Excel Add-Ins\nod  e_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:9:1)
+      at C:\Users\javis\OneDrive\Desktop\Excel Add-Ins\node_modules\webpack\lib\  NormalModuleFactory.js:614:22
+      at C:\Users\javis\OneDrive\Desktop\Excel Add-Ins\node_modules\webpack\lib\  NormalModuleFactory.js:180:10
+      at C:\Users\javis\OneDrive\Desktop\Excel Add-Ins\node_modules\webpack\lib\  NormalModuleFactory.js:884:25
+      at C:\Users\javis\OneDrive\Desktop\Excel Add-Ins\node_modules\webpack\lib\  NormalModuleFactory.js:1113:8
+      at C:\Users\javis\OneDrive\Desktop\Excel Add-Ins\node_modules\webpack\lib\  NormalModuleFactory.js:1242:5
+  
+  - Compilation.js:2065 
+    [Excel Add-Ins]/[webpack]/lib/Compilation.js:2065:28
+  
+  - NormalModuleFactory.js:1028 
+    [Excel Add-Ins]/[webpack]/lib/NormalModuleFactory.js:1028:13
+  
+  
+  - NormalModuleFactory.js:429 
+    [Excel Add-Ins]/[webpack]/lib/NormalModuleFactory.js:429:22
+  
+  
+  - NormalModuleFactory.js:614 
+    [Excel Add-Ins]/[webpack]/lib/NormalModuleFactory.js:614:22
+  
+  - NormalModuleFactory.js:180 
+    [Excel Add-Ins]/[webpack]/lib/NormalModuleFactory.js:180:10
+  
+  - NormalModuleFactory.js:884 
+    [Excel Add-Ins]/[webpack]/lib/NormalModuleFactory.js:884:25
+  
+  - NormalModuleFactory.js:1113 
+    [Excel Add-Ins]/[webpack]/lib/NormalModuleFactory.js:1113:8
+  
+  - NormalModuleFactory.js:1242 
+    [Excel Add-Ins]/[webpack]/lib/NormalModuleFactory.js:1242:5
+  
+  - child-compiler.js:211 
+    [Excel Add-Ins]/[html-webpack-plugin]/lib/child-compiler.js:211:18
+  
+  - Compiler.js:648 finalCallback
+    [Excel Add-Ins]/[webpack]/lib/Compiler.js:648:5
+  
+  - Compiler.js:684 
+    [Excel Add-Ins]/[webpack]/lib/Compiler.js:684:11
+  
+  - Compiler.js:1378 
+    [Excel Add-Ins]/[webpack]/lib/Compiler.js:1378:17
+  
+  
+  - Hook.js:21 Hook.CALL_ASYNC_DELEGATE [as _callAsync]
+    [Excel Add-Ins]/[tapable]/lib/Hook.js:21:14
+  
+  - Compiler.js:1374 
+    [Excel Add-Ins]/[webpack]/lib/Compiler.js:1374:33
+  
+  - Compilation.js:3169 finalCallback
+    [Excel Add-Ins]/[webpack]/lib/Compilation.js:3169:11
+  
+  - Compilation.js:3505 
+    [Excel Add-Ins]/[webpack]/lib/Compilation.js:3505:11
+  
+  
+  - Hook.js:21 Hook.CALL_ASYNC_DELEGATE [as _callAsync]
+    [Excel Add-Ins]/[tapable]/lib/Hook.js:21:14
+  
+  - Compilation.js:3498 
+    [Excel Add-Ins]/[webpack]/lib/Compilation.js:3498:38
+  
+  
+  - task_queues:105 process.processTicksAndRejections
+    node:internal/process/task_queues:105:5
+  
+[39m[22m
+
+[1m[31mERROR[39m[22m in [1m  [1m[31mError[39m[22m[1m: Child compilation [1m[31mfailed[39m[22m[1m:
+  Module [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve './assets/icon-32.png' in 'C:\Users\jav  is\OneDrive\Desktop\Excel Add-Ins\src\taskpane'
+  ModuleNotFoundError: Module [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve './assets/icon-32.  png' in 'C:\Users\javis\OneDrive\Desktop\Excel Add-Ins\src\taskpane'
+      at C:\Users\javis\OneDrive\Desktop\Excel Add-Ins\node_modules\webpack\lib\  Compilation.js:2065:28
+      at C:\Users\javis\OneDrive\Desktop\Excel Add-Ins\node_modules\webpack\lib\  NormalModuleFactory.js:1028:13
+      at eval (eval at create (C:\Users\javis\OneDrive\Desktop\Excel Add-Ins\nod  e_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:10:1)
+      at C:\Users\javis\OneDrive\Desktop\Excel Add-Ins\node_modules\webpack\lib\  NormalModuleFactory.js:429:22
+      at eval (eval at create (C:\Users\javis\OneDrive\Desktop\Excel Add-Ins\nod  e_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:9:1)
+      at C:\Users\javis\OneDrive\Desktop\Excel Add-Ins\node_modules\webpack\lib\  NormalModuleFactory.js:614:22
+      at C:\Users\javis\OneDrive\Desktop\Excel Add-Ins\node_modules\webpack\lib\  NormalModuleFactory.js:180:10
+      at C:\Users\javis\OneDrive\Desktop\Excel Add-Ins\node_modules\webpack\lib\  NormalModuleFactory.js:884:25
+      at C:\Users\javis\OneDrive\Desktop\Excel Add-Ins\node_modules\webpack\lib\  NormalModuleFactory.js:1113:8
+      at C:\Users\javis\OneDrive\Desktop\Excel Add-Ins\node_modules\webpack\lib\  NormalModuleFactory.js:1242:5
+  
+  - Compilation.js:2065 
+    [Excel Add-Ins]/[webpack]/lib/Compilation.js:2065:28
+  
+  - NormalModuleFactory.js:1028 
+    [Excel Add-Ins]/[webpack]/lib/NormalModuleFactory.js:1028:13
+  
+  
+  - NormalModuleFactory.js:429 
+    [Excel Add-Ins]/[webpack]/lib/NormalModuleFactory.js:429:22
+  
+  
+  - NormalModuleFactory.js:614 
+    [Excel Add-Ins]/[webpack]/lib/NormalModuleFactory.js:614:22
+  
+  - NormalModuleFactory.js:180 
+    [Excel Add-Ins]/[webpack]/lib/NormalModuleFactory.js:180:10
+  
+  - NormalModuleFactory.js:884 
+    [Excel Add-Ins]/[webpack]/lib/NormalModuleFactory.js:884:25
+  
+  - NormalModuleFactory.js:1113 
+    [Excel Add-Ins]/[webpack]/lib/NormalModuleFactory.js:1113:8
+  
+  - NormalModuleFactory.js:1242 
+    [Excel Add-Ins]/[webpack]/lib/NormalModuleFactory.js:1242:5
+  
+  - child-compiler.js:211 
+    [Excel Add-Ins]/[html-webpack-plugin]/lib/child-compiler.js:211:18
+  
+  - Compiler.js:648 finalCallback
+    [Excel Add-Ins]/[webpack]/lib/Compiler.js:648:5
+  
+  - Compiler.js:684 
+    [Excel Add-Ins]/[webpack]/lib/Compiler.js:684:11
+  
+  - Compiler.js:1378 
+    [Excel Add-Ins]/[webpack]/lib/Compiler.js:1378:17
+  
+  
+  - Hook.js:21 Hook.CALL_ASYNC_DELEGATE [as _callAsync]
+    [Excel Add-Ins]/[tapable]/lib/Hook.js:21:14
+  
+  - Compiler.js:1374 
+    [Excel Add-Ins]/[webpack]/lib/Compiler.js:1374:33
+  
+  - Compilation.js:3169 finalCallback
+    [Excel Add-Ins]/[webpack]/lib/Compilation.js:3169:11
+  
+  - Compilation.js:3505 
+    [Excel Add-Ins]/[webpack]/lib/Compilation.js:3505:11
+  
+  
+  - Hook.js:21 Hook.CALL_ASYNC_DELEGATE [as _callAsync]
+    [Excel Add-Ins]/[tapable]/lib/Hook.js:21:14
+  
+  - Compilation.js:3498 
+    [Excel Add-Ins]/[webpack]/lib/Compilation.js:3498:38
+  
+  
+  - task_queues:105 process.processTicksAndRejections
+    node:internal/process/task_queues:105:5
+  
+[39m[22m
+
+[1m[31mERROR[39m[22m in [1m  [1m[31mError[39m[22m[1m: Child compilation [1m[31mfailed[39m[22m[1m:
+  Module [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve './assets/icon-32.png' in 'C:\Users\jav  is\OneDrive\Desktop\Excel Add-Ins\src\taskpane'
+  ModuleNotFoundError: Module [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve './assets/icon-32.  png' in 'C:\Users\javis\OneDrive\Desktop\Excel Add-Ins\src\taskpane'
+      at C:\Users\javis\OneDrive\Desktop\Excel Add-Ins\node_modules\webpack\lib\  Compilation.js:2065:28
+      at C:\Users\javis\OneDrive\Desktop\Excel Add-Ins\node_modules\webpack\lib\  NormalModuleFactory.js:1028:13
+      at eval (eval at create (C:\Users\javis\OneDrive\Desktop\Excel Add-Ins\nod  e_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:10:1)
+      at C:\Users\javis\OneDrive\Desktop\Excel Add-Ins\node_modules\webpack\lib\  NormalModuleFactory.js:429:22
+      at eval (eval at create (C:\Users\javis\OneDrive\Desktop\Excel Add-Ins\nod  e_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:9:1)
+      at C:\Users\javis\OneDrive\Desktop\Excel Add-Ins\node_modules\webpack\lib\  NormalModuleFactory.js:614:22
+      at C:\Users\javis\OneDrive\Desktop\Excel Add-Ins\node_modules\webpack\lib\  NormalModuleFactory.js:180:10
+      at C:\Users\javis\OneDrive\Desktop\Excel Add-Ins\node_modules\webpack\lib\  NormalModuleFactory.js:884:25
+      at C:\Users\javis\OneDrive\Desktop\Excel Add-Ins\node_modules\webpack\lib\  NormalModuleFactory.js:1113:8
+      at C:\Users\javis\OneDrive\Desktop\Excel Add-Ins\node_modules\webpack\lib\  NormalModuleFactory.js:1242:5
+  
+  - Compilation.js:2065 
+    [Excel Add-Ins]/[webpack]/lib/Compilation.js:2065:28
+  
+  - NormalModuleFactory.js:1028 
+    [Excel Add-Ins]/[webpack]/lib/NormalModuleFactory.js:1028:13
+  
+  
+  - NormalModuleFactory.js:429 
+    [Excel Add-Ins]/[webpack]/lib/NormalModuleFactory.js:429:22
+  
+  
+  - NormalModuleFactory.js:614 
+    [Excel Add-Ins]/[webpack]/lib/NormalModuleFactory.js:614:22
+  
+  - NormalModuleFactory.js:180 
+    [Excel Add-Ins]/[webpack]/lib/NormalModuleFactory.js:180:10
+  
+  - NormalModuleFactory.js:884 
+    [Excel Add-Ins]/[webpack]/lib/NormalModuleFactory.js:884:25
+  
+  - NormalModuleFactory.js:1113 
+    [Excel Add-Ins]/[webpack]/lib/NormalModuleFactory.js:1113:8
+  
+  - NormalModuleFactory.js:1242 
+    [Excel Add-Ins]/[webpack]/lib/NormalModuleFactory.js:1242:5
+  
+  - child-compiler.js:211 
+    [Excel Add-Ins]/[html-webpack-plugin]/lib/child-compiler.js:211:18
+  
+  - Compiler.js:648 finalCallback
+    [Excel Add-Ins]/[webpack]/lib/Compiler.js:648:5
+  
+  - Compiler.js:684 
+    [Excel Add-Ins]/[webpack]/lib/Compiler.js:684:11
+  
+  - Compiler.js:1378 
+    [Excel Add-Ins]/[webpack]/lib/Compiler.js:1378:17
+  
+  
+  - Hook.js:21 Hook.CALL_ASYNC_DELEGATE [as _callAsync]
+    [Excel Add-Ins]/[tapable]/lib/Hook.js:21:14
+  
+  - Compiler.js:1374 
+    [Excel Add-Ins]/[webpack]/lib/Compiler.js:1374:33
+  
+  - Compilation.js:3169 finalCallback
+    [Excel Add-Ins]/[webpack]/lib/Compilation.js:3169:11
+  
+  - Compilation.js:3505 
+    [Excel Add-Ins]/[webpack]/lib/Compilation.js:3505:11
+  
+  
+  - Hook.js:21 Hook.CALL_ASYNC_DELEGATE [as _callAsync]
+    [Excel Add-Ins]/[tapable]/lib/Hook.js:21:14
+  
+  - Compilation.js:3498 
+    [Excel Add-Ins]/[webpack]/lib/Compilation.js:3498:38
+  
+  
+  - task_queues:105 process.processTicksAndRejections
+    node:internal/process/task_queues:105:5
+  
+[39m[22m
+
+[1m[31m1 ERROR in child compilations (Use 'stats.children: true' resp. '--stats-children' for more details)[39m[22m
+webpack 5.104.1 compiled with [1m[31m4 errors[39m[22m in 4025 ms

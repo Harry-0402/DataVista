@@ -93,7 +93,7 @@ export function generateWorkbookHTML(data, sheetNames, options, libs) {
                     DataVista Report
                 </div>
                 <h1 class="dashboard-title">${workbookName}</h1>
-                <p class="dashboard-meta">Generated on ${timestamp} &bull; ${sheetNames.length} Sheets &bull; v6.0 (Visual Precision)</p>
+                <p class="dashboard-meta">Generated on ${timestamp} &bull; ${sheetNames.length} Sheets &bull; v7.0 (Precision Layout)</p>
             </div>
             <div class="sheet-grid">
     `);

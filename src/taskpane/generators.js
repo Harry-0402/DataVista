@@ -158,7 +158,7 @@ export function generateHTML(data, sheetNames, options, libs) {
                 <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                 DataVista <span style="opacity: 0.6; margin: 0 8px;">|</span> ${sheetName}
             </div>
-            <div class="dv-meta">Generated: ${timestamp} &bull; v6.0 (Visual Precision)</div>
+            <div class="dv-meta">Generated: ${timestamp} &bull; v7.0 (Precision Layout)</div>
         </div>
         <ul class="nav nav-tabs dv-header-tabs" role="tablist">
             <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#page-data">Data</a></li>
