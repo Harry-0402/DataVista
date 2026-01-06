@@ -13,7 +13,7 @@
 - [📊 Analytics Module](#analytics-module)
 - [📂 Repository Structure](#repository-structure)
 - [🚀 Quick Start](#quick-start)
-- [Development](#development)
+- [🛠️ Development](#development)
 - [⚖️ License](#license)
 
 ---
