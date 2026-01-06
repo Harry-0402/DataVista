@@ -4,6 +4,8 @@
  */
 
 import { trimEmptyGrid } from "../utils/data-utils";
+import { generateHTML } from "../taskpane/generators";
+import { generateWorkbookHTML } from "../taskpane/workbook_generators";
 
 // Define library URLs for offline bundling (Same as taskpane.js)
 const LIB_URLS = {
