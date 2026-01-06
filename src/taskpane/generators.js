@@ -116,7 +116,9 @@ export function generateHTML(data, sheetNames, options, libs) {
             padding: 4px 8px !important; 
             border: 1px solid var(--bs-border-color) !important;
             white-space: normal !important;
-            overflow-wrap: break-word;
+            white-space: normal !important;
+            overflow-wrap: anywhere;
+            word-break: break-word;
         table.dataTable tfoot th {
             border: 1px solid var(--bs-border-color) !important;
             padding: 6px 8px !important;
@@ -160,7 +162,7 @@ export function generateHTML(data, sheetNames, options, libs) {
                 <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                 DataVista <span style="opacity: 0.6; margin: 0 8px;">|</span> ${sheetName}
             </div>
-            <div class="dv-meta">Generated: ${timestamp} &bull; v2.1 (Fit-Screen)</div>
+            <div class="dv-meta">Generated: ${timestamp} &bull; v2.2 (Auto-Scale)</div>
         </div>
         <ul class="nav nav-tabs dv-header-tabs" role="tablist">
             <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#page-data">Data</a></li>
@@ -209,10 +211,19 @@ export function generateHTML(data, sheetNames, options, libs) {
             colMax[c] = (isNum && max > 0) ? max : 0;
         }
 
+        // Dynamic Font Scaling
+        let fontSize = "0.8rem";
+        if (header.length > 8) {
+            // Reduce 0.05rem for every col over 8, boolean min 0.5rem
+            const size = Math.max(0.45, 0.85 - ((header.length - 8) * 0.035));
+            fontSize = size.toFixed(2) + "rem";
+        }
+
         parts.push(`<div class="dv-sheet-section" id="data-section">`);
         parts.push(`<div class="dv-card">`);
 
-        parts.push(`<table class="table table-hover display" style="width:100%">`);
+        // Apply dynamic font size to table
+        parts.push(`<table class="table table-hover display" style="width:100%; font-size:${fontSize} !important;">`);
         parts.push(`<thead><tr>`);
         header.forEach((h, cIdx) => {
             const alignClass = colTypes[cIdx] === 'num' ? 'text-end' : 'text-start';

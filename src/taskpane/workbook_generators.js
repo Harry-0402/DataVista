@@ -74,7 +74,7 @@ export function generateWorkbookHTML(data, sheetNames, options, libs) {
         table.dataTable { border-collapse: collapse !important; border: 1px solid var(--bs-border-color) !important; font-size: 0.8rem; width: 100% !important; table-layout: fixed; word-wrap: break-word; }
         table.dataTable thead th { border: 1px solid var(--bs-border-color); padding: 6px 8px; background: var(--bs-light); color: var(--bs-dark); }
         [data-bs-theme="dark"] table.dataTable thead th { background: #343a40; color: #fff; }
-        table.dataTable tbody td { border: 1px solid var(--bs-border-color); padding: 4px 8px; }
+        table.dataTable tbody td { border: 1px solid var(--bs-border-color); padding: 4px 8px; white-space: normal !important; overflow-wrap: anywhere; word-break: break-word; }
 
         /* Modal Tweaks */
         .modal-backdrop.show { opacity: 0 !important; position: fixed; width: 100vw; height: 100vh; top: 0; left: 0; }
@@ -96,7 +96,7 @@ export function generateWorkbookHTML(data, sheetNames, options, libs) {
                     DataVista Report
                 </div>
                 <h1 class="dashboard-title">${workbookName}</h1>
-                <p class="dashboard-meta">Generated on ${timestamp} &bull; ${sheetNames.length} Sheets &bull; v2.1 (Fit-Screen)</p>
+                <p class="dashboard-meta">Generated on ${timestamp} &bull; ${sheetNames.length} Sheets &bull; v2.2 (Auto-Scale)</p>
             </div>
             
             <div class="sheet-grid">
@@ -138,10 +138,17 @@ export function generateWorkbookHTML(data, sheetNames, options, libs) {
             <div class="container-fluid">
         `);
 
+        // Dynamic Font Scaling
+        let fontSize = "0.8rem";
+        if (header.length > 8) {
+            const size = Math.max(0.45, 0.85 - ((header.length - 8) * 0.035));
+            fontSize = size.toFixed(2) + "rem";
+        }
+
         // TABLE
         // We reuse the basic table generation but wrap it ensuring it has a unique ID if needed, 
         // though strictly they are in separate divs.
-        parts.push(`<table class="table table-striped table-hover display" style="width:100%">`);
+        parts.push(`<table class="table table-striped table-hover display" style="width:100%; font-size:${fontSize} !important;">`);
 
         // Thead
         parts.push(`<thead><tr>`);
