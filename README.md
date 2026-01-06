@@ -7,18 +7,20 @@
 ---
 
 ## 📑 Table of Contents
-- [🏢 Why DataVista? (Business Value)](#why-datavista-business-value)
-- [📖 How to Use](#how-to-use)
-- [✨ Key Features](#key-features)
-- [📊 Analytics Module](#analytics-module)
-- [📂 Repository Structure](#repository-structure)
-- [🚀 Quick Start](#quick-start)
-- [🛠️ Development](#development)
-- [⚖️ License](#license)
+
+<a href="#why-datavista-business-value" style="text-decoration:none;">🏢 Why DataVista? (Business Value)</a><br/>
+<a href="#how-to-use" style="text-decoration:none;">📖 How to Use</a><br/>
+<a href="#key-features" style="text-decoration:none;">✨ Key Features</a><br/>
+<a href="#analytics-module" style="text-decoration:none;">📊 Analytics Module</a><br/>
+<a href="#repository-structure" style="text-decoration:none;">📂 Repository Structure</a><br/>
+<a href="#quick-start" style="text-decoration:none;">🚀 Quick Start</a><br/>
+<a href="#development" style="text-decoration:none;">🛠️ Development & Deployment</a><br/>
+<a href="#license" style="text-decoration:none;">⚖️ License</a>
 
 ---
 
-## <a name="why-datavista-business-value"></a>🏢 Why DataVista? (Business Value)
+<a name="why-datavista-business-value"></a>
+## 🏢 Why DataVista? (Business Value)
 
 DataVista is designed for managers and business analysts who need to share complex data without the overhead of heavy BI tools or compromising security.
 
@@ -103,7 +105,18 @@ DataVista/
 
 ---
 
-## <a name="license"></a>⚖️ License
+<a name="development"></a>
+## 🛠️ Development & Deployment
+
+- **DataTables Engine**: Powered by DataTables.net with Buttons, SearchPanes, and SearchBuilder.
+- **Bootstrap 5**: Responsive UI components.
+- **Office.js**: Tight integration with the Excel host.
+- **Webpack 5**: Production-grade bundling and optimization.
+
+---
+
+<a name="license"></a>
+## ⚖️ License
 
 Distributed under the **Apache License 2.0**. See `LICENSE` for more information.
 
