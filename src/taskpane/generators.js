@@ -104,7 +104,7 @@ export function generateHTML(data, sheetNames, options, libs) {
         .dv-sheet-section { margin-bottom: 3rem; }
 
         /* DataTable Overrides */
-        table.dataTable { border-collapse: collapse !important; border: 1px solid var(--bs-border-color) !important; font-size: 0.8rem; }
+        table.dataTable { border-collapse: collapse !important; border: 1px solid var(--bs-border-color) !important; font-size: 0.8rem; width: 100% !important; table-layout: fixed; word-wrap: break-word; }
         table.dataTable thead th { 
             border: 1px solid var(--bs-border-color) !important; 
             border-bottom: 2px solid var(--bs-border-color) !important; 
@@ -115,6 +115,8 @@ export function generateHTML(data, sheetNames, options, libs) {
             vertical-align: middle; 
             padding: 4px 8px !important; 
             border: 1px solid var(--bs-border-color) !important;
+            white-space: normal !important;
+            overflow-wrap: break-word;
         table.dataTable tfoot th {
             border: 1px solid var(--bs-border-color) !important;
             padding: 6px 8px !important;
@@ -210,7 +212,7 @@ export function generateHTML(data, sheetNames, options, libs) {
         parts.push(`<div class="dv-sheet-section" id="data-section">`);
         parts.push(`<div class="dv-card">`);
 
-        parts.push(`<table class="table table-hover display nowrap" style="width:100%">`);
+        parts.push(`<table class="table table-hover display" style="width:100%">`);
         parts.push(`<thead><tr>`);
         header.forEach((h, cIdx) => {
             const alignClass = colTypes[cIdx] === 'num' ? 'text-end' : 'text-start';
@@ -313,6 +315,8 @@ export function generateHTML(data, sheetNames, options, libs) {
             
             var dt = table.DataTable({
                 dom: '<"row mb-3"<"col-md-6"B><"col-md-6"f>>rt<"row mt-3"<"col-md-6"i><"col-md-6"p>>',
+                autoWidth: false, 
+                scrollX: false,
                 initComplete: function () {
                     var api = this.api();
                     

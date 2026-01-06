@@ -71,7 +71,7 @@ export function generateWorkbookHTML(data, sheetNames, options, libs) {
         .btn-back:hover { text-decoration: underline; }
 
         /* Table Styles (Compact) */
-        table.dataTable { border-collapse: collapse !important; border: 1px solid var(--bs-border-color) !important; font-size: 0.8rem; width: 100% !important; }
+        table.dataTable { border-collapse: collapse !important; border: 1px solid var(--bs-border-color) !important; font-size: 0.8rem; width: 100% !important; table-layout: fixed; word-wrap: break-word; }
         table.dataTable thead th { border: 1px solid var(--bs-border-color); padding: 6px 8px; background: var(--bs-light); color: var(--bs-dark); }
         [data-bs-theme="dark"] table.dataTable thead th { background: #343a40; color: #fff; }
         table.dataTable tbody td { border: 1px solid var(--bs-border-color); padding: 4px 8px; }
@@ -141,7 +141,7 @@ export function generateWorkbookHTML(data, sheetNames, options, libs) {
         // TABLE
         // We reuse the basic table generation but wrap it ensuring it has a unique ID if needed, 
         // though strictly they are in separate divs.
-        parts.push(`<table class="table table-striped table-hover display nowrap" style="width:100%">`);
+        parts.push(`<table class="table table-striped table-hover display" style="width:100%">`);
 
         // Thead
         parts.push(`<thead><tr>`);
@@ -211,7 +211,8 @@ export function generateWorkbookHTML(data, sheetNames, options, libs) {
             var dt = table.DataTable({
                 dom: '<"row mb-3"<"col-md-6"B><"col-md-6"f>>rt<"row mt-3"<"col-md-6"i><"col-md-6"p>>',
                 pageLength: 15,
-                scrollX: true,
+                autoWidth: false,
+                scrollX: false,
                 buttons: [
                     {
                          text: 'Advanced Filters',
