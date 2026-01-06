@@ -9,6 +9,8 @@ window.LIB_URLS = {
     // SearchBuilder & DateTime
     searchbuilder_css: "https://cdn.datatables.net/searchbuilder/1.5.0/css/searchBuilder.bootstrap5.min.css",
     dateTime_css: "https://cdn.datatables.net/datetime/1.5.1/css/dataTables.dateTime.min.css",
+    searchpanes_css: "https://cdn.datatables.net/searchpanes/2.2.0/css/searchPanes.bootstrap5.min.css",
+    select_css: "https://cdn.datatables.net/select/1.7.0/css/select.bootstrap5.min.css",
 
     // JS Dependencies
     jquery: "https://code.jquery.com/jquery-3.7.0.min.js",
@@ -32,7 +34,10 @@ window.LIB_URLS = {
 
     dateTime_js: "https://cdn.datatables.net/datetime/1.5.1/js/dataTables.dateTime.min.js",
     searchbuilder_js: "https://cdn.datatables.net/searchbuilder/1.5.0/js/dataTables.searchBuilder.min.js",
-    searchbuilder_bs5_js: "https://cdn.datatables.net/searchbuilder/1.5.0/js/searchBuilder.bootstrap5.min.js"
+    searchbuilder_bs5_js: "https://cdn.datatables.net/searchbuilder/1.5.0/js/searchBuilder.bootstrap5.min.js",
+    searchpanes_js: "https://cdn.datatables.net/searchpanes/2.2.0/js/dataTables.searchPanes.min.js",
+    searchpanes_bs5_js: "https://cdn.datatables.net/searchpanes/2.2.0/js/searchPanes.bootstrap5.min.js",
+    select_js: "https://cdn.datatables.net/select/1.7.0/js/dataTables.select.min.js"
 };
 
 /**
@@ -88,44 +93,44 @@ export function generateHTML(data, sheetNames, options, libs) {
         /* Card */
         .dv-card { background: var(--bs-card-bg); border: 1px solid var(--bs-border-color); border-radius: 12px; padding: 1rem; box-shadow: 0 2px 4px rgba(0,0,0,0.02); margin-bottom: 2rem; }
 
-        /* === VISUAL PRECISION & FIXED CONTROLS (v8.0) === */
-        .dv-table-wrapper {
+        /* === PRECISION HEADER & FILTERS (v9.0) === */
+        .dv-table-wrapper { width: 100%; margin-bottom: 2rem; position: relative; }
+        
+        /* Header Styling */
+        table.dataTable thead tr:first-child th {
+            background: var(--bs-secondary-bg) !important;
+            padding: 12px 18px !important;
+            font-weight: 700 !important;
+            border-bottom: 2px solid var(--bs-border-color) !important;
+            vertical-align: middle !important;
+        }
+        
+        /* Filter Row Styling */
+        .filter-row th {
+            padding: 8px 10px !important;
+            background: var(--bs-body-bg) !important;
+            border-bottom: 1px solid var(--bs-border-color) !important;
+        }
+        .filter-input {
             width: 100%;
-            margin-bottom: 2rem;
-            position: relative;
+            border: 1px solid var(--bs-border-color);
+            padding: 5px 10px;
+            font-size: 0.75rem;
+            border-radius: 6px;
+            outline: none;
+            transition: border-color 0.2s;
         }
+        .filter-input:focus { border-color: #00bcd4; box-shadow: 0 0 0 2px rgba(0, 188, 212, 0.1); }
 
-        /* Buttons & Search Row */
-        .dv-controls-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
+        /* SearchPanes Styling */
+        .dtsp-searchPanes { margin-bottom: 1.5rem; border: 1px solid var(--bs-border-color); border-radius: 8px; padding: 15px; background: var(--bs-body-bg); }
+        .dtsp-pane { border: none !important; }
 
-        /* Stats & Search Group */
-        .dv-search-group {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        .dv-summary-stats {
-            display: flex;
-            gap: 10px;
-            font-size: 0.85rem;
-            color: var(--bs-secondary-color);
-            border-right: 1px solid var(--bs-border-color);
-            padding-right: 15px;
-        }
-        .dv-stat-badge {
-            background: var(--bs-secondary-bg);
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-weight: 600;
-            color: var(--bs-primary);
-        }
+        /* Controls Row */
+        .dv-controls-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 12px; }
+        .dv-search-group { display: flex; align-items: center; gap: 15px; }
+        .dv-summary-stats { display: flex; gap: 10px; font-size: 0.85rem; color: var(--bs-secondary-color); border-right: 1px solid var(--bs-border-color); padding-right: 15px; }
+        .dv-stat-badge { background: var(--bs-secondary-bg); padding: 2px 8px; border-radius: 4px; font-weight: 600; color: var(--bs-primary); }
 
         /* Navigator Bar Refinement */
         .dv-header-tabs {
@@ -206,7 +211,7 @@ export function generateHTML(data, sheetNames, options, libs) {
                 <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                 DataVista <span style="opacity: 0.6; margin: 0 8px;">|</span> ${sheetName}
             </div>
-            <div class="dv-meta">Generated: ${timestamp} &bull; v8.0 (Enhanced UI)</div>
+            <div class="dv-meta">Generated: ${timestamp} &bull; v9.0 (Precision Layout & Filters)</div>
         </div>
         <ul class="nav nav-tabs dv-header-tabs" role="tablist">
             <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#page-data">Data</a></li>
@@ -246,9 +251,19 @@ export function generateHTML(data, sheetNames, options, libs) {
 
         // Explicit style injection for font size
         parts.push(`<table class="table table-hover display table-bordered" style="width:100% !important; font-size:${fontSizeStr};">`);
-        parts.push(`<thead><tr>`);
+        parts.push(`<thead>`);
+
+        // Row 1: Titles
+        parts.push(`<tr>`);
         header.forEach((h) => parts.push(`<th>${h}</th>`));
-        parts.push(`</tr></thead><tbody>`);
+        parts.push(`</tr>`);
+
+        // Row 2: Filters
+        parts.push(`<tr class="filter-row">`);
+        header.forEach(() => parts.push(`<th></th>`));
+        parts.push(`</tr>`);
+
+        parts.push(`</thead><tbody>`);
 
         body.forEach(row => {
             parts.push(`<tr>`);
@@ -284,7 +299,13 @@ export function generateHTML(data, sheetNames, options, libs) {
             var table = $(this);
             // Initialize DataTable with STRICT options
             table.DataTable({
-                dom: '<"dv-controls-row"B<"dv-search-group"f>>t<"row mt-3"<"col-md-6"i><"col-md-6"p>>',
+                dom: 'P<"dv-controls-row"B<"dv-search-group"f>>t<"row mt-3"<"col-md-6"i><"col-md-6"p>>',
+                orderCellsTop: true, // Use first row for sorting
+                searchPanes: {
+                    cascadePanes: true,
+                    viewTotal: true,
+                    layout: 'columns-3'
+                },
                 autoWidth: false,
                 scrollX: true,
                 scrollCollapse: true,
@@ -317,16 +338,16 @@ export function generateHTML(data, sheetNames, options, libs) {
                     \`;
                     $('.dv-search-group').prepend(statsHtml);
 
-                    $(api.table().header()).find('th').each(function (colIdx) {
-                        var title = $(this).text();
-                        $(this).empty().append('<div style="margin-bottom:5px;font-weight:600;font-size:0.75rem;">'+title+'</div>');
-                        $('<input type="text" class="filter-input" placeholder="Filter..." style="width:100%; border:1px solid var(--bs-border-color); padding:4px; font-size:0.75rem; border-radius:4px; outline:none;" />')
+                    // Inject filters into the SECOND header row
+                    $(api.table().header()).find('tr.filter-row th').each(function (colIdx) {
+                        $('<input type="text" class="filter-input" placeholder="Filter..." />')
                             .appendTo(this)
                             .on('keyup change', function (e) { 
                                 e.stopPropagation();
                                 api.column(colIdx).search(this.value).draw(); 
                             });
                     });
+                    
                     setTimeout(function() { api.columns.adjust(); }, 150);
                 }
             });

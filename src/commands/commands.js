@@ -28,7 +28,12 @@ const LIB_URLS = {
     searchbuilder_js: "https://cdn.datatables.net/searchbuilder/1.5.0/js/dataTables.searchBuilder.min.js",
     searchbuilder_bs5_js: "https://cdn.datatables.net/searchbuilder/1.5.0/js/searchBuilder.bootstrap5.min.js",
     dateTime_css: "https://cdn.datatables.net/datetime/1.5.1/css/dataTables.dateTime.min.css",
-    dateTime_js: "https://cdn.datatables.net/datetime/1.5.1/js/dataTables.dateTime.min.js"
+    dateTime_js: "https://cdn.datatables.net/datetime/1.5.1/js/dataTables.dateTime.min.js",
+    searchpanes_css: "https://cdn.datatables.net/searchpanes/2.2.0/css/searchPanes.bootstrap5.min.css",
+    searchpanes_js: "https://cdn.datatables.net/searchpanes/2.2.0/js/dataTables.searchPanes.min.js",
+    searchpanes_bs5_js: "https://cdn.datatables.net/searchpanes/2.2.0/js/searchPanes.bootstrap5.min.js",
+    select_css: "https://cdn.datatables.net/select/1.7.0/css/select.bootstrap5.min.css",
+    select_js: "https://cdn.datatables.net/select/1.7.0/js/dataTables.select.min.js"
 };
 
 Office.onReady(() => {

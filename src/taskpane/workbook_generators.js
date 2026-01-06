@@ -58,10 +58,32 @@ export function generateWorkbookHTML(data, sheetNames, options, libs) {
         }
         .btn-back { cursor: pointer; font-weight: 600; text-decoration: none; color: inherit; display: flex; align-items: center; gap: 5px; }
 
-        /* === VISUAL PRECISION & FIXED CONTROLS (v8.0) === */
+        /* === PRECISION HEADER & FILTERS (v9.0) === */
         .dv-table-wrapper { width: 100%; margin-bottom: 2rem; position: relative; }
-        .dv-controls-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 12px; }
         
+        /* Header Styling */
+        table.dataTable thead tr:first-child th {
+            background: var(--dv-header-bg) !important;
+            padding: 12px 18px !important;
+            font-weight: 700 !important;
+            border-bottom: 2px solid var(--bs-border-color) !important;
+            vertical-align: middle !important;
+        }
+        
+        /* Filter Row Styling */
+        .filter-row th {
+            padding: 8px 10px !important;
+            background: var(--bs-body-bg) !important;
+            border-bottom: 1px solid var(--bs-border-color) !important;
+        }
+
+        .filter-input { width: 100%; border: 1px solid var(--bs-border-color); padding: 5px 10px; font-size: 0.75rem; border-radius: 6px; outline: none; transition: border-color 0.2s; }
+        .filter-input:focus { border-color: #00bcd4; box-shadow: 0 0 0 2px rgba(0, 188, 212, 0.1); }
+
+        /* SearchPanes Styling */
+        .dtsp-searchPanes { margin-bottom: 1.5rem; border: 1px solid var(--bs-border-color); border-radius: 8px; padding: 15px; background: var(--bs-body-bg); }
+
+        .dv-controls-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 12px; }
         .dv-search-group { display: flex; align-items: center; gap: 15px; }
         .dv-summary-stats { display: flex; gap: 10px; font-size: 0.85rem; color: var(--bs-secondary-color); border-right: 1px solid var(--bs-border-color); padding-right: 15px; }
         .dv-stat-badge { background: var(--bs-secondary-bg); padding: 2px 8px; border-radius: 4px; font-weight: 600; color: var(--dv-primary); }
@@ -97,7 +119,7 @@ export function generateWorkbookHTML(data, sheetNames, options, libs) {
                     DataVista Report
                 </div>
                 <h1 class="dashboard-title">${workbookName}</h1>
-                <p class="dashboard-meta">Generated on ${timestamp} &bull; ${sheetNames.length} Sheets &bull; v8.0 (Enhanced UI)</p>
+                <p class="dashboard-meta">Generated on ${timestamp} &bull; ${sheetNames.length} Sheets &bull; v9.0 (Precision Layout & Filters)</p>
             </div>
             <div class="sheet-grid">
     `);
@@ -139,7 +161,10 @@ export function generateWorkbookHTML(data, sheetNames, options, libs) {
             <div class="container-fluid" style="padding: 0 20px;">
                 <div class="dv-table-wrapper">
                     <table class="table table-striped table-hover display table-bordered" style="width:100% !important; font-size:${fontSizeStr};">
-                        <thead><tr>${header.map(h => `<th>${h || ""}</th>`).join('')}</tr></thead>
+                        <thead>
+                            <tr>${header.map(h => `<th>${h || ""}</th>`).join('')}</tr>
+                            <tr class="filter-row">${header.map(() => `<th></th>`).join('')}</tr>
+                        </thead>
                         <tbody>
                             ${body.map(r => `<tr>${r.map(c => `<td>${c || ""}</td>`).join('')}</tr>`).join('')}
                         </tbody>
@@ -168,7 +193,13 @@ export function generateWorkbookHTML(data, sheetNames, options, libs) {
         $('table.display').each(function() {
             var table = $(this);
             table.DataTable({
-                dom: '<"dv-controls-row"B<"dv-search-group"f>>t<"row mt-3"<"col-md-6"i><"col-md-6"p>>',
+                dom: 'P<"dv-controls-row"B<"dv-search-group"f>>t<"row mt-3"<"col-md-6"i><"col-md-6"p>>',
+                orderCellsTop: true,
+                searchPanes: {
+                    cascadePanes: true,
+                    viewTotal: true,
+                    layout: 'columns-3'
+                },
                 autoWidth: false,
                 scrollX: true,
                 scrollCollapse: true,
@@ -200,16 +231,16 @@ export function generateWorkbookHTML(data, sheetNames, options, libs) {
                     \`;
                     $(this).closest('.dv-table-wrapper').find('.dv-search-group').prepend(statsHtml);
 
-                    $(api.table().header()).find('th').each(function (colIdx) {
-                        var title = $(this).text();
-                        $(this).empty().append('<div style="margin-bottom:5px;font-weight:600;font-size:0.75rem;">'+title+'</div>');
-                        $('<input type="text" class="filter-input" placeholder="Filter..." style="width:100%; border:1px solid var(--bs-border-color); padding:4px; font-size:0.75rem; border-radius:4px; outline:none;" />')
+                    // Inject filters into the SECOND header row
+                    $(api.table().header()).find('tr.filter-row th').each(function (colIdx) {
+                        $('<input type="text" class="filter-input" placeholder="Filter..." />')
                             .appendTo(this)
                             .on('keyup change', function (e) { 
                                 e.stopPropagation();
                                 api.column(colIdx).search(this.value).draw(); 
                             });
                     });
+                    
                     setTimeout(function() { api.columns.adjust(); }, 150);
                 }
             });
