@@ -58,13 +58,22 @@ export function generateWorkbookHTML(data, sheetNames, options, libs) {
         }
         .btn-back { cursor: pointer; font-weight: 600; text-decoration: none; color: inherit; display: flex; align-items: center; gap: 5px; }
 
-        /* === FLUID RESPONSIVE TABLE LAYOUT (v4.0) === */
-        .dv-table-container {
+        /* === FIXED CONTROLS & FLUID DATA (v5.1) === */
+        .dv-table-wrapper {
             width: 100%;
-            overflow-x: auto;
+            margin-bottom: 2rem;
+        }
+
+        .dataTables_scrollBody {
             border: 1px solid var(--bs-border-color);
-            border-radius: 8px;
-            background: var(--bs-body-bg);
+            border-radius: 0 0 8px 8px;
+        }
+        
+        .dataTables_scrollHead {
+            border: 1px solid var(--bs-border-color);
+            border-bottom: none;
+            border-radius: 8px 8px 0 0;
+            background: var(--dv-header-bg);
         }
 
         table.dataTable { 
@@ -76,13 +85,11 @@ export function generateWorkbookHTML(data, sheetNames, options, libs) {
         
         table.dataTable th, 
         table.dataTable td { 
-            white-space: normal !important; 
-            word-wrap: break-word !important; 
-            overflow-wrap: break-word !important; 
-            vertical-align: top;
-            padding: 8px 10px !important;
+            white-space: nowrap !important;
+            vertical-align: middle;
+            padding: 10px 15px !important;
             border: 1px solid var(--bs-border-color);
-            min-width: 100px;
+            min-width: 120px;
         }
 
         .filter-input { width: 100%; border: 1px solid var(--bs-border-color); padding: 2px; font-size: 0.75rem; border-radius: 3px; }
@@ -104,7 +111,7 @@ export function generateWorkbookHTML(data, sheetNames, options, libs) {
                     DataVista Report
                 </div>
                 <h1 class="dashboard-title">${workbookName}</h1>
-                <p class="dashboard-meta">Generated on ${timestamp} &bull; ${sheetNames.length} Sheets &bull; v4.0 (Fluid Responsive)</p>
+                <p class="dashboard-meta">Generated on ${timestamp} &bull; ${sheetNames.length} Sheets &bull; v5.1 (Fixed Controls)</p>
             </div>
             <div class="sheet-grid">
     `);
@@ -144,7 +151,7 @@ export function generateWorkbookHTML(data, sheetNames, options, libs) {
                 <div onclick="document.documentElement.setAttribute('data-bs-theme', document.documentElement.getAttribute('data-bs-theme')==='dark'?'light':'dark')" style="cursor: pointer;">Theme</div>
             </div>
             <div class="container-fluid" style="padding: 0 20px;">
-                <div class="dv-table-container">
+                <div class="dv-table-wrapper">
                     <table class="table table-striped table-hover display table-bordered" style="width:100% !important; font-size:${fontSizeStr};">
                         <thead><tr>${header.map(h => `<th>${h || ""}</th>`).join('')}</tr></thead>
                         <tbody>
@@ -175,32 +182,49 @@ export function generateWorkbookHTML(data, sheetNames, options, libs) {
         $('table.display').each(function() {
             var table = $(this);
             table.DataTable({
-                dom: '<"row mb-2"<"col-6"B><"col-6"f>>rt<"row mt-2"<"col-6"i><"col-6"p>>',
-                autoWidth: false,      // KEY: Disable auto width
-                scrollX: false,        // KEY: Disable scrollX
+                dom: '<"row mb-3"<"col-md-8"B><"col-md-4"f>>t<"row mt-3"<"col-md-6"i><"col-md-6"p>>',
+                autoWidth: false,
+                scrollX: true,
+                scrollCollapse: true,
                 pageLength: 20,
                 buttons: [
                     {
-                         text: 'Filters', className: 'btn-sm btn-outline-secondary',
+                        extend: 'collection',
+                        text: 'Export',
+                        className: 'btn-sm btn-primary',
+                        buttons: ['copy', 'excel', 'pdf']
+                    },
+                    {
+                        extend: 'colvis',
+                        text: 'Columns',
+                        className: 'btn-sm btn-outline-secondary'
+                    },
+                    {
+                         text: 'Advanced Filters', 
+                         className: 'btn-sm btn-dark',
                          action: function (e, dt) {
                              $('#sb-modal-body').empty();
                              var sb = new $.fn.dataTable.SearchBuilder(dt, {});
                              $('#sb-modal-body').append(sb.getNode());
                              $('#searchBuilderModal').modal('show');
                          }
-                    }, 'copy', 'excel'
+                    }
                 ],
                 initComplete: function() {
                     var api = this.api();
-                    api.columns().eq(0).each(function (colIdx) {
-                        var header = $(api.column(colIdx).header());
-                        var title = header.text();
-                        header.empty().append('<div style="margin-bottom:2px;font-weight:bold;">'+title+'</div>');
-                        $('<input type="text" class="filter-input" placeholder="Search" />')
-                            .appendTo(header)
-                            .on('keyup change', function () { api.column(colIdx).search(this.value).draw(); });
+                    $(api.table().header()).find('th').each(function (colIdx) {
+                        var title = $(this).text();
+                        $(this).empty().append('<div style="margin-bottom:5px;font-weight:600;font-size:0.75rem;">'+title+'</div>');
+                        $('<input type="text" class="filter-input" placeholder="Filter..." />')
+                            .appendTo(this)
+                            .on('keyup change', function (e) { 
+                                e.stopPropagation();
+                                api.column(colIdx).search(this.value).draw(); 
+                            });
                     });
+                    setTimeout(function() { api.columns.adjust(); }, 100);
                 }
+            });
             });
         });
     });

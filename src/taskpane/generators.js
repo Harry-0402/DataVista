@@ -88,13 +88,24 @@ export function generateHTML(data, sheetNames, options, libs) {
         /* Card */
         .dv-card { background: var(--bs-card-bg); border: 1px solid var(--bs-border-color); border-radius: 12px; padding: 1rem; box-shadow: 0 2px 4px rgba(0,0,0,0.02); margin-bottom: 2rem; }
 
-        /* === FLUID RESPONSIVE TABLE LAYOUT (v4.0) === */
-        .dv-table-container {
+        /* === FIXED CONTROLS & FLUID DATA (v5.1) === */
+        .dv-table-wrapper {
             width: 100%;
-            overflow-x: auto;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        /* Ensure the DataTables scroll area is constrained */
+        .dataTables_scrollBody {
             border: 1px solid var(--bs-border-color);
-            border-radius: 8px;
-            background: var(--bs-card-bg);
+            border-radius: 0 0 8px 8px;
+        }
+        
+        .dataTables_scrollHead {
+            border: 1px solid var(--bs-border-color);
+            border-bottom: none;
+            border-radius: 8px 8px 0 0;
+            background: var(--bs-secondary-bg);
         }
 
         table.dataTable { 
@@ -106,15 +117,15 @@ export function generateHTML(data, sheetNames, options, libs) {
         
         table.dataTable th, 
         table.dataTable td { 
-            white-space: normal !important; 
-            word-wrap: break-word !important; 
-            overflow-wrap: break-word !important; 
-            word-break: normal !important; /* Avoid aggressive breaking */
-            vertical-align: top;
-            padding: 8px 10px !important;
+            white-space: nowrap !important; /* Prevent text wrapping unless explicitly needed */
+            vertical-align: middle;
+            padding: 10px 15px !important;
             font-size: inherit;
-            min-width: 100px; /* Minimum readability */
+            min-width: 120px; /* Ensure readability */
         }
+
+        /* Allow wrap in specific long-text columns if needed, but default to nowrap for clean look */
+        .dv-wrap { white-space: normal !important; min-width: 200px !important; }
 
         /* Filter Inputs - Make them smaller to fit */
         .filter-input { 
@@ -147,7 +158,7 @@ export function generateHTML(data, sheetNames, options, libs) {
                 <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                 DataVista <span style="opacity: 0.6; margin: 0 8px;">|</span> ${sheetName}
             </div>
-            <div class="dv-meta">Generated: ${timestamp} &bull; v4.0 (Fluid Responsive)</div>
+            <div class="dv-meta">Generated: ${timestamp} &bull; v5.1 (Fixed Controls)</div>
         </div>
         <ul class="nav nav-tabs dv-header-tabs" role="tablist">
             <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#page-data">Data</a></li>
@@ -183,7 +194,7 @@ export function generateHTML(data, sheetNames, options, libs) {
         const fontSizeStr = fontSizeVal.toFixed(2) + "rem";
 
         parts.push(`<div class="dv-sheet-section"><div class="dv-card">`);
-        parts.push(`<div class="dv-table-container">`); // Wrap in container
+        parts.push(`<div class="dv-table-wrapper">`); // Main wrapper for DataTables
 
         // Explicit style injection for font size
         parts.push(`<table class="table table-hover display table-bordered" style="width:100% !important; font-size:${fontSizeStr};">`);
@@ -198,7 +209,7 @@ export function generateHTML(data, sheetNames, options, libs) {
             });
             parts.push(`</tr>`);
         });
-        parts.push(`</tbody></table></div></div></div>`); // Close container and cards
+        parts.push(`</tbody></table></div></div></div>`);
     });
     parts.push(`</div>`); // End Data Page
 
@@ -225,37 +236,53 @@ export function generateHTML(data, sheetNames, options, libs) {
             var table = $(this);
             // Initialize DataTable with STRICT options
             table.DataTable({
-                dom: '<"row mb-2"<"col-6"B><"col-6"f>>rt<"row mt-2"<"col-6"i><"col-6"p>>',
-                autoWidth: false,      // KEY: Disable auto width calculation
-                scrollX: false,        // KEY: Disable horizontal scroll
+                dom: '<"row mb-3"<"col-md-8"B><"col-md-4"f>>t<"row mt-3"<"col-md-6"i><"col-md-6"p>>',
+                autoWidth: false,
+                scrollX: true,        // NATIVE SCROLLING
+                scrollCollapse: true,
                 paging: true,
                 pageLength: 20,
-                lengthChange: false,   // Simplify UI
+                lengthChange: true,
                 buttons: [
                     {
-                        text: 'Filters',
-                        className: 'btn-sm btn-outline-secondary',
+                        extend: 'collection',
+                        text: 'Export',
+                        className: 'btn-sm btn-primary',
+                        buttons: ['copy', 'excel', 'pdf', 'print']
+                    },
+                    {
+                        extend: 'colvis',
+                        text: 'Columns',
+                        className: 'btn-sm btn-outline-secondary'
+                    },
+                    {
+                        text: 'Advanced Filters',
+                        className: 'btn-sm btn-dark',
                         action: function (e, dt) {
                             $('#sb-modal-body').empty();
                             var sb = new $.fn.dataTable.SearchBuilder(dt, {});
                             $('#sb-modal-body').append(sb.getNode());
                             $('#searchBuilderModal').modal('show');
                         }
-                    },
-                    'copy', 'excel', 'pdf'
+                    }
                 ],
                 initComplete: function () {
                     var api = this.api();
-                    // Add compact search inputs
-                    api.columns().eq(0).each(function (colIdx) {
-                        var header = $(api.column(colIdx).header());
-                        var title = header.text();
-                        header.empty().append('<div style="margin-bottom:2px;font-weight:bold;">'+title+'</div>');
-                        $('<input type="text" class="filter-input" placeholder="Search" />')
-                            .appendTo(header)
-                            .on('keyup change', function () { api.column(colIdx).search(this.value).draw(); });
+                    // Fix: Apply filters to the corrected header in scrollX mode
+                    $(api.table().header()).find('th').each(function (colIdx) {
+                        var title = $(this).text();
+                        $(this).empty().append('<div style="margin-bottom:5px;font-weight:600;font-size:0.75rem;">'+title+'</div>');
+                        $('<input type="text" class="filter-input" placeholder="Filter..." />')
+                            .appendTo(this)
+                            .on('keyup change', function (e) { 
+                                e.stopPropagation();
+                                api.column(colIdx).search(this.value).draw(); 
+                            });
                     });
+                    // Recalculate column widths after init
+                    setTimeout(function() { api.columns.adjust(); }, 100);
                 }
+            });
             });
         });
     });
