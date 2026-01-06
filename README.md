@@ -1,53 +1,104 @@
-# DataVista Excel Add-in
+# DataVista Premium Export (v1.2.1)
 
-**Professional Offline Reporting for Excel.**
-DataVista is a modern, Ribbon-first Excel Add-in that allows you to generate beautiful, interactive HTML reports from your Excel data purely offline.
+![DataVista Banner](https://Harry-0402.github.io/DataVista/assets/icon-80.png)
 
-## Features
+**A professional, offline-first Excel Add-in for generating interactive HTML reports with advanced analytics and responsive data visualization.**
 
-- **Ribbon-First Architecture**: All main actions are accessible directly from the "DataVista" tab in the Excel Ribbon.
-- **Offline Generation**: No data is sent to any server. All processing happens locally in your browser.
-- **Fit to Screen**: Generated reports automatically adjust to fit your screen width, preventing horizontal scrolling.
-- **Interactive Reports**:
-  - Sort, search, and filter data.
-  - "Advanced Filters" via a modal dialog.
-  - "Summary Statistics" and "Dataset Info" tabs (optional).
-  - Dark Mode support.
+---
 
-## Installation
+## 📑 Table of Contents
+- [✨ Key Features](#-key-features)
+- [📊 Analytics Module](#-analytics-module)
+- [📂 Repository Structure](#-repository-structure)
+- [🚀 Quick Start](#-quick-start)
+- [🛠️ Development](#️-development)
+- [⚖️ License](#-license)
 
-1.  **Download Manifest**: Get the [manifest.xml](https://Harry-0402.github.io/DataVista/manifest.xml) file.
-2.  **Open Excel**: Use Excel on the Web or Excel for Desktop.
-3.  **Insert Add-in**:
-    - Go to **Insert** > **Add-ins** > **Manage My Add-ins**.
-    - Select **Upload My Add-in**.
-    - Choose the `manifest.xml` file you downloaded.
-4.  **Ready**: You will see a new **DataVista** tab in your Ribbon.
+---
 
-## Usage
+## ✨ Key Features
 
-### 1. Export Selection
-Select a range of cells in Excel and click **Export Selection** in the DataVista tab. A report will be generated for just those cells.
+- **Offline-First Privacy**: No data ever leaves your computer. Reports are generated locally in your browser.
+- **Precision Layout (v11.0+)**: Unified button groups and perfectly aligned toolbars.
+- **Multi-Dimensional Filtering**:
+  - **SearchPanes**: High-level categorical filtering.
+  - **SearchBuilder**: Complex conditional logic (AND/OR).
+  - **Real-time Column Filters**: Instant filtering on every column.
+- **Smart Data Presentation**:
+  - **Conditional Coloring**: Automatic green/red formatting for numeric trends.
+  - **Dynamic Scaling**: Automatic font adjustment for wide datasets.
+- **Clean Export Engine**: Aggressive "Ghost Row" removal to eliminate Excel artifacts.
 
-### 2. Export Workbook
-Click **Export Workbook** to generate a dashboard-style report containing all sheets in your workbook.
+## 📊 Analytics Module (v1.2.1)
 
-### 3. About / Support
-Click the **About / Support** button to open the Taskpane guide, which provides helpful instructions and version information.
+The latest **Analytics Edition** automatically calculates key insights for every dataset:
+- **Automatic Numeric Detection**: Identifies and analyzes numeric columns instantly.
+- **Summary Statistics**: Sum, Average, Min, Max, and Count calculations.
+- **Metadata Inspection**: Source verification and row/column audit logs.
 
-## Recent Updates
+---
 
-- **v2.1 (Fit-Screen)**: Fixed horizontal scrolling issues; tables now wrap text and fit to the screen width.
-- **v2.0**: Transitioned to Ribbon-First architecture; Taskpane is now a static guide.
+## 📂 Repository Structure
 
-## Development
-
-To run locally:
-```bash
-npm install
-npm run start
+```text
+DataVista/
+├── assets/             # Extension icons and UI assets
+├── docs/               # Production Build (GitHub Pages Root)
+│   ├── index.html      # Landing Page & Installer
+│   └── manifest.xml    # Final Production Manifest
+├── src/                # Source Code
+│   ├── taskpane/       # Add-in UI logic
+│   │   ├── taskpane.html
+│   │   ├── generators.js   # Single-sheet export engine
+│   │   └── workbook_generators.js # Dashboard engine
+│   ├── commands/       # Ribbon command handlers
+│   └── index.html      # Landing page source
+├── manifest.xml        # Development Manifest
+├── package.json        # Build scripts & dependencies
+└── webpack.config.js   # Production bundling configuration
 ```
-This will start the dev server on `https://localhost:3000`.
 
-## License
-MIT
+---
+
+## 🚀 Quick Start
+
+### For End Users
+1. Visit the [DataVista Landing Page](https://Harry-0402.github.io/DataVista/).
+2. Download the `manifest.xml`.
+3. Sideload into Excel (Office 365 or Desktop) via **Insert > Add-ins > Manage My Add-ins > Upload My Add-in**.
+4. Use the **DataVista** tab in your Ribbon!
+
+### For Developers
+1. Clone the repository.
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Run in development mode:
+   ```bash
+   npm start
+   ```
+4. Build for production:
+   ```bash
+   npm run build
+   ```
+
+---
+
+## 🛠️ Development Tools
+
+- **DataTables Engine**: Powered by DataTables.net with Buttons, SearchPanes, and SearchBuilder.
+- **Bootstrap 5**: Responsive UI components.
+- **Office.js**: Tight integration with the Excel host.
+- **Webpack 5**: Production-grade bundling and optimization.
+
+---
+
+## ⚖️ License
+
+Distributed under the **Apache License 2.0**. See `LICENSE` for more information.
+
+---
+
+**Built with Precision by Harish Chavan & DataVista Engine.**  
+[Live Preview](https://Harry-0402.github.io/DataVista/test_preview.html) &bull; [Official Site](https://Harry-0402.github.io/DataVista/)
