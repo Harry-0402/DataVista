@@ -72,9 +72,10 @@ export function generateWorkbookHTML(data, sheetNames, options, libs) {
         
         /* Filter Row Styling */
         .filter-row th {
-            padding: 8px 10px !important;
+            padding: 4px 10px !important;
             background: var(--bs-body-bg) !important;
             border-bottom: 1px solid var(--bs-border-color) !important;
+            line-height: 1 !important;
         }
 
         .filter-input { width: 100%; border: 1px solid var(--bs-border-color); padding: 5px 10px; font-size: 0.75rem; border-radius: 6px; outline: none; transition: border-color 0.2s; }
@@ -102,6 +103,10 @@ export function generateWorkbookHTML(data, sheetNames, options, libs) {
 
         .filter-input { width: 100%; border: 1px solid var(--bs-border-color); padding: 2px; font-size: 0.75rem; border-radius: 3px; }
         .dataTables_paginate { display: flex; justify-content: flex-end; margin-top: 10px; font-size: 0.8rem; }
+        
+        /* RICH FORMATTING */
+        .dv-pos { color: #28a745 !important; font-weight: 600; }
+        .dv-neg { color: #dc3545 !important; font-weight: 600; }
     </style>
     <style>${libs.css || ""}</style>
     `;
@@ -138,13 +143,14 @@ export function generateWorkbookHTML(data, sheetNames, options, libs) {
     sheetNames.forEach((name, index) => {
         const rows = data[name];
         const header = rows.length > 0 ? rows[0] : [];
-        const body = rows.length > 0 ? rows.slice(1) : [];
+        // v10.0: Remove blank rows
+        const body = rows.length > 0 ? rows.slice(1).filter(r => r.some(c => c && c.toString().trim() !== "")) : [];
 
-        // Dynamic Font Scaling
+        // Dynamic Font Scaling (v10.0 Refined)
         const colCount = header.length;
-        let fontSizeVal = 0.9;
+        let fontSizeVal = 1.0;
         if (colCount > 6) {
-            fontSizeVal = Math.max(0.5, 0.9 - ((colCount - 6) * 0.05));
+            fontSizeVal = Math.max(0.75, 1.0 - ((colCount - 6) * 0.04));
         }
         const fontSizeStr = fontSizeVal.toFixed(2) + "rem";
 
@@ -204,6 +210,17 @@ export function generateWorkbookHTML(data, sheetNames, options, libs) {
                 scrollX: true,
                 scrollCollapse: true,
                 pageLength: 20,
+                rowCallback: function(row, data) {
+                    // v10.0: Numeric Conditional Coloring
+                    $('td', row).each(function() {
+                        var text = $(this).text().trim();
+                        var val = parseFloat(text.replace(/[^0-9.-]+/g, ""));
+                        if (!isNaN(val) && !text.includes('/') && !text.includes('-20') && text.length < 15) {
+                            if (val > 0) $(this).addClass('dv-pos');
+                            else if (val < 0) $(this).addClass('dv-neg');
+                        }
+                    });
+                },
                 buttons: [
                     {
                         text: 'Advanced Filters',

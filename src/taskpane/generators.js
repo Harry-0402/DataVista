@@ -107,9 +107,10 @@ export function generateHTML(data, sheetNames, options, libs) {
         
         /* Filter Row Styling */
         .filter-row th {
-            padding: 8px 10px !important;
+            padding: 4px 10px !important;
             background: var(--bs-body-bg) !important;
             border-bottom: 1px solid var(--bs-border-color) !important;
+            line-height: 1 !important;
         }
         .filter-input {
             width: 100%;
@@ -195,7 +196,8 @@ export function generateHTML(data, sheetNames, options, libs) {
         }
 
         /* RICH FORMATTING */
-        .dv-neg { color: #dc3545 !important; font-weight: 500; }
+        .dv-pos { color: #28a745 !important; font-weight: 600; }
+        .dv-neg { color: #dc3545 !important; font-weight: 600; }
         .dv-bar-cell { position: relative; z-index: 1; }
         .dv-bar { position: absolute; top: 2px; bottom: 2px; left: 0; background: rgba(0, 188, 212, 0.15); z-index: -1; }
     </style>`);
@@ -211,7 +213,7 @@ export function generateHTML(data, sheetNames, options, libs) {
                 <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                 DataVista <span style="opacity: 0.6; margin: 0 8px;">|</span> ${sheetName}
             </div>
-            <div class="dv-meta">Generated: ${timestamp} &bull; v9.0 (Precision Layout & Filters)</div>
+            <div class="dv-meta">Generated: ${timestamp} &bull; v10.0 (UX Refined & Colored)</div>
         </div>
         <ul class="nav nav-tabs dv-header-tabs" role="tablist">
             <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#page-data">Data</a></li>
@@ -233,16 +235,17 @@ export function generateHTML(data, sheetNames, options, libs) {
         const rows = data[name];
         const hasHeader = rows.length > 0;
         const header = hasHeader ? rows[0] : [];
-        const body = hasHeader ? rows.slice(1) : [];
+        // v10.0: Remove blank rows (rows that are all empty)
+        const body = hasHeader ? rows.slice(1).filter(r => r.some(c => c && c.toString().trim() !== "")) : [];
         const colCount = header.length;
 
-        // Dynamic Font Scaling Logic
-        // Baseline: 0.9rem for < 6 cols
-        // Reduce by 0.05rem for each col above 6
-        // Min: 0.5rem
-        let fontSizeVal = 0.9;
+        // Dynamic Font Scaling Logic (v10.0 Refined)
+        // Baseline: 1.0rem for < 6 cols
+        // Reduce by 0.04rem for each col above 6
+        // Min: 0.75rem (Improved readability)
+        let fontSizeVal = 1.0;
         if (colCount > 6) {
-            fontSizeVal = Math.max(0.5, 0.9 - ((colCount - 6) * 0.05));
+            fontSizeVal = Math.max(0.75, 1.0 - ((colCount - 6) * 0.04));
         }
         const fontSizeStr = fontSizeVal.toFixed(2) + "rem";
 
@@ -311,6 +314,17 @@ export function generateHTML(data, sheetNames, options, libs) {
                 scrollCollapse: true,
                 paging: true,
                 pageLength: 20,
+                rowCallback: function(row, data) {
+                    // v10.0: Numeric Conditional Coloring
+                    $('td', row).each(function() {
+                        var text = $(this).text().trim();
+                        var val = parseFloat(text.replace(/[^0-9.-]+/g, ""));
+                        if (!isNaN(val) && !text.includes('/') && !text.includes('-20') && text.length < 15) {
+                            if (val > 0) $(this).addClass('dv-pos');
+                            else if (val < 0) $(this).addClass('dv-neg');
+                        }
+                    });
+                },
                 buttons: [
                     {
                         text: 'Advanced Filters',
