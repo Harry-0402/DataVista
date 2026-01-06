@@ -58,7 +58,7 @@ export function generateWorkbookHTML(data, sheetNames, options, libs) {
         }
         .btn-back { cursor: pointer; font-weight: 600; text-decoration: none; color: inherit; display: flex; align-items: center; gap: 5px; }
 
-        /* === PRECISION HEADER & FILTERS (v9.0) === */
+        /* === PRECISION HEADER & FILTERS === */
         .dv-table-wrapper { width: 100%; margin-bottom: 2rem; position: relative; }
         
         /* Header Styling */
@@ -87,7 +87,7 @@ export function generateWorkbookHTML(data, sheetNames, options, libs) {
         .dv-controls-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 12px; }
         .dv-search-group { display: flex; align-items: center; gap: 15px; }
         .dv-summary-stats { display: flex; gap: 10px; font-size: 0.85rem; color: var(--bs-secondary-color); border-right: 1px solid var(--bs-border-color); padding-right: 15px; }
-        .dv-stat-badge { background: var(--bs-secondary-bg); padding: 2px 8px; border-radius: 4px; font-weight: 600; color: var(--dv-primary); }
+        .dv-stat-badge { background: var(--bs-secondary-bg); padding: 2px 8px; border-radius: 4px; font-weight: 600; color: #00bcd4; }
 
         /* Unified Button Group Styling (v11.0) */
         .dt-buttons {
@@ -129,12 +129,12 @@ export function generateWorkbookHTML(data, sheetNames, options, libs) {
         table.dataTable { width: 100% !important; margin: 0 !important; table-layout: auto !important; border-collapse: collapse !important; }
         table.dataTable th, table.dataTable td { white-space: nowrap !important; vertical-align: middle; padding: 12px 18px !important; border: 1px solid var(--bs-border-color); min-width: 120px; }
 
-        .filter-input { width: 100%; border: 1px solid var(--bs-border-color); padding: 2px; font-size: 0.75rem; border-radius: 3px; }
         .dataTables_paginate { display: flex; justify-content: flex-end; margin-top: 10px; font-size: 0.8rem; }
         
         /* RICH FORMATTING */
         .dv-pos { color: #28a745 !important; font-weight: 600; }
         .dv-neg { color: #dc3545 !important; font-weight: 600; }
+        .dv-card { background: var(--bs-body-bg); border: 1px solid var(--bs-border-color); border-radius: 8px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
     </style>
     <style>${libs.css || ""}</style>
     `;
@@ -152,7 +152,7 @@ export function generateWorkbookHTML(data, sheetNames, options, libs) {
                     DataVista Report
                 </div>
                 <h1 class="dashboard-title">${workbookName}</h1>
-                <p class="dashboard-meta">Generated on ${timestamp} &bull; ${sheetNames.length} Sheets &bull; v1.1.0 (Final Production Edition)</p>
+                <p class="dashboard-meta">Generated on ${timestamp} &bull; ${sheetNames.length} Sheets &bull; v1.2.1 (Analytics Edition)</p>
             </div>
             <div class="sheet-grid">
     `);
@@ -171,10 +171,8 @@ export function generateWorkbookHTML(data, sheetNames, options, libs) {
     sheetNames.forEach((name, index) => {
         const rows = data[name];
         const header = rows.length > 0 ? rows[0] : [];
-        // v11.0: Aggressive row cleaning
         const body = rows.length > 0 ? rows.slice(1).filter(r => r.some(c => c !== null && c !== undefined && c.toString().trim() !== "")) : [];
 
-        // Dynamic Font Scaling (v10.0 Refined)
         const colCount = header.length;
         let fontSizeVal = 1.0;
         if (colCount > 6) {
@@ -193,16 +191,59 @@ export function generateWorkbookHTML(data, sheetNames, options, libs) {
                 <div onclick="document.documentElement.setAttribute('data-bs-theme', document.documentElement.getAttribute('data-bs-theme')==='dark'?'light':'dark')" style="cursor: pointer;">Theme</div>
             </div>
             <div class="container-fluid" style="padding: 0 20px;">
-                <div class="dv-table-wrapper">
-                    <table class="table table-striped table-hover display table-bordered" style="width:100% !important; font-size:${fontSizeStr};">
-                        <thead>
-                            <tr>${header.map(h => `<th>${h || ""}</th>`).join('')}</tr>
-                            <tr class="filter-row">${header.map(() => `<th></th>`).join('')}</tr>
-                        </thead>
-                        <tbody>
-                            ${body.map(r => `<tr>${r.map(c => `<td>${c || ""}</td>`).join('')}</tr>`).join('')}
-                        </tbody>
-                    </table>
+                <ul class="nav nav-pills mb-3 justify-content-center" role="tablist">
+                    <li class="nav-item"><a class="nav-link active" data-bs-toggle="pill" href="#sheet-${index}-data">Data</a></li>
+                    <li class="nav-item"><a class="nav-link" data-bs-toggle="pill" href="#sheet-${index}-stats">Analytics</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div id="sheet-${index}-data" class="tab-pane fade show active">
+                        <div class="dv-table-wrapper">
+                            <table class="table table-striped table-hover display table-bordered" style="width:100% !important; font-size:${fontSizeStr};">
+                                <thead>
+                                    <tr>${header.map(h => `<th>${h || ""}</th>`).join('')}</tr>
+                                    <tr class="filter-row">${header.map(() => `<th></th>`).join('')}</tr>
+                                </thead>
+                                <tbody>
+                                    ${body.map(r => `<tr>${r.map(c => `<td>${c || ""}</td>`).join('')}</tr>`).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="sheet-${index}-stats" class="tab-pane fade">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="dv-card mb-3">
+                                    <h6>Metadata</h6>
+                                    <p class="small mb-1 text-muted">Total Rows: <strong>${body.length}</strong></p>
+                                    <p class="small mb-1 text-muted">Total Columns: <strong>${header.length}</strong></p>
+                                    <p class="small mb-3 text-muted">Sheet: <strong>${name}</strong></p>
+                                    <div class="alert alert-secondary py-2 small">Analytics calculated on raw selection.</div>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="dv-card">
+                                    <h6>Column Statistics</h6>
+                                    <div class="table-responsive">
+                                        <table class="table table-sm small">
+                                            <thead><tr><th>Column</th><th>Sum</th><th>Avg</th></tr></thead>
+                                            <tbody>
+                                                ${header.map((h, colIdx) => {
+            const vals = body.map(r => {
+                const v = r[colIdx];
+                const n = parseFloat(v?.toString().replace(/[^0-9.-]+/g, ""));
+                return isNaN(n) ? null : n;
+            }).filter(v => v !== null);
+            if (vals.length === 0) return '';
+            const s = vals.reduce((a, b) => a + b, 0);
+            return `<tr><td>${h}</td><td>${s.toLocaleString()}</td><td>${(s / vals.length).toLocaleString()}</td></tr>`;
+        }).join('')}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -216,81 +257,66 @@ export function generateWorkbookHTML(data, sheetNames, options, libs) {
     // --- 3. SCRIPTS ---
     parts.push(`<script>${libs.js || ""}</script>`);
     parts.push(`<script>
-    function showDashboard() { $('.view-section').removeClass('active'); $('#dashboard-view').addClass('active'); }
-    function showSheet(index) { 
-        $('.view-section').removeClass('active'); 
-        $('#sheet-view-' + index).addClass('active'); 
-        $.fn.dataTable.tables({ visible: true, api: true }).columns.adjust();
-    }
+        function showDashboard() { $('.view-section').removeClass('active'); $('#dashboard-view').addClass('active'); }
+        function showSheet(index) {
+            $('.view-section').removeClass('active');
+            $('#sheet-view-' + index).addClass('active');
+            $.fn.dataTable.tables({ visible: true, api: true }).columns.adjust();
+        }
 
-    $(document).ready(function() {
-        $('table.display').each(function() {
-            var table = $(this);
-            table.DataTable({
-                dom: 'P<"dv-controls-row"B<"dv-search-group"f>>t<"row mt-3"<"col-md-6"i><"col-md-6"p>>',
-                orderCellsTop: true,
-                searchPanes: {
-                    cascadePanes: true,
-                    viewTotal: true,
-                    layout: 'columns-3'
-                },
-                autoWidth: false,
-                scrollX: true,
-                scrollCollapse: true,
-                pageLength: 20,
-                rowCallback: function(row, data) {
-                    // v10.0: Numeric Conditional Coloring
-                    $('td', row).each(function() {
-                        var text = $(this).text().trim();
-                        var val = parseFloat(text.replace(/[^0-9.-]+/g, ""));
-                        if (!isNaN(val) && !text.includes('/') && !text.includes('-20') && text.length < 15) {
-                            if (val > 0) $(this).addClass('dv-pos');
-                            else if (val < 0) $(this).addClass('dv-neg');
-                        }
-                    });
-                },
-                buttons: [
-                    {
-                        text: 'Advanced Filters',
-                        className: 'btn-advanced-filters',
-                        action: function (e, dt) {
-                            $('#sb-modal-body').empty();
-                            var sb = new $.fn.dataTable.SearchBuilder(dt, {});
-                            $('#sb-modal-body').append(sb.getNode());
-                            $('#searchBuilderModal').modal('show');
-                        }
+        $(document).ready(function () {
+            $('table.display').each(function () {
+                var table = $(this);
+                table.DataTable({
+                    dom: 'P<"dv-controls-row"B<"dv-search-group"f>>t<"row mt-3"<"col-md-6"i><"col-md-6"p>>',
+                    orderCellsTop: true,
+                    searchPanes: { cascadePanes: true, viewTotal: true, layout: 'columns-3' },
+                    autoWidth: false, scrollX: true, scrollCollapse: true, pageLength: 20,
+                    rowCallback: function (row, data) {
+                        $('td', row).each(function () {
+                            var text = $(this).text().trim();
+                            var val = parseFloat(text.replace(/[^0-9.-]+/g, ""));
+                            if (!isNaN(val) && !text.includes('/') && !text.includes('-20') && text.length < 15) {
+                                if (val > 0) $(this).addClass('dv-pos');
+                                else if (val < 0) $(this).addClass('dv-neg');
+                            }
+                        });
                     },
-                    'copy', 'csv', 'excel', 'pdf', 'print', 'colvis'
-                ],
-                initComplete: function() {
-                    var api = this.api();
+                    buttons: [
+                        {
+                            text: 'Advanced Filters', className: 'btn-advanced-filters',
+                            action: function (e, dt) {
+                                $('#sb-modal-body').empty();
+                                var sb = new $.fn.dataTable.SearchBuilder(dt, {});
+                                $('#sb-modal-body').append(sb.getNode());
+                                $('#searchBuilderModal').modal('show');
+                            }
+                        },
+                        'copy', 'csv', 'excel', 'pdf', 'print', 'colvis'
+                    ],
+                    initComplete: function () {
+                        var api = this.api();
+                        var rowCount = api.rows().count();
+                        var colCount = api.columns().count();
+                        var statsHtml = '<div class="dv-summary-stats">' +
+                            '<span>Total Rows: <span class="dv-stat-badge">' + rowCount + '</span></span>' +
+                            '<span>Total Columns: <span class="dv-stat-badge">' + colCount + '</span></span>' +
+                            '</div>';
+                        $(this).closest('.dv-table-wrapper').find('.dv-search-group').prepend(statsHtml);
 
-                    // Add Row/Col Counts
-                    var rowCount = api.rows().count();
-                    var colCount = api.columns().count();
-                    var statsHtml = \`
-                        <div class="dv-summary-stats">
-                            <span>Total Rows: <span class="dv-stat-badge">\${rowCount}</span></span>
-                            <span>Total Columns: <span class="dv-stat-badge">\${colCount}</span></span>
-                        </div>
-                    \`;
-                    $(this).closest('.dv-table-wrapper').find('.dv-search-group').prepend(statsHtml);
-
-                    // Inject filters into the SECOND header row
-                    $(api.table().header()).find('tr.filter-row th').each(function (colIdx) {
-                        $('<input type="text" class="filter-input" placeholder="Filter..." />')
-                            .appendTo(this)
-                            .on('keyup change', function (e) { 
-                                e.stopPropagation();
-                                api.column(colIdx).search(this.value).draw(); 
-                            });
-                    });
-                    
-                    setTimeout(function() { api.columns.adjust(); }, 150);
-                }
+                        $(api.table().header()).find('tr.filter-row th').each(function (colIdx) {
+                            $('<input type="text" class="filter-input" placeholder="Filter..." />')
+                                .appendTo(this)
+                                .on('keyup change', function (e) {
+                                    e.stopPropagation();
+                                    api.column(colIdx).search(this.value).draw();
+                                });
+                        });
+                        setTimeout(function () { api.columns.adjust(); }, 150);
+                    }
+                });
             });
         });
-    });
     </script></body></html>`);
 
     return new Blob([parts.join("")], { type: "text/html" });

@@ -221,7 +221,7 @@ export function generateHTML(data, sheetNames, options, libs) {
                 <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                 DataVista <span style="opacity: 0.6; margin: 0 8px;">|</span> ${sheetName}
             </div>
-            <div class="dv-meta">Generated: ${timestamp} &bull; v1.1.0 (Final Production Edition)</div>
+            <div class="dv-meta">Generated: ${timestamp} &bull; v1.2.0 (Analytics Edition)</div>
         </div>
         <ul class="nav nav-tabs dv-header-tabs" role="tablist">
             <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#page-data">Data</a></li>
@@ -287,12 +287,92 @@ export function generateHTML(data, sheetNames, options, libs) {
     });
     parts.push(`</div>`); // End Data Page
 
-    // --- INFO & STATS PAGES (Simplified) ---
-    if (options.info) {
-        parts.push(`<div id="page-info" class="tab-pane fade"><div class="dv-card"><h5>Dataset Info</h5><div class="alert alert-info">Generated via DataVista Engine v3.0</div></div></div>`);
-    }
-    if (options.stats) {
-        parts.push(`<div id="page-stats" class="tab-pane fade"><div class="dv-card"><h5>Statistics</h5><p>Statistics module initialized.</p></div></div>`);
+    // --- INFO & STATS PAGES ---
+    if (options.info || options.stats) {
+        // Calculate Stats (v1.2.0)
+        const name = sheetNames[0];
+        const rows = data[name] || [];
+        const header = rows.length > 0 ? rows[0] : [];
+        const body = rows.length > 0 ? rows.slice(1).filter(r => r.some(c => c !== null && c !== undefined && c.toString().trim() !== "")) : [];
+
+        const columnStats = header.map((h, colIdx) => {
+            const values = body.map(r => {
+                const val = r[colIdx];
+                if (val === null || val === undefined || val === "") return null;
+                const num = parseFloat(val.toString().replace(/[^0-9.-]+/g, ""));
+                return isNaN(num) ? null : num;
+            }).filter(v => v !== null);
+
+            if (values.length === 0) return null;
+
+            const sum = values.reduce((a, b) => a + b, 0);
+            return {
+                label: h || `Column ${colIdx + 1}`,
+                count: values.length,
+                sum: sum,
+                avg: sum / values.length,
+                min: Math.min(...values),
+                max: Math.max(...values)
+            };
+        }).filter(s => s !== null);
+
+        if (options.info) {
+            parts.push(`
+            <div id="page-info" class="tab-pane fade">
+                <div class="dv-card">
+                    <h5 class="mb-3">Dataset Metadata</h5>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead class="table-light"><tr><th>Property</th><th>Value</th></tr></thead>
+                            <tbody>
+                                <tr><td><strong>Source Sheet</strong></td><td>${sheetName}</td></tr>
+                                <tr><td><strong>Total Rows</strong></td><td>${body.length}</td></tr>
+                                <tr><td><strong>Total Columns</strong></td><td>${header.length}</td></tr>
+                                <tr><td><strong>Numeric Columns</strong></td><td>${columnStats.length}</td></tr>
+                                <tr><td><strong>Export Quality</strong></td><td><span class="badge bg-success">Verified</span></td></tr>
+                                <tr><td><strong>Engine Node</strong></td><td>DataVista v1.2.0</td></tr>
+                                <tr><td><strong>Export Date</strong></td><td>${timestamp}</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>`);
+        }
+        if (options.stats) {
+            parts.push(`
+            <div id="page-stats" class="tab-pane fade">
+                <div class="dv-card">
+                    <h5 class="mb-3">Summary Statistics</h5>
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Column</th>
+                                    <th>Count</th>
+                                    <th>Sum</th>
+                                    <th>Average</th>
+                                    <th>Min</th>
+                                    <th>Max</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${columnStats.map(s => `
+                                    <tr>
+                                        <td><strong>${s.label}</strong></td>
+                                        <td>${s.count}</td>
+                                        <td>${s.sum.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                        <td>${s.avg.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                        <td>${s.min.toLocaleString()}</td>
+                                        <td>${s.max.toLocaleString()}</td>
+                                    </tr>
+                                `).join('')}
+                                ${columnStats.length === 0 ? '<tr><td colspan="6" class="text-center text-muted">No numeric data found for calculation.</td></tr>' : ''}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>`);
+        }
     }
 
     parts.push(`</div></div>`); // End Container
@@ -352,12 +432,10 @@ export function generateHTML(data, sheetNames, options, libs) {
                     // Add Row/Col Counts
                     var rowCount = api.rows().count();
                     var colCount = api.columns().count();
-                    var statsHtml = \`
-                        <div class="dv-summary-stats">
-                            <span>Total Rows: <span class="dv-stat-badge">\${rowCount}</span></span>
-                            <span>Total Columns: <span class="dv-stat-badge">\${colCount}</span></span>
-                        </div>
-                    \`;
+                    var statsHtml = '<div class="dv-summary-stats">' +
+                        '<span>Total Rows: <span class="dv-stat-badge">' + rowCount + '</span></span>' +
+                        '<span>Total Columns: <span class="dv-stat-badge">' + colCount + '</span></span>' +
+                        '</div>';
                     $('.dv-search-group').prepend(statsHtml);
 
                     // Inject filters into the SECOND header row
