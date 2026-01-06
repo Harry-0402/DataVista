@@ -88,24 +88,32 @@ export function generateHTML(data, sheetNames, options, libs) {
         /* Card */
         .dv-card { background: var(--bs-card-bg); border: 1px solid var(--bs-border-color); border-radius: 12px; padding: 1rem; box-shadow: 0 2px 4px rgba(0,0,0,0.02); margin-bottom: 2rem; }
 
-        /* === ULTRA STRICT TABLE LAYOUT === */
+        /* === FLUID RESPONSIVE TABLE LAYOUT (v4.0) === */
+        .dv-table-container {
+            width: 100%;
+            overflow-x: auto;
+            border: 1px solid var(--bs-border-color);
+            border-radius: 8px;
+            background: var(--bs-card-bg);
+        }
+
         table.dataTable { 
             width: 100% !important; 
             margin: 0 !important;
-            table-layout: fixed !important; 
+            table-layout: auto !important; /* Allow natural sizing */
             border-collapse: collapse !important; 
         }
         
-        /* Force Wrap Everything */
         table.dataTable th, 
         table.dataTable td { 
             white-space: normal !important; 
             word-wrap: break-word !important; 
-            overflow-wrap: anywhere !important; 
-            word-break: break-word !important;
+            overflow-wrap: break-word !important; 
+            word-break: normal !important; /* Avoid aggressive breaking */
             vertical-align: top;
-            padding: 4px 6px !important;
-            font-size: inherit; /* Inherit dynamic size */
+            padding: 8px 10px !important;
+            font-size: inherit;
+            min-width: 100px; /* Minimum readability */
         }
 
         /* Filter Inputs - Make them smaller to fit */
@@ -139,7 +147,7 @@ export function generateHTML(data, sheetNames, options, libs) {
                 <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                 DataVista <span style="opacity: 0.6; margin: 0 8px;">|</span> ${sheetName}
             </div>
-            <div class="dv-meta">Generated: ${timestamp} &bull; v3.0 (Rewrite)</div>
+            <div class="dv-meta">Generated: ${timestamp} &bull; v4.0 (Fluid Responsive)</div>
         </div>
         <ul class="nav nav-tabs dv-header-tabs" role="tablist">
             <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#page-data">Data</a></li>
@@ -175,6 +183,7 @@ export function generateHTML(data, sheetNames, options, libs) {
         const fontSizeStr = fontSizeVal.toFixed(2) + "rem";
 
         parts.push(`<div class="dv-sheet-section"><div class="dv-card">`);
+        parts.push(`<div class="dv-table-container">`); // Wrap in container
 
         // Explicit style injection for font size
         parts.push(`<table class="table table-hover display table-bordered" style="width:100% !important; font-size:${fontSizeStr};">`);
@@ -189,7 +198,7 @@ export function generateHTML(data, sheetNames, options, libs) {
             });
             parts.push(`</tr>`);
         });
-        parts.push(`</tbody></table></div></div>`);
+        parts.push(`</tbody></table></div></div></div>`); // Close container and cards
     });
     parts.push(`</div>`); // End Data Page
 

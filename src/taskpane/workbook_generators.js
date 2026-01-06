@@ -58,11 +58,19 @@ export function generateWorkbookHTML(data, sheetNames, options, libs) {
         }
         .btn-back { cursor: pointer; font-weight: 600; text-decoration: none; color: inherit; display: flex; align-items: center; gap: 5px; }
 
-        /* === ULTRA STRICT TABLE LAYOUT === */
+        /* === FLUID RESPONSIVE TABLE LAYOUT (v4.0) === */
+        .dv-table-container {
+            width: 100%;
+            overflow-x: auto;
+            border: 1px solid var(--bs-border-color);
+            border-radius: 8px;
+            background: var(--bs-body-bg);
+        }
+
         table.dataTable { 
             width: 100% !important; 
             margin: 0 !important;
-            table-layout: fixed !important; 
+            table-layout: auto !important; 
             border-collapse: collapse !important; 
         }
         
@@ -70,10 +78,11 @@ export function generateWorkbookHTML(data, sheetNames, options, libs) {
         table.dataTable td { 
             white-space: normal !important; 
             word-wrap: break-word !important; 
-            overflow-wrap: anywhere !important; 
+            overflow-wrap: break-word !important; 
             vertical-align: top;
-            padding: 4px 6px !important;
+            padding: 8px 10px !important;
             border: 1px solid var(--bs-border-color);
+            min-width: 100px;
         }
 
         .filter-input { width: 100%; border: 1px solid var(--bs-border-color); padding: 2px; font-size: 0.75rem; border-radius: 3px; }
@@ -95,7 +104,7 @@ export function generateWorkbookHTML(data, sheetNames, options, libs) {
                     DataVista Report
                 </div>
                 <h1 class="dashboard-title">${workbookName}</h1>
-                <p class="dashboard-meta">Generated on ${timestamp} &bull; ${sheetNames.length} Sheets &bull; v3.0 (Rewrite)</p>
+                <p class="dashboard-meta">Generated on ${timestamp} &bull; ${sheetNames.length} Sheets &bull; v4.0 (Fluid Responsive)</p>
             </div>
             <div class="sheet-grid">
     `);
@@ -135,12 +144,14 @@ export function generateWorkbookHTML(data, sheetNames, options, libs) {
                 <div onclick="document.documentElement.setAttribute('data-bs-theme', document.documentElement.getAttribute('data-bs-theme')==='dark'?'light':'dark')" style="cursor: pointer;">Theme</div>
             </div>
             <div class="container-fluid" style="padding: 0 20px;">
-                <table class="table table-striped table-hover display table-bordered" style="width:100% !important; font-size:${fontSizeStr};">
-                    <thead><tr>${header.map(h => `<th>${h || ""}</th>`).join('')}</tr></thead>
-                    <tbody>
-                        ${body.map(r => `<tr>${r.map(c => `<td>${c || ""}</td>`).join('')}</tr>`).join('')}
-                    </tbody>
-                </table>
+                <div class="dv-table-container">
+                    <table class="table table-striped table-hover display table-bordered" style="width:100% !important; font-size:${fontSizeStr};">
+                        <thead><tr>${header.map(h => `<th>${h || ""}</th>`).join('')}</tr></thead>
+                        <tbody>
+                            ${body.map(r => `<tr>${r.map(c => `<td>${c || ""}</td>`).join('')}</tr>`).join('')}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
         `);
