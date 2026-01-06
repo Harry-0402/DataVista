@@ -6,27 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DataVista</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+    <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             font-size: 0.9rem;
-            padding-bottom: 60px;
-        }
-
-        .ribbon-guide {
-            background: #e7f1ff;
-            border-left: 4px solid #3c6ea9;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 4px;
-            color: #0c3e76;
-            font-size: 0.9rem;
-        }
-
-        .ribbon-guide strong {
-            display: block;
-            margin-bottom: 4px;
-            font-weight: 700;
+            padding-bottom: 20px;
         }
 
         .hero {
@@ -46,81 +31,7 @@
             align-items: center;
             gap: 10px;
         }
-
-        .group-label {
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-size: 0.75rem;
-            color: #6c757d;
-            margin-bottom: 8px;
-            margin-top: 20px;
-        }
-
-        .form-switch .form-check-input {
-            width: 3em;
-            height: 1.5em;
-            cursor: pointer;
-        }
-
-        .form-check-label {
-            cursor: pointer;
-            padding-top: 3px;
-        }
-
-        .btn-export {
-            background: #3c6ea9;
-            color: white;
-            border: none;
-            padding: 12px;
-            font-weight: 600;
-            border-radius: 8px;
-            width: 100%;
-            box-shadow: 0 4px 6px rgba(60, 110, 169, 0.3);
-            transition: all 0.2s;
-        }
-
-        .btn-export:hover {
-            background: #325d91;
-            transform: translateY(-1px);
-            box-shadow: 0 6px 8px rgba(60, 110, 169, 0.4);
-        }
-
-        .btn-export:active {
-            transform: translateY(0);
-        }
-
-        .footer-status {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 10px;
-            border-top: 1px solid #eee;
-            text-align: center;
-            font-size: 0.8rem;
-            backdrop-filter: blur(5px);
-            z-index: 100;
-        }
-
-        /* Dark Mode for Taskpane */
-        [data-bs-theme="dark"] body {
-            background-color: #212529;
-            color: #f8f9fa;
-        }
-
-        [data-bs-theme="dark"] .footer-status {
-            background: rgba(33, 37, 41, 0.95);
-            border-top: 1px solid #444;
-        }
-
-        [data-bs-theme="dark"] .card {
-            background-color: #2c3034;
-            border-color: #444;
-        }
     </style>
-    <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
 </head>
 
 <body class="bg-light">
@@ -133,88 +44,58 @@
         <p class="opacity-75 mb-0 small">Clear. Powerful. Offline.</p>
     </div>
 
-    <div class="container px-3">
+    <div class="container px-4 py-3">
 
-        <!-- Ribbon Guide -->
-        <div class="ribbon-guide">
-            <strong>🚀 Ready to Export?</strong>
-            Use the <b>DataVista</b> tab in the Ribbon above for one-click exports. Use this panel to configure your
-            settings.
-        </div>
+        <div class="guide-steps">
+            <h5 class="mb-4 text-center">How to Use</h5>
 
-        <!-- Source -->
-        <div class="group-label">Source Selection</div>
-        <div class="card p-3 border-0 shadow-sm mb-3">
-            <div class="btn-group w-100" role="group">
-                <input type="radio" class="btn-check" name="source" id="src-selection" value="selection" checked>
-                <label class="btn btn-outline-primary" for="src-selection">Current Selection</label>
-
-                <input type="radio" class="btn-check" name="source" id="src-workbook" value="workbook">
-                <label class="btn btn-outline-primary" for="src-workbook">Entire Workbook</label>
-            </div>
-        </div>
-
-        <!-- Options -->
-        <div class="group-label">Analysis Options</div>
-        <div class="card p-3 border-0 shadow-sm">
-            <div class="form-check form-switch d-flex align-items-center gap-2 mb-3">
-                <input class="form-check-input m-0" type="checkbox" id="opt-stats" checked>
-                <label class="form-check-label m-0" for="opt-stats">Add Summary Statistics</label>
-            </div>
-            <div class="form-check form-switch d-flex align-items-center gap-2 mb-3">
-                <input class="form-check-input m-0" type="checkbox" id="opt-info" checked>
-                <label class="form-check-label m-0" for="opt-info">Dataset Info</label>
-            </div>
-            <div class="form-check form-switch d-flex align-items-center gap-2 mb-3">
-                <input class="form-check-input m-0" type="checkbox" id="opt-desc">
-                <label class="form-check-label m-0" for="opt-desc">Pandas Describe</label>
-            </div>
-            <hr class="my-2 opacity-25">
-            <div class="form-check form-switch d-flex align-items-center gap-2 mt-2">
-                <input class="form-check-input m-0 flex-shrink-0" type="checkbox" id="opt-formatting" checked>
-                <label class="form-check-label text-primary fw-bold m-0" for="opt-formatting">Rich Formatting <span
-                        class="fw-normal text-muted small">(Red Negatives, Data Bars)</span></label>
-            </div>
-        </div>
-
-        <!-- Format -->
-        <div class="group-label">Export Format</div>
-        <div class="card p-3 border-0 shadow-sm mb-3">
-            <div class="d-flex justify-content-between text-center">
-                <div class="form-check form-check-inline m-0">
-                    <input class="form-check-input" type="radio" name="format" id="fmt-html" value="html" checked>
-                    <label class="form-check-label d-block small fw-bold" for="fmt-html">Interactive HTML</label>
+            <div class="d-flex gap-3 mb-4">
+                <div class="step-icon">
+                    <span class="badge rounded-pill bg-primary"
+                        style="font-size: 1rem; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">1</span>
                 </div>
-                <!-- Disabled for MVP, focus on HTML
-                <div class="form-check form-check-inline m-0">
-                    <input class="form-check-input" type="radio" name="format" id="fmt-csv" value="csv">
-                    <label class="form-check-label d-block small" for="fmt-csv">CSV</label>
-                </div> 
-                -->
+                <div>
+                    <h6 class="fw-bold mb-1">Select Your Data</h6>
+                    <p class="small text-muted mb-0">Highlight the cells you want to analyze or just open your workbook.
+                    </p>
+                </div>
             </div>
-        </div>
 
-        <!-- Theme -->
-        <div class="form-check mb-4">
-            <input class="form-check-input" type="checkbox" id="theme-dark">
-            <label class="form-check-label small text-muted" for="theme-dark">Dark Mode (Add-in UI)</label>
-        </div>
+            <div class="d-flex gap-3 mb-4">
+                <div class="step-icon">
+                    <span class="badge rounded-pill bg-primary"
+                        style="font-size: 1rem; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">2</span>
+                </div>
+                <div>
+                    <h6 class="fw-bold mb-1">Use the Ribbon</h6>
+                    <p class="small text-muted mb-0">Click the <strong>DataVista</strong> tab at the top of Excel.</p>
+                </div>
+            </div>
 
-        <button id="run-btn" class="btn-export btn-secondary" style="background: #6c757d; font-size: 0.8rem;">
-            Generate from Sidebar
-        </button>
+            <div class="d-flex gap-3 mb-4">
+                <div class="step-icon">
+                    <span class="badge rounded-pill bg-primary"
+                        style="font-size: 1rem; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">3</span>
+                </div>
+                <div>
+                    <h6 class="fw-bold mb-1">Export Report</h6>
+                    <p class="small text-muted mb-0">
+                        Click <strong>Export Selection</strong> or <strong>Export Workbook</strong>.
+                    </p>
+                </div>
+            </div>
+
+            <div class="alert alert-info small text-center mt-5">
+                <strong><i class="bi bi-info-circle"></i> Info:</strong> Reports generate locally in your browser.
+            </div>
+
+            <div id="status" class="text-center small text-muted mt-3">Ready</div>
+        </div>
 
     </div>
 
-    <div id="status" class="footer-status text-muted">Ready</div>
-
-    <!-- Scripts -->
-    <script>
-        // Simple UI Theme Toggle
-        document.getElementById('theme-dark').addEventListener('change', function (e) {
-            document.documentElement.setAttribute('data-bs-theme', e.target.checked ? 'dark' : 'light');
-        });
-    </script>
+    <!-- Minimal Script to Init Office JS -->
+    <script src="taskpane.js"></script>
 </body>
 
 </html>
