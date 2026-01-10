@@ -98,7 +98,7 @@ DataVista/
 3. Choose a sideloading method below to add the add-in to Excel.
 
 #### Method A: The "Shared Folder" Way (Desktop Excel - Most Reliable)
-1.  **Locate your Project Folder**: `C:\Users\javis\OneDrive\Desktop\Tools\Excel Add-Ins`.
+1.  **Locate your Project Folder**: Select a folder containing `manifest.xml` file, like `C:\Users\javis\OneDrive\Desktop\Tools\Excel Add-Ins\manifest.xml`
 2.  **Share the Folder**:
     *   Right-click the folder `Excel Add-Ins` -> **Properties** -> **Sharing** tab.
     *   Click the **Share...** button, select your name (`javis`) or **Everyone**, and click **Share**.
